@@ -1,19 +1,19 @@
-import java.util.Date;
+import java.util.ArrayList;
 
 public class Cuenta {
 	
 	int codigo = 0;
 	String nombre;
-	int cantidad;
-	boolean debe;
-	Date fecha;
+	ArrayList<Anotacion> deber;
+	ArrayList<Anotacion> haber;
+	int saldo;
 	
-	public Cuenta(int codigo, String nombre, int cantidad, boolean debe, Date fecha){
+	public Cuenta(int codigo, String nombre, ArrayList<Anotacion> deber, ArrayList<Anotacion> haber, int saldo){
 		this.codigo = codigo;
-		this.nombre =nombre;
-		this.cantidad = cantidad;
-		this.debe = debe;
-		this.fecha = fecha;
+		this.nombre = nombre;
+		this.deber = deber;
+		this.haber = haber;
+		this.saldo = saldo;
 	}
 	
 }

@@ -1,17 +1,18 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Asiento {
 	protected String enunciado;
 	protected Date fecha;
-	protected int [] inputs; //A veces será nº otras veces sera string
-	protected ArrayList<Cuenta> cuentas;
+	protected int [] inputs;
+	HashMap<Integer, Cuenta> todasCuentas;
 
 	
-	public Asiento (String enunciado, Date fecha, int [] inputs, ArrayList<Cuenta> cuentas){
+	public Asiento (String enunciado, Date fecha, int [] inputs, HashMap<Integer, Cuenta> todasCuentas){
 		this.enunciado = enunciado;
 		this.inputs =inputs;
-		this.cuentas = cuentas;
+		this.todasCuentas = todasCuentas;
 	}
 	
 	public String getEnunciado() { 
@@ -23,30 +24,20 @@ public class Asiento {
 	public int [] getInputs(){
 		return inputs;
 	}
-	public ArrayList<Cuenta> getcuentas(){
-		return cuentas;
+	public HashMap<Integer, Cuenta> getTodasCuentas(){
+		return todasCuentas;
 	}
 	
-	public void contabilizar(ArrayList<Cuenta> todasCuentas, ArrayList<Cuenta> cuentasConcretas){
-		for(int i=0; i<todasCuentas.size(); i++) {
-			for(int j=0; j<cuentasConcretas.size(); j++) {
-				if (todasCuentas.get(i).codigo==cuentasConcretas.get(j).codigo) {
-					//Si ya tiene la cuenta que hago
-				}else{
-					todasCuentas.add(cuentasConcretas.get(j));
-				}
-			}
-		}
-	}
-	public void debeHaber(ArrayList<Cuenta> todasCuentas, ArrayList<Cuenta> deber, ArrayList<Cuenta> haber){
-		for(int i=0; i<todasCuentas.size(); i++) {
-			if(todasCuentas.get(i).debe==true){
-				deber.add(todasCuentas.get(i));
+	public void contabilizar(ArrayList<Cuenta> cuentas){
+		Cuenta cuenta = null;
+		for(int i=0; i<cuentas.size(); i++) {
+			cuenta = cuentas.get(i);
+			if(!(todasCuentas.containsKey(cuenta.codigo))){
+				todasCuentas.put(cuenta.codigo,cuenta);
 			}else{
-				haber.add(todasCuentas.get(i));			
+				todasCuentas.get(cuenta.codigo).deber.addAll(cuenta.deber);
+				todasCuentas.get(cuenta.codigo).haber.addAll(cuenta.haber);
 			}
 		}
-		
 	}
-
 }
