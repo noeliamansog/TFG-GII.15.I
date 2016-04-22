@@ -1,67 +1,54 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 
-public class Asiento<T> {
-	
-	private Tipo tipo;
-	private T asiento;
-	
-	//Aportación inicial
-	public int socios;
-	public int aportacion;
-	
-	//Prestamo
-	public int prestamo;
-	public String tipoPrestamo;
-	public Boolean mensual = false;
-	public int añosPrestamo;
-	public int interesPrestamo;
+public class Asiento {
+	protected String enunciado;
+	protected Date fecha;
+	protected int [] inputs; //A veces será nº otras veces sera string
+	protected ArrayList<Cuenta> cuentas;
+	protected ArrayList<Array[]> cantidad = new ArrayList<Array[]>();
+	HashMap<Integer,String> todasCuentas = new HashMap<Integer, String>();
 	
 	
-	private Asiento(T asiento) {
-		this.asiento = asiento;
+	public Asiento (String enunciado, Date fecha, int [] inputs, ArrayList<Cuenta> cuentas, ArrayList<Array[]> cantidad, HashMap<Integer,String> todasCuentas){
+		this.enunciado = enunciado;
+		this.inputs =inputs;
+		this.cuentas = cuentas;
+		this.cantidad = cantidad;
+		this.todasCuentas=todasCuentas;
 	}
 	
-	public T getAsiento() {
-		return this.asiento;
+	public String getEnunciado() { 
+		return enunciado;  
+	}
+	public Date getFecha() { 
+		return fecha;  
+	}
+	public int [] getInputs(){
+		return inputs;
+	}
+	public ArrayList<Cuenta> getcuentas(){
+		return cuentas;
+	}
+	public ArrayList<Array[]> getCantidad(){
+		return cantidad;
+	}
+	public HashMap<Integer,String> getTodasCuentas(){
+		return todasCuentas;
 	}
 	
-	private enum Tipo {
-		APORTACION_INCIAL,
-		PRESTAMO,
-	}
-	public String getTipo() {
-		switch (tipo) {
-		case APORTACION_INCIAL:
-			return "AportacionInicial";
-		case PRESTAMO:
-			return "Prestamo";
-		default:
-			throw new UnsupportedOperationException(
-					"Argumento tipo no soportado.");
+	public void contabilizar(ArrayList<Cuenta> cuentas, HashMap<Integer,String> todasCuentas){
+		for(int i=0; i<cuentas.size(); i++) {
+			if ((todasCuentas.containsKey(cuentas.get(i).codigo))) {
+				//Si ya tiene la cuenta que hago?
+			}else{
+				todasCuentas.put(cuentas.get(i).codigo, cuentas.get(i).nombre);
+			}
 		}
+		
 	}
-
-	public int getSocios() {
-		return this.socios;
-	}
-	public int getAportacion(){
-		return this.aportacion;
-	}
-	
-	public int getPrestamo(){
-		return this.prestamo;
-	}
-	public String getTipoPrestamo(){
-		return this.tipoPrestamo;
-	}
-	public boolean getMesual(){
-		return this.mensual;
-	}
-	public int getAñosPrestamo(){
-		return this.añosPrestamo;
-	}
-	public int getInteresPrestamo(){
-		return this.interesPrestamo;
-	}	
 
 }
