@@ -1,61 +1,19 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Calendar;
 
-public class Asiento {
+public class Asiento extends SupuestoContable {
 	protected String enunciado;
-	protected Date fecha;
+	protected Calendar fecha;
 	protected int [] inputs;
-	HashMap<Integer, Cuenta> todasCuentas;
 
 	
-	public Asiento (String enunciado, Date fecha, int [] inputs, HashMap<Integer, Cuenta> todasCuentas){
-		this.enunciado = enunciado;
-		this.inputs =inputs;
-		this.todasCuentas = todasCuentas;
-	}
-	
-	public String getEnunciado() { 
-		return enunciado;  
-	}
-	public Date getFecha() { 
-		return fecha;  
-	}
-	public int [] getInputs(){
-		return inputs;
-	}
-	public HashMap<Integer, Cuenta> getTodasCuentas(){
-		return todasCuentas;
-	}
-	
-	public void contabilizar(ArrayList<Cuenta> cuentas){
-		Cuenta cuenta = null;
-		for(int i=0; i<cuentas.size(); i++) {
-			cuenta = cuentas.get(i);
-			if(todasCuentas==null){
-				todasCuentas = new HashMap<Integer, Cuenta>();
-				todasCuentas.put(cuenta.codigo, cuenta);
-			}else{
-				if(!(todasCuentas.containsKey(cuenta.codigo))){
-					todasCuentas.put(cuenta.codigo,cuenta);
-				}else{
-					if(cuenta.deber!=null){
-						if (todasCuentas.get(cuenta.codigo).deber==null){
-							todasCuentas.get(cuenta.codigo).deber= new ArrayList<Anotacion>();
-						}
-						todasCuentas.get(cuenta.codigo).deber.addAll(cuenta.deber);
-					}
-					if(cuenta.haber!=null){
-						if (todasCuentas.get(cuenta.codigo).haber==null){
-							todasCuentas.get(cuenta.codigo).haber= new ArrayList<Anotacion>();
-						}
-						todasCuentas.get(cuenta.codigo).haber.addAll(cuenta.haber);
-					}
-				}
-			}
+	public Cuenta dameCuenta(int codigo){
+		Cuenta cuenta;
+		if(todasCuentas.containsKey(codigo)){
+			cuenta = todasCuentas.get(codigo);
+		}else{
+			cuenta = new Cuenta(codigo, todosNombresCuentas.get(codigo));
+			todasCuentas.put(codigo, cuenta);		
 		}
-		System.out.println("Cuentas:");
-		System.out.println(todasCuentas);
-		System.out.println("\n");
+		return cuenta;
 	}
 }
