@@ -32,12 +32,30 @@ public class Asiento {
 		Cuenta cuenta = null;
 		for(int i=0; i<cuentas.size(); i++) {
 			cuenta = cuentas.get(i);
-			if(!(todasCuentas.containsKey(cuenta.codigo))){
-				todasCuentas.put(cuenta.codigo,cuenta);
+			if(todasCuentas==null){
+				todasCuentas = new HashMap<Integer, Cuenta>();
+				todasCuentas.put(cuenta.codigo, cuenta);
 			}else{
-				todasCuentas.get(cuenta.codigo).deber.addAll(cuenta.deber);
-				todasCuentas.get(cuenta.codigo).haber.addAll(cuenta.haber);
+				if(!(todasCuentas.containsKey(cuenta.codigo))){
+					todasCuentas.put(cuenta.codigo,cuenta);
+				}else{
+					if(cuenta.deber!=null){
+						if (todasCuentas.get(cuenta.codigo).deber==null){
+							todasCuentas.get(cuenta.codigo).deber= new ArrayList<Anotacion>();
+						}
+						todasCuentas.get(cuenta.codigo).deber.addAll(cuenta.deber);
+					}
+					if(cuenta.haber!=null){
+						if (todasCuentas.get(cuenta.codigo).haber==null){
+							todasCuentas.get(cuenta.codigo).haber= new ArrayList<Anotacion>();
+						}
+						todasCuentas.get(cuenta.codigo).haber.addAll(cuenta.haber);
+					}
+				}
 			}
 		}
+		System.out.println("Cuentas:");
+		System.out.println(todasCuentas);
+		System.out.println("\n");
 	}
 }
