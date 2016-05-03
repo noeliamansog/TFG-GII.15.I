@@ -15,7 +15,7 @@ public class AportacionInicial extends Asiento {
 		
 		System.out.println(enunciado);
 
-		dameCuenta(527).añadirDebe(new Anotacion(fecha, "Aportacion inicial", (inputs[0]*inputs[1])));
+		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Aportacion inicial", (inputs[0]*inputs[1])));
 		
 		dameCuenta(100).añadirHaber(new Anotacion(fecha, "Aportacion inicial", (inputs[0]*inputs[1])));		
 	}

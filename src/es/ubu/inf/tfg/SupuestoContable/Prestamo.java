@@ -23,13 +23,19 @@ public class Prestamo extends Asiento {
 		dameCuenta(17).añadirHaber(new Anotacion(fecha, "Prestamo", (inputs[0])));
 		/*
 		//PAGO DE UNA CUOTA:
-		// ¡¡¡¡¡Calcular segun el tipo de prestamo (amortización o pago) la cuota a pagar por año!!!!!
-		dameCuenta(17).añadirDebe(new Anotacion(fecha, "Cuota prestamo", (inputs[0])));
-		
-		dameCuenta(662).añadirDebe(new Anotacion(fecha, "Interés del prestamo", (inputs[4])));
-		
-		// Calcular cuota prestamo ???
-		dameCuenta(17).añadirHaber(new Anotacion(fecha, "Prestamo", (inputs[0])));
-		*/
+		 if(inputs[1]==0){ //cuotas de amortización
+		 	//inputs[0] --> importe
+		 	//inputs[2] --> anual o mensual
+		 	//inputs[3] --> años
+		 	//inputs[4] --> interes
+		  
+		 }else{ //cuotas de pago
+		 	dameCuenta(17).añadirDebe(new Anotacion(fecha, "Cuota prestamo", (inputs[0])));
+		 	dameCuenta(662).añadirDebe(new Anotacion(fecha, "Interés del prestamo", (inputs[4])));
+		 	
+		 	dameCuenta(17).añadirHaber(new Anotacion(fecha, "Prestamo", (inputs[0]/inputs[3])));
+		 
+		 }
+		 */
 	}
 }

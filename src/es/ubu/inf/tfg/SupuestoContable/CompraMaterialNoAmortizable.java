@@ -33,7 +33,7 @@ public class CompraMaterialNoAmortizable extends Asiento {
 		}
 			
 		
-		//DESPUES DE "Y" DIAS (Se salda la deuda con los proveedores)
+		//DESPUES DE "Y" DIAS (Se salda la deuda con los vendedores)
 		Calendar fechaDeudas = (Calendar)fecha.clone();
 		fechaDeudas.add(Calendar.MONTH, +inputs[3]);
 

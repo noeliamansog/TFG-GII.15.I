@@ -19,7 +19,7 @@ public class CompraMaterialAmortizable extends Asiento{
 		case 0: dameCuenta(213).añadirDebe(new Anotacion(fecha, "Maquinaria", inputs[1]));
 				dameCuenta(400).añadirHaber(new Anotacion(fecha, "Maquinaria", inputs[1]));	
 				break;
-		case 1:dameCuenta(216).añadirDebe(new Anotacion(fecha, "Mobiliario", inputs[1])); 
+		case 1: dameCuenta(216).añadirDebe(new Anotacion(fecha, "Mobiliario", inputs[1])); 
 				dameCuenta(400).añadirHaber(new Anotacion(fecha, "Mobiliario", inputs[1]));	
 				break;
 		case 2: dameCuenta(217).añadirDebe(new Anotacion(fecha, "Equipos para procesos de información", inputs[1])); 
