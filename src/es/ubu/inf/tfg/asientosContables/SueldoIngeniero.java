@@ -7,7 +7,9 @@ import es.ubu.inf.tfg.otrasCosas.Asiento;
 
 public class SueldoIngeniero extends Asiento {
 
-	public SueldoIngeniero(Calendar fecha, int[] inputs) {
+	public SueldoIngeniero(Calendar f, int[] i) {
+		fecha =f;
+		inputs=i;
 	
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -20,11 +22,8 @@ public class SueldoIngeniero extends Asiento {
 	System.out.println(enunciado);	
 	
 	dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos Ingeniero informático", inputs[0]));
-	
 	dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos ingeniero", inputs[0]));
-
 	dameCuenta(200).añadirDebe(new Anotacion(fecha, "Gasto en investigacion", inputs[1]*inputs[0]));
-	
 	dameCuenta(730).añadirHaber(new Anotacion(fecha, "Trabajos realizados para el inmovilizado intangible", inputs[1]*inputs[0]));
 		
 	}

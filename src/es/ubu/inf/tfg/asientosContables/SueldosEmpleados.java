@@ -7,7 +7,9 @@ import es.ubu.inf.tfg.otrasCosas.Asiento;
 
 public class SueldosEmpleados extends Asiento {
 
-	public SueldosEmpleados(Calendar fecha, int[] inputs) {
+	public SueldosEmpleados(Calendar f, int[] i) {
+		fecha =f;
+		inputs=i;
 	
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -21,13 +23,9 @@ public class SueldosEmpleados extends Asiento {
 	System.out.println(enunciado);	
 	
 	dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos empleados", (inputs[0]*inputs[1])));
-	
 	dameCuenta(642).añadirDebe(new Anotacion(fecha, "S.S. a cargo de la empresa", (inputs[0]*inputs[2])));
-	
 	dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de ls S.S acreedores", ((inputs[4]/((inputs[0]*inputs[1]))))*100));
-	
 	dameCuenta(4751).añadirHaber(new Anotacion(fecha, "H.P acreedor por retenciones practicadas", ((inputs[3]/((inputs[0]*inputs[1]))))*100));
-	
 	dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos empleados", (inputs[0]*inputs[1])));
 	
 	}
