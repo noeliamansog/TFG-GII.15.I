@@ -1,5 +1,4 @@
 package es.ubu.inf.tfg.asientosContables;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import es.ubu.inf.tfg.otrasCosas.*;
@@ -10,13 +9,11 @@ public class PagoTodoPrestamo extends Asiento {
 		fecha =f;
 		inputs=i;
 		
-		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-
-		enunciado = formateador.format(fecha.getTime())+" Se paga la totalidad del préstamo anticipadamente. \n"
+		String enunciado1 = " Se paga la totalidad del préstamo anticipadamente. \n"
     			+ "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros;"
     			+ "170. Deudas a largo plazo con entidades de crédito. \n";
 		
-		System.out.println(enunciado);
+		enunciados.add(new Enunciado(fecha, enunciado1));
 		
 		//Intereses???
 		double saldo = dameCuenta(170).getSaldo(fecha);
