@@ -83,67 +83,84 @@ public class Tesoreria extends Asiento{
         documento.addTitle("Tesorería"); 
         documento.addAuthor("Noelia Manso García"); 
         
-        PdfPTable table = new PdfPTable(6);
         
-        PdfPCell celda =new PdfPCell (new Paragraph("Tesorería", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
-        celda.setColspan(6);
+        //TESORERÍA
+        PdfPTable tesoreria = new PdfPTable(1);
+        
+        PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
         celda.setHorizontalAlignment(Element.ALIGN_CENTER);
         celda.setPadding (12.0f);
-        celda.setBackgroundColor(BaseColor.GRAY);
+        celda.setBackgroundColor(BaseColor.DARK_GRAY);
         
-        table.addCell(celda);
+        tesoreria.addCell(celda);
         
-        PdfPCell celda2 =new PdfPCell (new Paragraph("Cobros", FontFactory.getFont("arial",13,Font.BOLD, BaseColor.BLACK)));
+        //COBROS Y PAGOS
+        PdfPTable cobrosPagos = new PdfPTable(6);
+        
+        PdfPCell celda2 =new PdfPCell (new Paragraph("COBROS", FontFactory.getFont("arial",12,Font.BOLD, BaseColor.BLACK)));
         celda2.setColspan(3);
         celda2.setHorizontalAlignment(Element.ALIGN_CENTER);
         celda.setPadding (10.0f);
         celda2.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        table.addCell(celda2);
+        cobrosPagos.addCell(celda2);
         
-        PdfPCell celda3 =new PdfPCell (new Paragraph("Pagos", FontFactory.getFont("arial",13,Font.BOLD, BaseColor.BLACK)));
+        PdfPCell celda3 =new PdfPCell (new Paragraph("PAGOS", FontFactory.getFont("arial",12,Font.BOLD, BaseColor.BLACK)));
         celda3.setColspan(3);
         celda3.setHorizontalAlignment(Element.ALIGN_CENTER);
         celda.setPadding (10.0f);
         celda3.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        table.addCell(celda3);
+        cobrosPagos.addCell(celda3);
         
-       int contador=0;
-       int contCobros=0;
-       int contPagos=0;
-       for(int i=0; i<tamaño; i++){
+        int contador=0;
+        int contCobros=0;
+        int contPagos=0;
+        for(int i=0; i<tamaño; i++){
     	   //GASTOS
     	   if(cobros.size()>contCobros){
     		   Calendar fechaCobros= cobros.get(contador).fecha;
-    		   table.addCell(formateador.format(fechaCobros.getTime()));
-    		   table.addCell(cobros.get(contador).nombre);
-    		   table.addCell(cobros.get(contador).cantidad+"€");
+    		   cobrosPagos.addCell(formateador.format(fechaCobros.getTime()));
+    		   cobrosPagos.addCell(cobros.get(contador).nombre);
+    		   cobrosPagos.addCell(cobros.get(contador).cantidad+"€");
     		   
 
     		   contCobros++;
     	   }else{
-    		   table.addCell(" ");
-    		   table.addCell(" ");
-    		   table.addCell(" "); 
+    		   cobrosPagos.addCell(" ");
+    		   cobrosPagos.addCell(" ");
+    		   cobrosPagos.addCell(" "); 
     	   }
 
     	   //INGRESOS
     	   if(pagos.size()>contPagos){
     		   Calendar fechaPagos= pagos.get(contador).fecha;
-    		   table.addCell(formateador.format(fechaPagos.getTime()));
-    		   table.addCell(pagos.get(contador).nombre);
-    		   table.addCell(pagos.get(contador).cantidad+"€");
+    		   cobrosPagos.addCell(formateador.format(fechaPagos.getTime()));
+    		   cobrosPagos.addCell(pagos.get(contador).nombre);
+    		   cobrosPagos.addCell(pagos.get(contador).cantidad+"€");
     		   contPagos++;
     	   }else{
-    		   table.addCell(" ");
-    		   table.addCell(" ");
-    		   table.addCell(" "); 
+    		   cobrosPagos.addCell(" ");
+    		   cobrosPagos.addCell(" ");
+    		   cobrosPagos.addCell(" "); 
     	   }
     	  contador++;
     	   
        }
+       //CELDA RESULTADO TOTAL
+      	PdfPTable tablaResultado = new PdfPTable(3);
+      	PdfPCell total = new PdfPCell (new Paragraph("SALDO TOTAL TESORERÍA:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+      	total.setColspan(2);
+      	total.setPadding (10.0f);
+      	total.setBackgroundColor(BaseColor.YELLOW);
+      	PdfPCell calculoTotal = new PdfPCell (new Paragraph("Calcular saldo", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+      	calculoTotal.setPadding (10.0f);
+      	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
+      	tablaResultado.addCell(total);
+      	tablaResultado.addCell(calculoTotal);
            
-        // Agregamos la tabla al documento            
-        documento.add(table);
+        // Agregamos la tabla al documento    
+      	documento.add(tesoreria);
+        documento.add(cobrosPagos);
+        documento.add(tablaResultado);
         
         documento.close();
         

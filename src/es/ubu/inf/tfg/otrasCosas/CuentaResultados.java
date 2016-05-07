@@ -46,6 +46,9 @@ public class CuentaResultados extends Asiento{
 	public void imprimeCuentaResultados(){
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		
+		Collections.sort(gastos);
+		Collections.sort(ingresos);
+		
 		/* IMPRIME POR PANTALLA 
 		 
 		System.out.println("\n\n CUENTA DE RESULTADOS: \n");
@@ -65,20 +68,10 @@ public class CuentaResultados extends Asiento{
 		  }
 		}
 		*/
-		
+			
 		
 		
 		/*GENERA PDF */
-		Collections.sort(gastos);
-		Collections.sort(ingresos);
-		
-		int tamaño = 0;
-		if(gastos.size()>=ingresos.size()){
-			tamaño=gastos.size();
-		}else{
-			tamaño=ingresos.size();
-		}
-		
 		Document documento = new Document();
 		
 		try{			
@@ -88,68 +81,141 @@ public class CuentaResultados extends Asiento{
             documento.addTitle("Cuenta de Resultados"); 
             documento.addAuthor("Noelia Manso García"); 
             
-            PdfPTable table = new PdfPTable(6);
             
-            PdfPCell celda =new PdfPCell (new Paragraph("Cuenta de resultados", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
-            celda.setColspan(6);
+            //CUENTA RESULTADOS
+            PdfPTable cuentaResultados = new PdfPTable(1);
+            
+            PdfPCell celda =new PdfPCell (new Paragraph("CUENTA RESULTADOS", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
-            celda.setBackgroundColor(BaseColor.GRAY);
+            celda.setBackgroundColor(BaseColor.DARK_GRAY);
             
-            table.addCell(celda);
+            cuentaResultados.addCell(celda);
             
-            PdfPCell celda2 =new PdfPCell (new Paragraph("Gastos", FontFactory.getFont("arial",13,Font.BOLD, BaseColor.BLACK)));
-            celda2.setColspan(3);
-            celda2.setHorizontalAlignment(Element.ALIGN_CENTER);
-            celda.setPadding (10.0f);
-            celda2.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            table.addCell(celda2);
+            //INGRESOS Y GASTOS DE LA ACTIVIDAD
+            PdfPTable ingresosGastosActividad = new PdfPTable(3);
+    
+            PdfPCell celdaIG =new PdfPCell (new Paragraph("INGRESOS Y GASTOS DE LA ACTIVIDAD", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
+            celdaIG.setColspan(3);
+            celdaIG.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaIG.setPadding (10.0f);
+            celdaIG.setBackgroundColor(BaseColor.GRAY);
+            ingresosGastosActividad.addCell(celdaIG);
             
-            PdfPCell celda3 =new PdfPCell (new Paragraph("Ingresos", FontFactory.getFont("arial",13,Font.BOLD, BaseColor.BLACK)));
-            celda3.setColspan(3);
-            celda3.setHorizontalAlignment(Element.ALIGN_CENTER);
-            celda.setPadding (10.0f);
-            celda3.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            table.addCell(celda3);
+            //GASTOS
+            PdfPCell celdaGastos = new PdfPCell (new Paragraph("GASTOS DE LA ACTIVIDAD", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            celdaGastos.setColspan(3);
+            celdaGastos.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaGastos.setPadding (10.0f);
+            celdaGastos.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            ingresosGastosActividad.addCell(celdaGastos);
+            
+            for(int i=0; i<gastos.size(); i++){
+        	   Calendar fechaGastos= gastos.get(i).fecha;
+        	   ingresosGastosActividad.addCell(formateador.format(fechaGastos.getTime()));
+        	   ingresosGastosActividad.addCell(gastos.get(i).nombre);
+        	   ingresosGastosActividad.addCell(gastos.get(i).cantidad+"€");
+            } 
+            
+            //INGRESOS
+            PdfPCell celdaIngresos = new PdfPCell (new Paragraph("INGRESOS DE LA ACTIVIDAD", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            celdaIngresos.setColspan(3);
+            celdaIngresos.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaIngresos.setPadding (10.0f);
+            celdaIngresos.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            ingresosGastosActividad.addCell(celdaIngresos);
+            
+            for(int i=0; i<gastos.size(); i++){
+        	   Calendar fechaGastos= gastos.get(i).fecha;
+        	   ingresosGastosActividad.addCell(formateador.format(fechaGastos.getTime()));
+        	   ingresosGastosActividad.addCell(gastos.get(i).nombre);
+        	   ingresosGastosActividad.addCell(gastos.get(i).cantidad+"€");
+            } 
+            
+            //CELDA TOTAL INGRESOS Y GASTOS DE LA ACTIVIDAD
+            PdfPCell resulActividad = new PdfPCell (new Paragraph("EXCEDENTE DE LA ACTIVIDAD:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            resulActividad.setColspan(2);
+            resulActividad.setPadding (10.0f);
+            resulActividad.setBackgroundColor(BaseColor.CYAN);
+           	PdfPCell excedenteAct = new PdfPCell (new Paragraph("Calcular excedente:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	excedenteAct.setColspan(2);
+           	excedenteAct.setPadding (10.0f);
+           	excedenteAct.setBackgroundColor(BaseColor.CYAN);
+           	ingresosGastosActividad.addCell(resulActividad);
+           	ingresosGastosActividad.addCell(excedenteAct);
             
             
-           int contador=0;
-           int contGastos=0;
-           int contIngresos=0;
-           for(int i=0; i<tamaño; i++){
-        	   //GASTOS
-        	   if(gastos.size()>contGastos){
-        		   Calendar fechaGastos= gastos.get(contador).fecha;
-        		   table.addCell(formateador.format(fechaGastos.getTime()));
-        		   table.addCell(gastos.get(contador).nombre);
-        		   table.addCell(gastos.get(contador).cantidad+"€");
-        		   
- 
-        		   contGastos++;
-        	   }else{
-        		   table.addCell(" ");
-        		   table.addCell(" ");
-        		   table.addCell(" "); 
-        	   }
-
-        	   //INGRESOS
-        	   if(ingresos.size()>contIngresos){
-        		   Calendar fechaIngresos= ingresos.get(contador).fecha;
-        		   table.addCell(formateador.format(fechaIngresos.getTime()));
-        		   table.addCell(ingresos.get(contador).nombre);
-        		   table.addCell(ingresos.get(contador).cantidad+"€");
-        		   contIngresos++;
-        	   }else{
-        		   table.addCell(" ");
-        		   table.addCell(" ");
-        		   table.addCell(" "); 
-        	   }
-        	  contador++;
-        	   
-           }
+            
+            
+            
+          //INGRESOS Y GASTOS FINANCIEROS
+            PdfPTable ingresosGastosFinancieros = new PdfPTable(3);
+    
+            PdfPCell celdaIGF =new PdfPCell (new Paragraph("INGRESOS Y GASTOS FINANCIEROS", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
+            celdaIGF.setColspan(3);
+            celdaIGF.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaIGF.setPadding (10.0f);
+            celdaIGF.setBackgroundColor(BaseColor.GRAY);
+            ingresosGastosFinancieros.addCell(celdaIGF);
+            
+            //GASTOS
+            PdfPCell celdaGastosF = new PdfPCell (new Paragraph("GASTOS FINANCIEROS", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            celdaGastosF.setColspan(3);
+            celdaGastosF.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaGastosF.setPadding (10.0f);
+            celdaGastosF.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            ingresosGastosFinancieros.addCell(celdaGastosF);
+            
+            for(int i=0; i<1; i++){
+        	   ingresosGastosFinancieros.addCell("Fecha");
+        	   ingresosGastosFinancieros.addCell("Nombre");
+        	   ingresosGastosFinancieros.addCell("Cantidad");
+            } 
+            
+            //INGRESOS
+            PdfPCell celdaIngresosF = new PdfPCell (new Paragraph("INGRESOS FINANCIEROS", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            celdaIngresosF.setColspan(3);
+            celdaIngresosF.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaIngresosF.setPadding (10.0f);
+            celdaIngresosF.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            ingresosGastosFinancieros.addCell(celdaIngresosF);
+            
+            for(int i=0; i<1; i++){
+        	   ingresosGastosFinancieros.addCell("Fecha");
+        	   ingresosGastosFinancieros.addCell("Nombre");
+        	   ingresosGastosFinancieros.addCell("Cantidad");
+            } 
+            
+            //CELDA TOTAL INGRESOS Y GASTOS DE LA ACTIVIDAD
+            PdfPCell resulFinanciero = new PdfPCell (new Paragraph("EXCEDENTE DE LAS OPERACIONES FINANCIERAS:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            resulFinanciero.setColspan(2);
+            resulFinanciero.setPadding (10.0f);
+            resulFinanciero.setBackgroundColor(BaseColor.CYAN);
+           	PdfPCell excedenteFinan = new PdfPCell (new Paragraph("Calcular excedente:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	excedenteFinan.setColspan(2);
+           	excedenteFinan.setPadding (10.0f);
+           	excedenteFinan.setBackgroundColor(BaseColor.CYAN);
+           	ingresosGastosFinancieros.addCell(resulFinanciero);
+           	ingresosGastosFinancieros.addCell(excedenteFinan);
+           	
+           	
+            //CELDA RESULTADO TOTAL
+           	PdfPTable resultado = new PdfPTable(3);
+            PdfPCell total = new PdfPCell (new Paragraph("RESULTADO TOTAL:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            total.setColspan(2);
+            total.setPadding (10.0f);
+            total.setBackgroundColor(BaseColor.YELLOW);
+           	PdfPCell calculoTotal = new PdfPCell (new Paragraph("Calculo total:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	calculoTotal.setPadding (10.0f);
+           	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
+           	resultado.addCell(total);
+           	resultado.addCell(calculoTotal);
                
-            // Agregamos la tabla al documento            
-            documento.add(table);
+            // Agregamos la tabla al documento     
+           	documento.add(cuentaResultados);
+            documento.add(ingresosGastosActividad);
+            documento.add(ingresosGastosFinancieros);
+            documento.add(resultado);
             
             documento.close();
             
