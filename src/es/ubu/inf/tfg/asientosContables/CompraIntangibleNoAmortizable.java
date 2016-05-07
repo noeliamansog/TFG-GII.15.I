@@ -18,8 +18,8 @@ public class CompraIntangibleNoAmortizable extends Asiento {
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		dameCuenta(202).añadirDebe(new Anotacion(fecha, "Concesiones administrativas", inputs[0]));
-		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos Administración Pública", inputs[0]));
+		dameCuenta(202).añadirDebe(new Anotacion(fecha, "Concesiones administrativas", inputs[0], damePrioridad(202)));
+		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos Administración Pública", inputs[0], damePrioridad(572)));
 		
 	}
 

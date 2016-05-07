@@ -29,6 +29,10 @@ public class Asiento {
 		}
 		return cuenta;
 	}
+	
+	public int damePrioridad(int codigo){
+		return todasCuentas.get(codigo).prioridad;	
+	}
 
 	public void inicializarTodasCuentas() {
 		// INICIALIZMAOS TODAS LAS CUENTAS CON SU CODIGO, SU NOMBRE Y SU PRIORIDAD

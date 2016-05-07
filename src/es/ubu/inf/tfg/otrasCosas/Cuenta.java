@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class Cuenta implements Comparable<Cuenta>{
+public class Cuenta {
 	
-	int codigo = 0;
-	String nombre;
-	int prioridad;
+	protected int codigo = 0;
+	protected String nombre;
+	protected int prioridad;
 	public ArrayList<Anotacion> debe = new ArrayList<Anotacion>();
 	public ArrayList<Anotacion> haber = new ArrayList<Anotacion>();
 	protected HashMap<Integer, Boolean> saldoDebeMenosHaber = new HashMap<Integer, Boolean>();
@@ -48,18 +48,7 @@ public class Cuenta implements Comparable<Cuenta>{
 			return contHaber-contDebe;
 		}
 	}
-	
-	@Override
-	public int compareTo(Cuenta cuenta) {
-		int resultado = 0;
-        if (this.prioridad < cuenta.prioridad) {
-            resultado = -1;
-        }
-        if (this.prioridad > cuenta.prioridad) {
-            resultado = 1;
-        }
-		return resultado;
-	}
+
 	
 	public void inicializarSaldoDebeMenosHaber(){
 		// INICIALIZAMOS LAS CUENTAS CON UN BOOLEANO PARA SABER SI ESTÁN A LA IZQUIERDA O A LA DERECHA DE LA CUENTA

@@ -18,7 +18,7 @@ public class PagoTodoPrestamo extends Asiento {
 		//Intereses???
 		double saldo = dameCuenta(170).getSaldo(fecha);
 		
-		dameCuenta(170).añadirDebe(new Anotacion(fecha, "Prestamo", saldo));
-		dameCuenta(527).añadirHaber(new Anotacion(fecha, "Prestamo", saldo));		
+		dameCuenta(170).añadirDebe(new Anotacion(fecha, "Prestamo", saldo, damePrioridad(170)));
+		dameCuenta(527).añadirHaber(new Anotacion(fecha, "Prestamo", saldo, damePrioridad(572)));		
 	}
 }

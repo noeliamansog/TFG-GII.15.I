@@ -17,10 +17,10 @@ public class Inventario extends Asiento {
 
 		double saldoMercaderias = dameCuenta(300).getSaldo(fecha);
 
-		dameCuenta(610).añadirDebe(new Anotacion(fecha, "Variación mercaderias", saldoMercaderias));
-		dameCuenta(300).añadirHaber(new Anotacion(fecha, "Mercaderías", saldoMercaderias));
+		dameCuenta(610).añadirDebe(new Anotacion(fecha, "Variación mercaderias", saldoMercaderias, damePrioridad(610)));
+		dameCuenta(300).añadirHaber(new Anotacion(fecha, "Mercaderías", saldoMercaderias, damePrioridad(300)));
 	
-		dameCuenta(610).añadirHaber(new Anotacion(fecha, "Variación mercaderias", inputs[0]));
-		dameCuenta(300).añadirDebe(new Anotacion(fecha, "Mercaderias", inputs[0]));				
+		dameCuenta(610).añadirHaber(new Anotacion(fecha, "Variación mercaderias", inputs[0], damePrioridad(610)));
+		dameCuenta(300).añadirDebe(new Anotacion(fecha, "Mercaderias", inputs[0], damePrioridad(300)));				
 	}
 }

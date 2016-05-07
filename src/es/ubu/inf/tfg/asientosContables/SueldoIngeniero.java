@@ -19,10 +19,10 @@ public class SueldoIngeniero extends Asiento {
 	
 		enunciados.add(new Enunciado(fecha, enunciado1));
 	
-	dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos Ingeniero informático", inputs[0]));
-	dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos ingeniero", inputs[0]));
-	dameCuenta(200).añadirDebe(new Anotacion(fecha, "Gasto en investigacion", inputs[1]*inputs[0]));
-	dameCuenta(730).añadirHaber(new Anotacion(fecha, "Trabajos realizados para el inmovilizado intangible", inputs[1]*inputs[0]));
+	dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos Ingeniero informático", inputs[0], damePrioridad(640)));
+	dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos ingeniero", inputs[0], damePrioridad(572)));
+	dameCuenta(200).añadirDebe(new Anotacion(fecha, "Gasto en investigacion", inputs[1]*inputs[0], damePrioridad(200)));
+	dameCuenta(730).añadirHaber(new Anotacion(fecha, "Trabajos realizados para el inmovilizado intangible", inputs[1]*inputs[0], damePrioridad(730)));
 		
 	}
 }

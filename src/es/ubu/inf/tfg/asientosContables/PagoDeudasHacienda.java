@@ -16,7 +16,7 @@ public class PagoDeudasHacienda extends Asiento {
 		
 		double saldo = dameCuenta(4751).getSaldo(fecha);
 
-		dameCuenta(4751).añadirDebe(new Anotacion(fecha, "H.P acreedor por retenciones practicas", saldo));
-		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos hacienda", saldo));	
+		dameCuenta(4751).añadirDebe(new Anotacion(fecha, "H.P acreedor por retenciones practicas", saldo, damePrioridad(4751)));
+		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos hacienda", saldo, damePrioridad(572)));	
 	}
 }

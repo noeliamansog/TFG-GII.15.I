@@ -16,7 +16,7 @@ public class PagoDeudasSS extends Asiento {
 		
 		double saldo = dameCuenta(476).getSaldo(fecha);
 
-		dameCuenta(476).añadirDebe(new Anotacion(fecha, "Organismos de la S.S acreedores", saldo));
-		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos S.S", saldo));
+		dameCuenta(476).añadirDebe(new Anotacion(fecha, "Organismos de la S.S acreedores", saldo, damePrioridad(476)));
+		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos S.S", saldo, damePrioridad(572)));
 	}
 }

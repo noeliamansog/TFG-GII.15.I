@@ -18,9 +18,9 @@ public class Interes extends Asiento{
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 
-		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Intereses devengados", inputs[0]));
-		dameCuenta(473).añadirDebe(new Anotacion(fecha, "Hacienda Pública", inputs[0]));
-		dameCuenta(769).añadirHaber(new Anotacion(fecha, "Otros ingresos financieros", inputs[0]));
+		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Intereses devengados", inputs[0], damePrioridad(572)));
+		dameCuenta(473).añadirDebe(new Anotacion(fecha, "Hacienda Pública", inputs[0], damePrioridad(473)));
+		dameCuenta(769).añadirHaber(new Anotacion(fecha, "Otros ingresos financieros", inputs[0], damePrioridad(769)));
 		
 	}
 }

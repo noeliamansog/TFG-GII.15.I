@@ -26,20 +26,20 @@ public class CompraMaterialNoAmortizable extends Asiento {
 			
 		if (inputs[0]==1){
 			enunciado1 = enunciado1 + "CUENTAS PGC: 210. Terrenos y bienes naturales; 572. Bancos e instituciones de crédito c/c vista, euros;";							
-			dameCuenta(210).añadirDebe(new Anotacion(fecha, "Terrenos y bienes naturales", inputs[1]));
-			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Terrenos y bienes naturales", inputs[1]));
+			dameCuenta(210).añadirDebe(new Anotacion(fecha, "Terrenos y bienes naturales", inputs[1], damePrioridad(210)));
+			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Terrenos y bienes naturales", inputs[1], damePrioridad(572)));
 		}else{
 			enunciado1 = enunciado1 + "CUENTAS PGC: 211. Construcciones; 572. Bancos e instituciones de crédito c/c vista, euros;";
-			dameCuenta(211).añadirDebe(new Anotacion(fecha, "Construcciones", inputs[1]));
-			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Construcciones", inputs[1]));
+			dameCuenta(211).añadirDebe(new Anotacion(fecha, "Construcciones", inputs[1], damePrioridad(211)));
+			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Construcciones", inputs[1], damePrioridad(572)));
 		}
 		
 		if (inputs[3]<12){
 			enunciado1 = enunciado1 + " 523. Proveedores de inmovilizado a corto plazo (PASIVO CORRIENTE). \n";
-			dameCuenta(523).añadirHaber(new Anotacion(fecha, "Proveedores", (inputs[1]-inputs[2])));
+			dameCuenta(523).añadirHaber(new Anotacion(fecha, "Proveedores", (inputs[1]-inputs[2]),damePrioridad(523)));
 		}else{
 			enunciado1 = enunciado1 + " 173. Proveedores de inmovilizado a largo plazo (PASIVO NO CORRIENTE). \n";
-			dameCuenta(173).añadirHaber(new Anotacion(fecha, "Proveedores", (inputs[1]-inputs[2])));
+			dameCuenta(173).añadirHaber(new Anotacion(fecha, "Proveedores", (inputs[1]-inputs[2]), damePrioridad(173)));
 		}
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
@@ -54,8 +54,8 @@ public class CompraMaterialNoAmortizable extends Asiento {
 
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
-		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores", (inputs[1]-inputs[2])));
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos proveedores", (inputs[1]-inputs[2])));
+		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores", (inputs[1]-inputs[2]), damePrioridad(400)));
+		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos proveedores", (inputs[1]-inputs[2]), damePrioridad(572)));
 					
 	}
 

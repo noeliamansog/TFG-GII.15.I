@@ -27,11 +27,11 @@ public class Cierre extends Asiento{
 		double resultado = dameCuenta(129).getSaldo(fechaFinAno);
 		
 		if(resultado>=0){
-			dameCuenta(129).añadirDebe(new Anotacion(fechaFinAno, "Fin de año "+fechaFinAno.get(Calendar.YEAR) , resultado));
-			dameCuenta(12).añadirHaber(new Anotacion(fechaFinAno,"Fin de año "+fechaFinAno.get(Calendar.YEAR), resultado));
+			dameCuenta(129).añadirDebe(new Anotacion(fechaFinAno, "Fin de año "+fechaFinAno.get(Calendar.YEAR) , resultado, damePrioridad(129)));
+			dameCuenta(12).añadirHaber(new Anotacion(fechaFinAno,"Fin de año "+fechaFinAno.get(Calendar.YEAR), resultado, damePrioridad(12)));
 		}else{
-			dameCuenta(129).añadirHaber(new Anotacion(fechaFinAno, "Fin de año "+fechaFinAno.get(Calendar.YEAR), -resultado));
-			dameCuenta(12).añadirDebe(new Anotacion(fechaFinAno,"Fin de año "+fechaFinAno.get(Calendar.YEAR), -resultado));
+			dameCuenta(129).añadirHaber(new Anotacion(fechaFinAno, "Fin de año "+fechaFinAno.get(Calendar.YEAR), -resultado, damePrioridad(129)));
+			dameCuenta(12).añadirDebe(new Anotacion(fechaFinAno,"Fin de año "+fechaFinAno.get(Calendar.YEAR), -resultado, damePrioridad(12)));
 			
 		}
 		

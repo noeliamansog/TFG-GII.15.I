@@ -17,9 +17,9 @@ public class CompraMercaderias extends Asiento{
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		dameCuenta(600).añadirDebe(new Anotacion(fecha, "Compra mercaderias", inputs[0]));
-		dameCuenta(472).añadirDebe(new Anotacion(fecha, "H.P IVA Soportado", inputs[1]));
-		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores mercaderias", (inputs[0])));
+		dameCuenta(600).añadirDebe(new Anotacion(fecha, "Compra mercaderias", inputs[0], damePrioridad(600)));
+		dameCuenta(472).añadirDebe(new Anotacion(fecha, "H.P IVA Soportado", inputs[1], damePrioridad(472)));
+		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores mercaderias", inputs[0],damePrioridad(400)));
 				
 				
 		//SE SALDAN LAS DEUDAS CON LOS PROVEEDORES "Y" DIAS DESPUES:
@@ -31,8 +31,8 @@ public class CompraMercaderias extends Asiento{
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 
-		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores mercaderias", inputs[0]));
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos mercaderias", inputs[0]));
+		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores mercaderias", inputs[0], damePrioridad(400)));
+		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos mercaderias", inputs[0], damePrioridad(572)));
 		
 	}
 }

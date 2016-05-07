@@ -18,16 +18,16 @@ public class Dividendos extends Asiento {
 		
 		double resultado = dameCuenta(12).getSaldo(fecha);
 		
-		dameCuenta(129).añadirDebe(new Anotacion(fecha, "Reparto de dividendos", (inputs[0]*resultado)/100));
+		dameCuenta(129).añadirDebe(new Anotacion(fecha, "Reparto de dividendos", (inputs[0]*resultado)/100, damePrioridad(129)));
 		
 		Calendar fechaAñoAnterior = (Calendar)fecha.clone();
 		fechaAñoAnterior.add(Calendar.YEAR, -1);
 		
-		dameCuenta(112).añadirHaber(new Anotacion(fecha, "Beneficios retenidos del año: "+fechaAñoAnterior.get(Calendar.YEAR), ((100-inputs[0])*resultado)/100));
-		dameCuenta(12).añadirDebe(new Anotacion(fecha,"Aplicación de resultados del año: "+fechaAñoAnterior.get(Calendar.YEAR), resultado));
+		dameCuenta(112).añadirHaber(new Anotacion(fecha, "Beneficios retenidos del año: "+fechaAñoAnterior.get(Calendar.YEAR), ((100-inputs[0])*resultado)/100, damePrioridad(112)));
+		dameCuenta(12).añadirDebe(new Anotacion(fecha,"Aplicación de resultados del año: "+fechaAñoAnterior.get(Calendar.YEAR), resultado, damePrioridad(12)));
 		
-		dameCuenta(4751).añadirHaber(new Anotacion(fecha, "Retenciones practicadas por reparto de dividendos", (inputs[0]*resultado)*(100-inputs[1])/100));	
-		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Reparto dividendos", (inputs[0]*resultado)*(100-inputs[1])/100));
+		dameCuenta(4751).añadirHaber(new Anotacion(fecha, "Retenciones practicadas por reparto de dividendos", (inputs[0]*resultado)*(100-inputs[1])/100, damePrioridad(4751)));	
+		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Reparto dividendos", (inputs[0]*resultado)*(100-inputs[1])/100, damePrioridad(572)));
 		
 	}
 }

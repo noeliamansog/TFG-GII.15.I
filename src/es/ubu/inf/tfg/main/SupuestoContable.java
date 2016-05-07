@@ -1,24 +1,29 @@
 package es.ubu.inf.tfg.main;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import es.ubu.inf.tfg.asientosContables.*;
 import es.ubu.inf.tfg.otrasCosas.*;
 
 public class SupuestoContable {
+	public static int impuestoSociedad = 12;
+	public static int IVA = 10;
+	public static int numEmpleados = 2;
+	public static Calendar fecha = Calendar.getInstance();
 	
 	public static void main(String args[]) {
-		int impuestoSociedad = 12;
-		int IVA = 10;
-		int numEmpleados = 2;
-		
+
 		ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();
-		
-		Calendar fecha = Calendar.getInstance();
-		
-		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 			
 
 		//APORTACIÓN INICIAL
@@ -122,26 +127,10 @@ public class SupuestoContable {
 
 		*/
 		
-		
+		//Meto todos los enunciados en una lista y la ordeno
 		ArrayList<Enunciado> todosEnunciadosOrdenados = ordenaEnunciadosPorFecha(todosEnunciados);
 		imprimeEnunciados(todosEnunciadosOrdenados);
 		
-
-		
-		String enunciadoEjercicio = "\n\nSe pide: \n"
-				 + "  a) Indique claramente cómo afectaría a cada una de las cuentas contables cada una de las "
-				 + "transacciones económicas de la empresa, elaborando al mismo tiempo el balance de situación, "
-				 + "la cuenta de pérdidas y ganancias y el estado de flujos de tesorería de cada año. El impuesto "
-				 + "de sociedades es el " +impuestoSociedad+ "% del beneficio y el IVA es " +IVA+ "%.\n"
-				 + "  b) Calcular la rentabilidad económica y la rentabilidad financiera de cada año y comprobar "
-				 + "que se cumple la ecuación que las liga. \n"
-				 + "  c) Calcular y comentar el Fondo de Maniobra al final de cada año.\n"
-				 + "  d) Analizar la liquidez de la empresa mediante ratios para cada uno de los años.\n"
-				 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.\n"
-				 + "  f) Indique cuál es el valor nominal, el valor contable y el valor de emisión de la nueva "
-				 + "acción emitida el " +formateador.format(fecha.getTime())+ ". ¿Cuál sería el valor de mercado de las acciones? \n";
-		
-		System.out.println(enunciadoEjercicio);
 		
 		CuentaResultados cuentaResultados = new CuentaResultados ();
 		cuentaResultados.imprimeCuentaResultados();
@@ -169,12 +158,44 @@ public class SupuestoContable {
 		Calendar fech;
 		String enun;
 		
-		for(int i=0; i<todosEnunciadosOrdenados.size(); i++){
-			fech= todosEnunciadosOrdenados.get(i).getFecha();
-			enun = todosEnunciadosOrdenados.get(i).getEnunciado();
-			System.out.println(formateador.format(fech.getTime())+ " " + enun);
-		}
+		Document documento = new Document();
 		
+		try{	
+			PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/Enunciado.pdf"));
+			
+			documento.open();
+			
+			Paragraph par = new Paragraph("ENUNCIADO SUPUESTO CONTABLE:  \n \n", FontFactory.getFont("arial", 16, Font.BOLD, BaseColor.GRAY)); 
+			documento.add(par);
+			
+			for(int i=0; i<todosEnunciadosOrdenados.size(); i++){
+				fech= todosEnunciadosOrdenados.get(i).getFecha();
+				enun = todosEnunciadosOrdenados.get(i).getEnunciado();
+				documento.add(new Paragraph(formateador.format(fech.getTime())+ " " + enun));
+				documento.add(new Paragraph("\n"));	
+			}
+			
+			documento.add(new Paragraph("\n\nSe pide: \n"
+				 + "  a) Indique claramente cómo afectaría a cada una de las cuentas contables cada una de las "
+				 + "transacciones económicas de la empresa, elaborando al mismo tiempo el balance de situación, "
+				 + "la cuenta de pérdidas y ganancias y el estado de flujos de tesorería de cada año. El impuesto "
+				 + "de sociedades es el " +impuestoSociedad+ "% del beneficio y el IVA es " +IVA+ "%.\n"
+				 + "  b) Calcular la rentabilidad económica y la rentabilidad financiera de cada año y comprobar "
+				 + "que se cumple la ecuación que las liga. \n"
+				 + "  c) Calcular y comentar el Fondo de Maniobra al final de cada año.\n"
+				 + "  d) Analizar la liquidez de la empresa mediante ratios para cada uno de los años.\n"
+				 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.\n"
+				 + "  f) Indique cuál es el valor nominal, el valor contable y el valor de emisión de la nueva "
+				 + "acción emitida el " +formateador.format(fecha.getTime())
+				 + ". ¿Cuál sería el valor de mercado de las acciones? \n"));
+			
+			documento.close();
+			
+		}catch(Exception e){
+            System.err.println("Ocurrio un error al crear el archivo");
+            System.exit(-1);
+		
+		}
 	}
 
 }

@@ -18,8 +18,8 @@ public class CompraSoftwareAmortizable extends Asiento{
 	
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		dameCuenta(206).añadirDebe(new Anotacion(fecha, "App informática", inputs[0]));
-		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores App informática", inputs[0]));
+		dameCuenta(206).añadirDebe(new Anotacion(fecha, "App informática", inputs[0], damePrioridad(206)));
+		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores App informática", inputs[0], damePrioridad(400)));
 		
 		
 		//SE SALDAN LAS DEUDAS CON LOS PROVEEDORES "Y" DIAS DESPUES:
@@ -31,8 +31,8 @@ public class CompraSoftwareAmortizable extends Asiento{
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
-		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores APP informática", inputs[0]));
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos APP informática", inputs[0]));
+		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores APP informática", inputs[0], damePrioridad(400)));
+		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos APP informática", inputs[0], damePrioridad(572)));
 		
 
 		
@@ -48,8 +48,8 @@ public class CompraSoftwareAmortizable extends Asiento{
 			
 			enunciados.add(new Enunciado(fechaAmortizacion, enunciado3));
 			
-			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización APP informática", (inputs[0]/inputs[2])));
-			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada APP informática", (inputs[0]/inputs[2])));
+			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización APP informática", (inputs[0]/inputs[2]), damePrioridad(680)));
+			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada APP informática", (inputs[0]/inputs[2]), damePrioridad(280)));
 
 		}		
 	}

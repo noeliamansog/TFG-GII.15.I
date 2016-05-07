@@ -26,20 +26,20 @@ public class CompraMaterialAmortizable extends Asiento{
 		
 		switch (inputs[0]){
 			case 0: enunciado1 = enunciado1 + "CUENTAS PGC: 213. Maquinaria; 400. Proveedores.\n";
-					dameCuenta(213).añadirDebe(new Anotacion(fecha, "Maquinaria", inputs[1]));
-					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Maquinaria", inputs[1]));	
+					dameCuenta(213).añadirDebe(new Anotacion(fecha, "Maquinaria", inputs[1], damePrioridad(213)));
+					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Maquinaria", inputs[1], damePrioridad(400)));	
 					break;
 			case 1: enunciado1 = enunciado1 + "CUENTAS PGC: 216. Mobiliario; 400. Proveedores.\n"; 
-					dameCuenta(216).añadirDebe(new Anotacion(fecha, "Mobiliario", inputs[1])); 
-					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Mobiliario", inputs[1]));	
+					dameCuenta(216).añadirDebe(new Anotacion(fecha, "Mobiliario", inputs[1], damePrioridad(216))); 
+					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Mobiliario", inputs[1], damePrioridad(400)));	
 					break;
 			case 2: enunciado1 = enunciado1 + "CUENTAS PGC: 217. Equipos para procesos de información; 400. Proveedores.\n";
-					dameCuenta(217).añadirDebe(new Anotacion(fecha, "Equipos para procesos de información", inputs[1])); 
-					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Equipos para procesos de información", inputs[1]));
+					dameCuenta(217).añadirDebe(new Anotacion(fecha, "Equipos para procesos de información", inputs[1], damePrioridad(217))); 
+					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Equipos para procesos de información", inputs[1], damePrioridad(400)));
 					break;
 			case 3: enunciado1 = enunciado1 + "CUENTAS PGC: 218. Elementos de transporte; 400. Proveedores.\n";
-					dameCuenta(218).añadirDebe(new Anotacion(fecha, "Elementos de transporte", inputs[1]));
-					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Elementos de transporte", inputs[1]));
+					dameCuenta(218).añadirDebe(new Anotacion(fecha, "Elementos de transporte", inputs[1], damePrioridad(218)));
+					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Elementos de transporte", inputs[1], damePrioridad(400)));
 					break;
 		}
 		
@@ -54,8 +54,8 @@ public class CompraMaterialAmortizable extends Asiento{
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
-		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores", inputs[1]));
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos proveedores", inputs[1]));
+		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores", inputs[1], damePrioridad(400)));
+		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos proveedores", inputs[1], damePrioridad(572)));
 		
 
 		
@@ -74,8 +74,8 @@ public class CompraMaterialAmortizable extends Asiento{
 			
 			enunciados.add(new Enunciado(fechaAmortizacion, enunciado3));
 			
-			dameCuenta(681).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización inmovilizado", (inputs[1]/inputs[3])));
-			dameCuenta(281).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada del inmovilizado material", (inputs[1]/inputs[3])));		
+			dameCuenta(681).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización inmovilizado", (inputs[1]/inputs[3]), damePrioridad(681)));
+			dameCuenta(281).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada del inmovilizado material", (inputs[1]/inputs[3]), damePrioridad(281)));		
 			
 		}	
 	}

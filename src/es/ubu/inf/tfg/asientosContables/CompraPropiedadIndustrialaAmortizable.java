@@ -19,8 +19,8 @@ public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 	
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		dameCuenta(203).añadirDebe(new Anotacion(fecha, "Propiedad industrial", inputs[0]));
-		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores Propiedad industrial", inputs[0]));
+		dameCuenta(203).añadirDebe(new Anotacion(fecha, "Propiedad industrial", inputs[0], damePrioridad(203)));
+		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores Propiedad industrial", inputs[0], damePrioridad(400)));
 		
 		
 		//SE SALDAN LAS DEUDAS CON LOS PROVEEDORES "Y" DIAS DESPUES:
@@ -32,8 +32,8 @@ public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
-		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores Propiedad industrial", inputs[0]));
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos Propiedad industrial", inputs[0]));
+		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores Propiedad industrial", inputs[0], damePrioridad(400)));
+		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos Propiedad industrial", inputs[0], damePrioridad(572)));
 		
 
 		
@@ -49,8 +49,8 @@ public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 			
 			enunciados.add(new Enunciado(fechaAmortizacion, enunciado3));
 			
-			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización Propiedad industrial", (inputs[0]/inputs[2])));
-			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada Propiedad industrial", (inputs[0]/inputs[2])));				
+			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización Propiedad industrial", (inputs[0]/inputs[2]), damePrioridad(680)));
+			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada Propiedad industrial", (inputs[0]/inputs[2]), damePrioridad(280)));				
 		}
 	}
 }

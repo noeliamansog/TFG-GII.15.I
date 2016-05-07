@@ -17,9 +17,9 @@ public class VentaMercaderias extends Asiento {
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 
-		dameCuenta(430).añadirDebe(new Anotacion(fecha, "Clientes mercaderías", inputs[0]));
-		dameCuenta(700).añadirHaber(new Anotacion(fecha, "Ventas mercaderías", inputs[0]));
-		dameCuenta(477).añadirHaber(new Anotacion(fecha, "IVA mercaderias", (inputs[1])));
+		dameCuenta(430).añadirDebe(new Anotacion(fecha, "Clientes mercaderías", inputs[0], damePrioridad(430)));
+		dameCuenta(700).añadirHaber(new Anotacion(fecha, "Ventas mercaderías", inputs[0], damePrioridad(700)));
+		dameCuenta(477).añadirHaber(new Anotacion(fecha, "IVA mercaderias", inputs[1], damePrioridad(477)));
 			
 		
 		//SE SALDAN LAS DEUDAS CON LA EMPRESA "Y" DIAS DESPUES:
@@ -31,7 +31,7 @@ public class VentaMercaderias extends Asiento {
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 
-		dameCuenta(572).añadirDebe(new Anotacion(fechaDeudas, "Bancos mercaderias", inputs[0]));
-		dameCuenta(430).añadirHaber(new Anotacion(fechaDeudas, "Clientes mercaderias", inputs[0]));
+		dameCuenta(572).añadirDebe(new Anotacion(fechaDeudas, "Bancos mercaderias", inputs[0], damePrioridad(572)));
+		dameCuenta(430).añadirHaber(new Anotacion(fechaDeudas, "Clientes mercaderias", inputs[0], damePrioridad(430)));
 	}
 }
