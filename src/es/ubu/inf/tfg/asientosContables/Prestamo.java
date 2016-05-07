@@ -55,15 +55,16 @@ public class Prestamo extends Asiento {
 			 //Mensual
 			 if(inputs[2]==0){
 				 tipoInteres = Math.pow(1 + inputs[4], (1/12)-1);
+				 tipoInteres = Math.round(tipoInteres * 100.0) / 100.0;
 				 numPagos = inputs[3]*12;
 				 
 				 cuotaAmortizacion = inputs[0]/numPagos;
 				 			 
 				 for(int j=1; j<=numPagos; j++){
 					 Calendar fechaMesSiguiente = (Calendar)fecha.clone();
-					 dameCuenta(170).añadirDebe(new Anotacion(fechaMesSiguiente, "Cuota prestamo, numero:"+j, cuotaAmortizacion, damePrioridad(170)));
-					 dameCuenta(662).añadirDebe(new Anotacion(fechaMesSiguiente, "Intereses préstamo, cuota numero:"+j, deudaViva*tipoInteres, damePrioridad(662)));
-					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, "Cuota prestamo, numero:"+j, cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
+					 dameCuenta(170).añadirDebe(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
+					 dameCuenta(662).añadirDebe(new Anotacion(fechaMesSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
+					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 fechaMesSiguiente.add(Calendar.MONTH, +j-1);
 				 }
@@ -76,9 +77,9 @@ public class Prestamo extends Asiento {
 				 
 				 for(int j=1; j<=numPagos; j++){
 					 Calendar fechaAñoSiguiente = (Calendar)fecha.clone();
-					 dameCuenta(170).añadirDebe(new Anotacion(fechaAñoSiguiente, "Cuota prestamo, numero:"+j, cuotaAmortizacion, damePrioridad(170)));
-					 dameCuenta(662).añadirDebe(new Anotacion(fechaAñoSiguiente, "Intereses préstamo, cuota numero:"+j, deudaViva*tipoInteres, damePrioridad(662)));
-					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, "Cuota prestamo, numero:"+j, cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
+					 dameCuenta(170).añadirDebe(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
+					 dameCuenta(662).añadirDebe(new Anotacion(fechaAñoSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
+					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 fechaAñoSiguiente.add(Calendar.YEAR, +j-1);
 				 }
@@ -90,16 +91,18 @@ public class Prestamo extends Asiento {
 			 //Mensual
 			 if(inputs[2]==0){
 				 tipoInteres = Math.pow(1 + inputs[4], (1/12)-1);
+				 tipoInteres = Math.round(tipoInteres * 100.0) / 100.0;
 				 numPagos = inputs[3]*12;
 				 
 				 cuotaPago = (Math.pow(inputs[0]*(1+tipoInteres), numPagos)*tipoInteres)/(Math.pow(1+tipoInteres, numPagos)-1);
+				 cuotaPago = Math.round(cuotaPago * 100.0) / 100.0;
 				 
 				 for(int j=1; j<=numPagos; j++){
 					 Calendar fechaMesSiguiente = (Calendar)fecha.clone();
 					 cuotaAmortizacion =  cuotaPago-deudaViva*tipoInteres;
-					 dameCuenta(170).añadirDebe(new Anotacion(fechaMesSiguiente, "Cuota prestamo, numero:"+j, cuotaAmortizacion, damePrioridad(170)));
-					 dameCuenta(662).añadirDebe(new Anotacion(fechaMesSiguiente, "Intereses préstamo, cuota numero:"+j, deudaViva*tipoInteres, damePrioridad(662)));
-					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, "Cuota prestamo, numero:"+j, cuotaPago, damePrioridad(572)));
+					 dameCuenta(170).añadirDebe(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
+					 dameCuenta(662).añadirDebe(new Anotacion(fechaMesSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
+					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 fechaMesSiguiente.add(Calendar.MONTH, +j-1);
 				 }
@@ -109,14 +112,15 @@ public class Prestamo extends Asiento {
 				 numPagos = inputs[3];
 				 
 				 cuotaPago = (Math.pow(inputs[0]*(1+tipoInteres), numPagos)*tipoInteres)/(Math.pow(1+tipoInteres, numPagos)-1);
+				 cuotaPago = Math.round(cuotaPago * 100.0) / 100.0;
 				 
 				 //Calendar fechaAñoSiguiente = (Calendar)fecha.clone();
 				 for(int j=1; j<=numPagos; j++){
 					 Calendar fechaAñoSiguiente = (Calendar)fecha.clone();
 					 cuotaAmortizacion =  cuotaPago-deudaViva*tipoInteres;
-					 dameCuenta(170).añadirDebe(new Anotacion(fechaAñoSiguiente, "Cuota prestamo, numero:"+j, cuotaAmortizacion, damePrioridad(170)));
-					 dameCuenta(662).añadirDebe(new Anotacion(fechaAñoSiguiente, "Intereses préstamo, cuota numero:"+j, deudaViva*tipoInteres, damePrioridad(662)));
-					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, "Cuota prestamo, numero:"+j, cuotaPago, damePrioridad(572)));
+					 dameCuenta(170).añadirDebe(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
+					 dameCuenta(662).añadirDebe(new Anotacion(fechaAñoSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
+					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 	
 					 fechaAñoSiguiente.add(Calendar.YEAR, +j-1);

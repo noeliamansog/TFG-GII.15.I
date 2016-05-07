@@ -18,10 +18,15 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class CuentaResultados extends Asiento{
-	ArrayList<Anotacion> gastos = new ArrayList<Anotacion>();
-	ArrayList<Anotacion> ingresos = new ArrayList<Anotacion>();
+	static ArrayList<Anotacion> gastos = new ArrayList<Anotacion>();
+	static ArrayList<Anotacion> ingresos = new ArrayList<Anotacion>();
+	static double valorGastos;
+	static double valorIngresos;
 	
-	public CuentaResultados(){
+	public CuentaResultados(Calendar fecha){
+		this.fecha = fecha;
+		valorGastos=0;
+		valorIngresos=0;
 		
 		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
@@ -29,15 +34,22 @@ public class CuentaResultados extends Asiento{
 		  Cuenta cuenta = cuentas.get(key);
 
 		  if(cuenta.prioridad==0){
+			  //Gastos
 			  if (!(cuenta.debe.isEmpty())){
 				  for(int i=0; i<cuenta.debe.size(); i++){
-					  gastos.add(cuenta.debe.get(i));
+					  if (cuenta.debe.get(i).fecha.before(fecha)){
+						  gastos.add(cuenta.debe.get(i));
+						  valorGastos += cuenta.debe.get(i).cantidad;
+					  }
 				  }
 			  }
+			  //Ingresos
 			  if (!(cuenta.haber.isEmpty())){
 				  for(int i=0; i<cuenta.haber.size(); i++){
-					  ingresos.add(cuenta.haber.get(i));
-					  
+					  if (cuenta.haber.get(i).fecha.before(fecha)){
+						  ingresos.add(cuenta.haber.get(i));
+						  valorIngresos += cuenta.haber.get(i).cantidad;
+					  }
 				  }
 			  }
 		  }
@@ -49,29 +61,6 @@ public class CuentaResultados extends Asiento{
 		Collections.sort(gastos);
 		Collections.sort(ingresos);
 		
-		/* IMPRIME POR PANTALLA 
-		 
-		System.out.println("\n\n CUENTA DE RESULTADOS: \n");
-		System.out.println("GASTOS:");
-		if (!(gastos.isEmpty())){
-			for(int i=0; i<gastos.size(); i++){
-				Calendar fecha= gastos.get(i).fecha;
-				System.out.println(formateador.format(fecha.getTime()) +" \t"+ gastos.get(i).nombre +" \t\t\t\t"+ gastos.get(i).cantidad);
-			}
-		}
-		System.out.println("\n");
-		System.out.println("INGRESOS:");
-		if (!(ingresos.isEmpty())){
-			for(int i=0; i<ingresos.size(); i++){
-				Calendar fecha= ingresos.get(i).fecha;
-				System.out.println(formateador.format(fecha.getTime()) +" \t"+ ingresos.get(i).nombre +" \t\t\t\t"+ ingresos.get(i).cantidad);
-		  }
-		}
-		*/
-			
-		
-		
-		/*GENERA PDF */
 		Document documento = new Document();
 		
 		try{			
@@ -85,7 +74,7 @@ public class CuentaResultados extends Asiento{
             //CUENTA RESULTADOS
             PdfPTable cuentaResultados = new PdfPTable(1);
             
-            PdfPCell celda =new PdfPCell (new Paragraph("CUENTA RESULTADOS", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+            PdfPCell celda =new PdfPCell (new Paragraph("CUENTA RESULTADOS hasta "+formateador.format(fecha.getTime()), FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
             celda.setBackgroundColor(BaseColor.DARK_GRAY);
@@ -137,7 +126,7 @@ public class CuentaResultados extends Asiento{
             resulActividad.setColspan(2);
             resulActividad.setPadding (10.0f);
             resulActividad.setBackgroundColor(BaseColor.CYAN);
-           	PdfPCell excedenteAct = new PdfPCell (new Paragraph("Calcular excedente:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell excedenteAct = new PdfPCell (new Paragraph(valorGastos-valorIngresos+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	excedenteAct.setColspan(2);
            	excedenteAct.setPadding (10.0f);
            	excedenteAct.setBackgroundColor(BaseColor.CYAN);
@@ -199,7 +188,7 @@ public class CuentaResultados extends Asiento{
            	ingresosGastosFinancieros.addCell(excedenteFinan);
            	
            	
-            //CELDA RESULTADO TOTAL
+            //RESULTADO TOTAL
            	PdfPTable resultado = new PdfPTable(3);
             PdfPCell total = new PdfPCell (new Paragraph("RESULTADO TOTAL:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
             total.setColspan(2);

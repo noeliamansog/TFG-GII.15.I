@@ -131,14 +131,15 @@ public class SupuestoContable {
 		ArrayList<Enunciado> todosEnunciadosOrdenados = ordenaEnunciadosPorFecha(todosEnunciados);
 		imprimeEnunciados(todosEnunciadosOrdenados);
 		
-		
-		CuentaResultados cuentaResultados = new CuentaResultados ();
+		Calendar fechaLimite =  Calendar.getInstance();
+		fechaLimite.set(2016, 11, 31);
+		CuentaResultados cuentaResultados = new CuentaResultados (fechaLimite);
 		cuentaResultados.imprimeCuentaResultados();
 		
-		Balance balance = new Balance();
+		Balance balance = new Balance(fechaLimite);
 		balance.imprimeBalance();
 		
-		Tesoreria tesoreria = new Tesoreria ();
+		Tesoreria tesoreria = new Tesoreria (fechaLimite);
 		tesoreria.imprimeTesoreria();
 	}
 	

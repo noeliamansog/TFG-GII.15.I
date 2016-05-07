@@ -20,22 +20,35 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class Tesoreria extends Asiento{
 	static ArrayList<Anotacion> cobros = new ArrayList<Anotacion>();
 	static ArrayList<Anotacion> pagos = new ArrayList<Anotacion>();
+	static double valorCobros;
+	static double valorPagos;
 	
-	public Tesoreria(){
+	public Tesoreria(Calendar fecha){
+		this.fecha = fecha;
+		valorCobros=0;
+		valorPagos=0;
 
 		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
 		  Integer key = (Integer) it.next();
 		  Cuenta cuenta = cuentas.get(key);
 		  
-		  if (!(cuenta.debe.isEmpty())){
-			  for(int i=0; i<cuenta.debe.size(); i++){
-				  cobros.add(cuenta.debe.get(i));
-			  }
-		  }
+		  //Cobros
 		  if (!(cuenta.haber.isEmpty())){
 			  for(int i=0; i<cuenta.haber.size(); i++){
-				  pagos.add(cuenta.haber.get(i));			  
+				  if (cuenta.haber.get(i).fecha.before(fecha)){
+					  cobros.add(cuenta.haber.get(i));
+					  valorCobros += cuenta.haber.get(i).cantidad;
+				  }
+			  }
+		  }
+		  //Gastos
+		  if (!(cuenta.debe.isEmpty())){
+			  for(int i=0; i<cuenta.debe.size(); i++){
+				  if (cuenta.debe.get(i).fecha.before(fecha)){
+					  pagos.add(cuenta.debe.get(i));
+					  valorPagos += cuenta.debe.get(i).cantidad;
+				  }
 			  }
 		  }
 		}	
@@ -44,130 +57,87 @@ public class Tesoreria extends Asiento{
 	public void imprimeTesoreria(){
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		
-		/* IMPRIME POR PANTALLA 
-		System.out.println("\n\n TESORERÍA: \n");
-		System.out.println("COBROS:");
-		if (!(cobros.isEmpty())){
-			for(int i=0; i<cobros.size(); i++){
-				Calendar fecha= cobros.get(i).fecha;
-				System.out.println(formateador.format(fecha.getTime()) +" \t"+ cobros.get(i).nombre +" \t\t\t\t"+ cobros.get(i).cantidad);
-			}
-		}
-		System.out.println("\n");
-		System.out.println("PAGOS:");
-		if (!(pagos.isEmpty())){
-			for(int i=0; i<pagos.size(); i++){
-				Calendar fecha= pagos.get(i).fecha;
-				System.out.println(formateador.format(fecha.getTime()) +" \t"+ pagos.get(i).nombre +" \t\t\t\t"+ pagos.get(i).cantidad);
-		  }
-		}
-		*/
+		Collections.sort(cobros);
+		Collections.sort(pagos);
 	
-	/*GENERA PDF */
-	Collections.sort(cobros);
-	Collections.sort(pagos);
-	
-	int tamaño = 0;
-	if(cobros.size()>=pagos.size()){
-		tamaño=cobros.size();
-	}else{
-		tamaño=pagos.size();
+		Document documento = new Document();
+		
+		try{			
+            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/Tesorería.pdf"));
+            
+            documento.open();
+            documento.addTitle("Tesorería"); 
+            documento.addAuthor("Noelia Manso García"); 
+            
+            //TESORERIA
+            PdfPTable tesoreria = new PdfPTable(1);
+            
+            PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA hasta "+formateador.format(fecha.getTime()), FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celda.setPadding (12.0f);
+            celda.setBackgroundColor(BaseColor.DARK_GRAY);
+            
+            tesoreria.addCell(celda);
+            
+            //COBROS
+            PdfPTable tablaCobros = new PdfPTable(3);
+    
+            PdfPCell celdaCobros =new PdfPCell (new Paragraph("COBROS", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
+            celdaCobros.setColspan(3);
+            celdaCobros.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaCobros.setPadding (10.0f);
+            celdaCobros.setBackgroundColor(BaseColor.GRAY);
+            tablaCobros.addCell(celdaCobros);
+            
+            for(int i=0; i<cobros.size(); i++){
+         	   Calendar fechaCobros= cobros.get(i).fecha;
+         	   tablaCobros.addCell(formateador.format(fechaCobros.getTime()));
+         	   tablaCobros.addCell(cobros.get(i).nombre);
+         	   tablaCobros.addCell(cobros.get(i).cantidad+"€");
+             } 
+            
+            
+            //Pagos
+            PdfPTable tablaPagos = new PdfPTable(3);
+            
+            PdfPCell celdaPagos =new PdfPCell (new Paragraph("GASTOS", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
+            celdaPagos.setColspan(3);
+            celdaPagos.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celdaPagos.setPadding (10.0f);
+            celdaPagos.setBackgroundColor(BaseColor.GRAY);
+            tablaCobros.addCell(celdaPagos);
+            
+            for(int i=0; i<pagos.size(); i++){
+         	   Calendar fechaPagos= pagos.get(i).fecha;
+         	   tablaPagos.addCell(formateador.format(fechaPagos.getTime()));
+         	   tablaPagos.addCell(pagos.get(i).nombre);
+         	   tablaPagos.addCell(pagos.get(i).cantidad+"€");
+             } 
+            
+            
+            //SALDO TOTAL
+           	PdfPTable saldoTotal = new PdfPTable(3);
+            PdfPCell total = new PdfPCell (new Paragraph("SALDO TOTAL TESORERÍA:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+            total.setColspan(2);
+            total.setPadding (10.0f);
+            total.setBackgroundColor(BaseColor.YELLOW);
+           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(valorCobros-valorPagos+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	calculoTotal.setPadding (10.0f);
+           	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
+           	saldoTotal.addCell(total);
+           	saldoTotal.addCell(calculoTotal);
+         
+            // Agregamos las tablas al documento  
+            documento.add(tesoreria);
+           	documento.add(tablaCobros);
+            documento.add(tablaPagos);
+            documento.add(saldoTotal);
+            
+            documento.close();
+            
+        }catch(Exception e){
+            System.err.println("Ocurrio un error al crear el archivo");
+            System.exit(-1);
+        }
 	}
-	
-	Document documento = new Document();
-	
-	try{			
-        PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/Tesorería.pdf"));
-        
-        documento.open();
-        documento.addTitle("Tesorería"); 
-        documento.addAuthor("Noelia Manso García"); 
-        
-        
-        //TESORERÍA
-        PdfPTable tesoreria = new PdfPTable(1);
-        
-        PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
-        celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-        celda.setPadding (12.0f);
-        celda.setBackgroundColor(BaseColor.DARK_GRAY);
-        
-        tesoreria.addCell(celda);
-        
-        //COBROS Y PAGOS
-        PdfPTable cobrosPagos = new PdfPTable(6);
-        
-        PdfPCell celda2 =new PdfPCell (new Paragraph("COBROS", FontFactory.getFont("arial",12,Font.BOLD, BaseColor.BLACK)));
-        celda2.setColspan(3);
-        celda2.setHorizontalAlignment(Element.ALIGN_CENTER);
-        celda.setPadding (10.0f);
-        celda2.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cobrosPagos.addCell(celda2);
-        
-        PdfPCell celda3 =new PdfPCell (new Paragraph("PAGOS", FontFactory.getFont("arial",12,Font.BOLD, BaseColor.BLACK)));
-        celda3.setColspan(3);
-        celda3.setHorizontalAlignment(Element.ALIGN_CENTER);
-        celda.setPadding (10.0f);
-        celda3.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cobrosPagos.addCell(celda3);
-        
-        int contador=0;
-        int contCobros=0;
-        int contPagos=0;
-        for(int i=0; i<tamaño; i++){
-    	   //GASTOS
-    	   if(cobros.size()>contCobros){
-    		   Calendar fechaCobros= cobros.get(contador).fecha;
-    		   cobrosPagos.addCell(formateador.format(fechaCobros.getTime()));
-    		   cobrosPagos.addCell(cobros.get(contador).nombre);
-    		   cobrosPagos.addCell(cobros.get(contador).cantidad+"€");
-    		   
-
-    		   contCobros++;
-    	   }else{
-    		   cobrosPagos.addCell(" ");
-    		   cobrosPagos.addCell(" ");
-    		   cobrosPagos.addCell(" "); 
-    	   }
-
-    	   //INGRESOS
-    	   if(pagos.size()>contPagos){
-    		   Calendar fechaPagos= pagos.get(contador).fecha;
-    		   cobrosPagos.addCell(formateador.format(fechaPagos.getTime()));
-    		   cobrosPagos.addCell(pagos.get(contador).nombre);
-    		   cobrosPagos.addCell(pagos.get(contador).cantidad+"€");
-    		   contPagos++;
-    	   }else{
-    		   cobrosPagos.addCell(" ");
-    		   cobrosPagos.addCell(" ");
-    		   cobrosPagos.addCell(" "); 
-    	   }
-    	  contador++;
-    	   
-       }
-       //CELDA RESULTADO TOTAL
-      	PdfPTable tablaResultado = new PdfPTable(3);
-      	PdfPCell total = new PdfPCell (new Paragraph("SALDO TOTAL TESORERÍA:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
-      	total.setColspan(2);
-      	total.setPadding (10.0f);
-      	total.setBackgroundColor(BaseColor.YELLOW);
-      	PdfPCell calculoTotal = new PdfPCell (new Paragraph("Calcular saldo", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
-      	calculoTotal.setPadding (10.0f);
-      	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
-      	tablaResultado.addCell(total);
-      	tablaResultado.addCell(calculoTotal);
-           
-        // Agregamos la tabla al documento    
-      	documento.add(tesoreria);
-        documento.add(cobrosPagos);
-        documento.add(tablaResultado);
-        
-        documento.close();
-        
-    }catch(Exception e){
-        System.err.println("Ocurrio un error al crear el archivo");
-        System.exit(-1);
-    }
-}
-
 }
