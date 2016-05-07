@@ -1,8 +1,6 @@
 package es.ubu.inf.tfg.otrasCosas;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 
 public class Balance extends Asiento{
@@ -12,12 +10,12 @@ public class Balance extends Asiento{
 	
 	public Balance(){
 		
-		Iterator<Integer> it = todasCuentas.keySet().iterator();
+		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
 		  Integer key = (Integer) it.next();
-		  Cuenta cuenta = todasCuentas.get(key);
+		  Cuenta cuenta = cuentas.get(key);
 
-		  if(cuenta.getPrioridad()!=0){
+		  if(cuenta.prioridad!=0){
 			  if (!(cuenta.debe.isEmpty())){
 				  for(int i=0; i<cuenta.debe.size(); i++){
 					  activo.add(cuenta.debe.get(i));
@@ -34,7 +32,7 @@ public class Balance extends Asiento{
 	}
 	
 	public void imprimeBalance(){
-		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+		//SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		
 		/* IMPRIME POR PANTALLA 
 		System.out.println("\n\n BALANCE: \n");

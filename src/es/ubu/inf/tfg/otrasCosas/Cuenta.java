@@ -1,29 +1,25 @@
 package es.ubu.inf.tfg.otrasCosas;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class Cuenta {
+public class Cuenta implements Comparable<Cuenta>{
 	
 	int codigo = 0;
 	String nombre;
-	ArrayList<Anotacion> debe = new ArrayList<Anotacion>();
-	ArrayList<Anotacion> haber = new ArrayList<Anotacion>();
+	int prioridad;
+	public ArrayList<Anotacion> debe = new ArrayList<Anotacion>();
+	public ArrayList<Anotacion> haber = new ArrayList<Anotacion>();
 	protected HashMap<Integer, Boolean> saldoDebeMenosHaber = new HashMap<Integer, Boolean>();
-	protected HashMap<Integer, Integer> prioridades = new HashMap<Integer, Integer>();
 	
-	
-	public Cuenta(int codigo, String nombre){
+	public Cuenta(int codigo, String nombre, int prioridad){
 		this.codigo = codigo;
 		this.nombre = nombre;
-		inicializarPrioridades();
+		this.prioridad = prioridad;
 		inicializarSaldoDebeMenosHaber();
 	}
-	
-	public int getPrioridad(){
-		return prioridades.get(codigo);
-	}
-	
+
 	public void añadirDebe(Anotacion anotacion){
 		debe.add(anotacion);	
 	}
@@ -39,7 +35,6 @@ public class Cuenta {
 		for( int i = 0 ; i < debe.size() ; i++ ){
 			if(debe.get(i).fecha.before(fecha)){
 				contDebe += debe.get(i).cantidad;
-				System.out.println("AnotaciónDebe con fecha guay");
 			}
 		}
 		for( int i = 0 ; i < haber.size() ; i++ ){
@@ -53,61 +48,18 @@ public class Cuenta {
 			return contHaber-contDebe;
 		}
 	}
-	public void inicializarPrioridades() {
-		// INICIALIZAMOS PRIORIDADES CON EL CODIGO DE LA CUENTA Y SUS PRIORIDADES
-		prioridades.put(12, -11);
-
-		prioridades.put(100, -1);
-		prioridades.put(110, -7);
-		prioridades.put(112, -6);
-		prioridades.put(129, -10);
-		prioridades.put(170, -21);
-		prioridades.put(173, -23);
-
-		prioridades.put(200, 13);
-		prioridades.put(202, 12);
-		prioridades.put(203, 11);
-		prioridades.put(206, 14);
-		prioridades.put(210, 1);
-		prioridades.put(211, 2);
-		prioridades.put(213, 4);
-		prioridades.put(216, 6);
-		prioridades.put(217, 8);
-		prioridades.put(218, 5);
-		prioridades.put(280, 20);
-		prioridades.put(281, 10);
-		
-		prioridades.put(300, 35);
-
-		prioridades.put(400, -40);
-		prioridades.put(430, 42);
-		prioridades.put(472, 0);
-		prioridades.put(473, 48);
-		prioridades.put(476, -50);
-		prioridades.put(477, 0);
-
-		prioridades.put(523, -35);
-		prioridades.put(572, 59);
-
-		prioridades.put(600, 0);
-		prioridades.put(610, 0);
-		prioridades.put(640, 0);
-		prioridades.put(642, 0);
-		prioridades.put(662, 0);
-		prioridades.put(680, 0);
-		prioridades.put(681, 0);
-
-		prioridades.put(700, 0);
-		prioridades.put(705, 0);
-		prioridades.put(730, 0);
-		prioridades.put(769, 0);
-
-		prioridades.put(4700, 45);
-		prioridades.put(4751, -51);
-		prioridades.put(4750, -52);
-		
+	
+	@Override
+	public int compareTo(Cuenta cuenta) {
+		int resultado = 0;
+        if (this.prioridad < cuenta.prioridad) {
+            resultado = -1;
+        }
+        if (this.prioridad > cuenta.prioridad) {
+            resultado = 1;
+        }
+		return resultado;
 	}
-
 	
 	public void inicializarSaldoDebeMenosHaber(){
 		// INICIALIZAMOS LAS CUENTAS CON UN BOOLEANO PARA SABER SI ESTÁN A LA IZQUIERDA O A LA DERECHA DE LA CUENTA
@@ -161,6 +113,5 @@ public class Cuenta {
 		saldoDebeMenosHaber.put(4700, true);
 		saldoDebeMenosHaber.put(4751, false);
 		saldoDebeMenosHaber.put(4750, false);
-	}
-	
+	}	
 }

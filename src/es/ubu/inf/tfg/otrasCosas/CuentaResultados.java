@@ -23,12 +23,12 @@ public class CuentaResultados extends Asiento{
 	
 	public CuentaResultados(){
 		
-		Iterator<Integer> it = todasCuentas.keySet().iterator();
+		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
 		  Integer key = (Integer) it.next();
-		  Cuenta cuenta = todasCuentas.get(key);
+		  Cuenta cuenta = cuentas.get(key);
 
-		  if(cuenta.getPrioridad()==0){
+		  if(cuenta.prioridad==0){
 			  if (!(cuenta.debe.isEmpty())){
 				  for(int i=0; i<cuenta.debe.size(); i++){
 					  gastos.add(cuenta.debe.get(i));

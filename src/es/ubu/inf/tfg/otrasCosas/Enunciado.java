@@ -8,18 +8,17 @@ public class Enunciado implements Comparable<Enunciado>{
 	private Calendar fecha;
 	private String enunciado;
 	
-    
     SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+    
+    public Enunciado (Calendar fecha, String enunciado) {
+        this.fecha = fecha;
+        this.enunciado = enunciado;
+    }
     
     public String toString() {
         return this.formateador.format(fecha.getTime()) + " " + this.enunciado;
     }
     
-   public Enunciado (Calendar fecha, String enunciado) {
-        this.fecha = fecha;
-        this.enunciado = enunciado;
-    }
-
     public Calendar getFecha() {
         return fecha;
     }
@@ -40,8 +39,4 @@ public class Enunciado implements Comparable<Enunciado>{
 	public int compareTo(Enunciado o) {
 		return this.fecha.compareTo(o.fecha);
 	}
-
-
 }
-
-
