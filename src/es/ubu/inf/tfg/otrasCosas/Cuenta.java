@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class Cuenta {
+public class Cuenta implements Comparable<Cuenta>{
 	
 	protected int codigo = 0;
 	protected String nombre;
@@ -102,5 +102,27 @@ public class Cuenta {
 		saldoDebeMenosHaber.put(4700, true);
 		saldoDebeMenosHaber.put(4751, false);
 		saldoDebeMenosHaber.put(4750, false);
-	}	
+	}
+
+
+	@Override
+	public int compareTo(Cuenta cuenta) {
+		int resultado = 0;
+		if (prioridad >0){
+			if (this.prioridad < cuenta.prioridad){
+				resultado = -1;
+			}
+			if (this.prioridad > cuenta.prioridad){
+				resultado = 1;
+			}
+		}else{
+			if (this.prioridad < cuenta.prioridad){
+				resultado = 1;
+			}
+			if (this.prioridad > cuenta.prioridad){
+				resultado = -1;
+			}
+		}
+		return resultado;
+	}
 }

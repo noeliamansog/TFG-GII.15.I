@@ -19,7 +19,7 @@ public class NuevoSocio extends Asiento {
 		enunciados.add(new Enunciado(fecha, enunciado1));
 	
 		
-		double valorNominal = dameCuenta(100).getSaldo(fecha)/numAcciones;
+		double valorNominal = dameCuenta(100).getSaldo(fecha)/inputs[1];
 		
 		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Aportacion nuevo socio", inputs[0], damePrioridad(572)));
 		dameCuenta(100).añadirHaber(new Anotacion(fecha, "Valor nominal nuevo socio", valorNominal, damePrioridad(100)));	

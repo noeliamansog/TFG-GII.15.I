@@ -16,9 +16,10 @@ import es.ubu.inf.tfg.asientosContables.*;
 import es.ubu.inf.tfg.otrasCosas.*;
 
 public class SupuestoContable {
-	public static int impuestoSociedad = 12;
+	public static int impuestoSociedad = 30;
 	public static int IVA = 10;
 	public static int numEmpleados = 2;
+	public static int numAcciones = numEmpleados;
 	public static Calendar fecha = Calendar.getInstance();
 	
 	public static void main(String args[]) {
@@ -92,7 +93,7 @@ public class SupuestoContable {
 		todosEnunciados.add(intereses.enunciados);
 		
 		//NUEVOS_SOCIOS
-		int [] inputsNuevoSocio = {10000};
+		int [] inputsNuevoSocio = {10000, numAcciones};
 		NuevoSocio nuevoSocio = new NuevoSocio(fecha, inputsNuevoSocio);
 		todosEnunciados.add(nuevoSocio.enunciados);
 		
@@ -127,13 +128,13 @@ public class SupuestoContable {
 
 		*/
 		
-		//Meto todos los enunciados en una lista y la ordeno
 		ArrayList<Enunciado> todosEnunciadosOrdenados = ordenaEnunciadosPorFecha(todosEnunciados);
 		imprimeEnunciados(todosEnunciadosOrdenados);
 		
 		Calendar fechaLimite =  Calendar.getInstance();
 		fechaLimite.set(2016, 11, 31);
-		CuentaResultados cuentaResultados = new CuentaResultados (fechaLimite);
+		
+		CuentaResultados cuentaResultados = new CuentaResultados (fechaLimite, impuestoSociedad);
 		cuentaResultados.imprimeCuentaResultados();
 		
 		Balance balance = new Balance(fechaLimite);

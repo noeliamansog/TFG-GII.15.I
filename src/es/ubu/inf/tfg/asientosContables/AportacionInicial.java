@@ -8,8 +8,6 @@ public class AportacionInicial extends Asiento {
 	public AportacionInicial(Calendar f, int [] i) {
 		fecha = f;
 		inputs = i;
-		numSocios = inputs[0];
-		numAcciones = inputs[0];
 
 		String enunciado1 = " Cada uno de los " +inputs[0]+ " socios fundadores realiza una aportación inicial en "
     			+ "efectivo a favor de la empresa por importe de " +inputs[1]+ "€ (" +(inputs[0])*(inputs[1])+ "€ en total). "

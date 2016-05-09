@@ -9,8 +9,6 @@ public class Asiento {
 	public ArrayList<Enunciado> enunciados = new ArrayList<Enunciado>();
 	public Calendar fecha;
 	public int[] inputs;
-	protected static int numSocios;
-	protected static int numAcciones;
 	protected static HashMap<Integer, Cuenta> cuentas = new HashMap<Integer, Cuenta>();
 	protected static HashMap<Integer, Cuenta> todasCuentas = new HashMap<Integer, Cuenta>();
 	
