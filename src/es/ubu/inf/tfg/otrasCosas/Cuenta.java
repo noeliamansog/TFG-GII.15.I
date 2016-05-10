@@ -28,9 +28,9 @@ public class Cuenta implements Comparable<Cuenta>{
 		haber.add(anotacion);	
 	}
 	
-	public int getSaldo(Calendar fecha){
-		int contDebe = 0;
-		int contHaber = 0;
+	public double getSaldo(Calendar fecha){
+		double contDebe = 0;
+		double contHaber = 0;
 		
 		for( int i = 0 ; i < debe.size() ; i++ ){
 			if(debe.get(i).fecha.before(fecha)){
@@ -88,6 +88,7 @@ public class Cuenta implements Comparable<Cuenta>{
 
 		saldoDebeMenosHaber.put(600, true);
 		saldoDebeMenosHaber.put(610, true);
+		saldoDebeMenosHaber.put(630, true);
 		saldoDebeMenosHaber.put(640, true);
 		saldoDebeMenosHaber.put(642, true);
 		saldoDebeMenosHaber.put(662, true);
@@ -102,6 +103,7 @@ public class Cuenta implements Comparable<Cuenta>{
 		saldoDebeMenosHaber.put(4700, true);
 		saldoDebeMenosHaber.put(4751, false);
 		saldoDebeMenosHaber.put(4750, false);
+		saldoDebeMenosHaber.put(4752, false);
 	}
 
 

@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class VentaProyecto extends Asiento {
 
-	public VentaProyecto(Calendar f, int[] i) {
+	public VentaProyecto(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 		
@@ -24,7 +24,7 @@ public class VentaProyecto extends Asiento {
 		
 		//SE SALDAN LAS DEUDAS CON LA EMPRESA "Y" DIAS DESPUES:
 		Calendar fechaDeudas = (Calendar)fecha.clone();
-		fechaDeudas.add(Calendar.DAY_OF_YEAR, +inputs[2]);
+		fechaDeudas.add(Calendar.DAY_OF_YEAR, (int) +inputs[2]);
 		
 		String enunciado2 = " Los clientes saldan su deuda del proyecto con la empresa.\n"
 				+ "CUENTAS PGC: 430. Clientes; 572. Bancos e instituciones de crédito c/c vista, euros.\n";

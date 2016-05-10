@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class Prestamo extends Asiento {
 
-	public Prestamo(Calendar f, int [] i) {
+	public Prestamo(Calendar f, double [] i) {
 		fecha =f;
 		inputs=i;
 		String tipoPrestamo=null;
@@ -17,7 +17,7 @@ public class Prestamo extends Asiento {
 		double cuotaPago = 0;
 		double tipoInteres = 0;
 		double deudaViva = inputs[0];
-		int numPagos = 0;
+		double numPagos = 0;
 	
 
 		if(inputs[1]==0){
@@ -54,8 +54,7 @@ public class Prestamo extends Asiento {
 		 if(inputs[1]==0){
 			 //Mensual
 			 if(inputs[2]==0){
-				 tipoInteres = Math.pow(1 + inputs[4], (1/12)-1);
-				 tipoInteres = Math.round(tipoInteres * 100.0) / 100.0;
+				 tipoInteres = Math.pow(1 + inputs[4], (1/12))-1;
 				 numPagos = inputs[3]*12;
 				 
 				 cuotaAmortizacion = inputs[0]/numPagos;
@@ -70,7 +69,7 @@ public class Prestamo extends Asiento {
 				 }
 			 //Anual
 			 }else{
-				 tipoInteres =inputs[4];
+				 tipoInteres =inputs[4]/100;
 				 numPagos = inputs[3];
 				 
 				 cuotaAmortizacion = inputs[0]/numPagos;
@@ -91,11 +90,9 @@ public class Prestamo extends Asiento {
 			 //Mensual
 			 if(inputs[2]==0){
 				 tipoInteres = Math.pow(1 + inputs[4], (1/12)-1);
-				 tipoInteres = Math.round(tipoInteres * 100.0) / 100.0;
 				 numPagos = inputs[3]*12;
 				 
 				 cuotaPago = (Math.pow(inputs[0]*(1+tipoInteres), numPagos)*tipoInteres)/(Math.pow(1+tipoInteres, numPagos)-1);
-				 cuotaPago = Math.round(cuotaPago * 100.0) / 100.0;
 				 
 				 for(int j=1; j<=numPagos; j++){
 					 Calendar fechaMesSiguiente = (Calendar)fecha.clone();
@@ -108,13 +105,11 @@ public class Prestamo extends Asiento {
 				 }
 			 //Anual
 			 }else{
-				 tipoInteres =inputs[4];
+				 tipoInteres =inputs[4]/100;
 				 numPagos = inputs[3];
 				 
-				 cuotaPago = (Math.pow(inputs[0]*(1+tipoInteres), numPagos)*tipoInteres)/(Math.pow(1+tipoInteres, numPagos)-1);
-				 cuotaPago = Math.round(cuotaPago * 100.0) / 100.0;
+				 cuotaPago = inputs[0]*(tipoInteres*(Math.pow(1+tipoInteres, numPagos))/(Math.pow(1+tipoInteres, numPagos)-1));
 				 
-				 //Calendar fechaAñoSiguiente = (Calendar)fecha.clone();
 				 for(int j=1; j<=numPagos; j++){
 					 Calendar fechaAñoSiguiente = (Calendar)fecha.clone();
 					 cuotaAmortizacion =  cuotaPago-deudaViva*tipoInteres;

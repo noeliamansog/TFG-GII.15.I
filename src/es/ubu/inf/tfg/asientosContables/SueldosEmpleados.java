@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class SueldosEmpleados extends Asiento {
 
-	public SueldosEmpleados(Calendar f, int[] i) {
+	public SueldosEmpleados(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 	

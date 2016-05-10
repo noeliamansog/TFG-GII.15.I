@@ -8,7 +8,7 @@ public class Asiento {
 	
 	public ArrayList<Enunciado> enunciados = new ArrayList<Enunciado>();
 	public Calendar fecha;
-	public int[] inputs;
+	public double[] inputs;
 	protected static HashMap<Integer, Cuenta> cuentas = new HashMap<Integer, Cuenta>();
 	protected static HashMap<Integer, Cuenta> todasCuentas = new HashMap<Integer, Cuenta>();
 	
@@ -25,6 +25,14 @@ public class Asiento {
 			cuenta = new Cuenta(codigo, todasCuentas.get(codigo).nombre, todasCuentas.get(codigo).prioridad);
 			cuentas.put(codigo, cuenta);
 		}
+		
+		for(int i=0; i<cuenta.debe.size(); i++){
+			System.out.println("CUENTA: "+ cuenta.codigo +" "+ cuenta.debe.get(i).nombre +"\t CANTIDAD EN EL DEBE: " + cuenta.debe.get(i).cantidad);
+		}
+		for(int i=0; i<cuenta.haber.size(); i++){
+			System.out.println("CUENTA: "+ cuenta.codigo +" "+ cuenta.haber.get(i).nombre +"\t CANTIDAD EN EL HABER: " + cuenta.haber.get(i).cantidad);
+		}
+		
 		return cuenta;
 	}
 	
@@ -37,11 +45,11 @@ public class Asiento {
 		todasCuentas.put(12,new Cuenta(12, "Resultados pendientes de aplicación.", -11));
 
 		todasCuentas.put(100, new Cuenta (100, "Capital social", -1));
-		todasCuentas.put(110, new Cuenta (110, "Prima de misión o sunción", -7));
+		todasCuentas.put(110, new Cuenta (110, "Prima de emisión o asunción", -7));
 		todasCuentas.put(112, new Cuenta (112, "Reserva legar", -6));
 		todasCuentas.put(129, new Cuenta (129, "Resultado del ejercicio", -10));
 		todasCuentas.put(170, new Cuenta (170, "Deudas a largo plazo con entidades de crédito", -21));
-		todasCuentas.put(173, new Cuenta (173, "Proveedores de inmovilizado a largo plazo (PASIVO NO CORRIENTE)", -23));
+		todasCuentas.put(173, new Cuenta (173, "Proveedores de inmovilizado a largo plazo", -23));
 
 		todasCuentas.put(200, new Cuenta (200, "Gasto en investigación", 13));
 		todasCuentas.put(202, new Cuenta (202, "Concesiones administrativas", 12));
@@ -65,11 +73,12 @@ public class Asiento {
 		todasCuentas.put(476, new Cuenta (476, "Organismos de la S.S acreedores", -50));
 		todasCuentas.put(477, new Cuenta (477, "H.P. IVA Repercutido", 0));
 
-		todasCuentas.put(523, new Cuenta (523, "Proveedores de inmovilizado a corto plazo (PASIVO CORRIENTE)", -35));
+		todasCuentas.put(523, new Cuenta (523, "Proveedores de inmovilizado a corto plazo", -35));
 		todasCuentas.put(572, new Cuenta (572, "Bancos e instituciones de crédito c/c vista, euros", 59));
 
 		todasCuentas.put(600, new Cuenta (600, "Compra de mercaderías", 0));
 		todasCuentas.put(610, new Cuenta (610, "Variación de existencias de mercaderías", 0));
+		todasCuentas.put(630, new Cuenta (630, "Impuestos sobre beneficios", 0));
 		todasCuentas.put(640, new Cuenta (640, "Sueldos y salario", 0));
 		todasCuentas.put(642, new Cuenta (642, "S.S a cargo de la empresa", 0));
 		todasCuentas.put(662, new Cuenta (662, "Intereses de deudas", 0));
@@ -84,5 +93,6 @@ public class Asiento {
 		todasCuentas.put(4700, new Cuenta (4700, "H.P deudor por IVA", 45));
 		todasCuentas.put(4750, new Cuenta (4750, "H.P Acreedor por IVA", -51));
 		todasCuentas.put(4751,new Cuenta (4751, "H.P Acreedor por rentenciones practicadas", -52));
+		todasCuentas.put(4752,new Cuenta (4752, "H.P Acreedora por impuestos sobre sociedades", -53));
 	}
 }

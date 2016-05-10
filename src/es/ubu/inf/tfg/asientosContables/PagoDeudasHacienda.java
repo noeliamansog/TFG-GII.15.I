@@ -5,7 +5,7 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class PagoDeudasHacienda extends Asiento {
 	
-	public PagoDeudasHacienda(Calendar f, int [] i) {
+	public PagoDeudasHacienda(Calendar f, double [] i) {
 		fecha =f;
 		inputs=i;
 

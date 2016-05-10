@@ -5,7 +5,7 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class Inventario extends Asiento {
 	
-	public Inventario(Calendar f, int [] i) {
+	public Inventario(Calendar f, double [] i) {
 		fecha =f;
 		inputs=i;
 

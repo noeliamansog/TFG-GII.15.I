@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class CompraMaterialNoAmortizable extends Asiento {
 
-	public CompraMaterialNoAmortizable(Calendar f, int[] i) {
+	public CompraMaterialNoAmortizable(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 		String compra=null;
@@ -35,10 +35,10 @@ public class CompraMaterialNoAmortizable extends Asiento {
 		}
 		
 		if (inputs[3]<12){
-			enunciado1 = enunciado1 + " 523. Proveedores de inmovilizado a corto plazo (PASIVO CORRIENTE). \n";
+			enunciado1 = enunciado1 + " 523. Proveedores de inmovilizado a corto plazo. \n";
 			dameCuenta(523).añadirHaber(new Anotacion(fecha, "Proveedores", (inputs[1]-inputs[2]),damePrioridad(523)));
 		}else{
-			enunciado1 = enunciado1 + " 173. Proveedores de inmovilizado a largo plazo (PASIVO NO CORRIENTE). \n";
+			enunciado1 = enunciado1 + " 173. Proveedores de inmovilizado a largo plazo. \n";
 			dameCuenta(173).añadirHaber(new Anotacion(fecha, "Proveedores", (inputs[1]-inputs[2]), damePrioridad(173)));
 		}
 		
@@ -47,16 +47,19 @@ public class CompraMaterialNoAmortizable extends Asiento {
 			
 		//SE SALDAN LAS DEUDAS CON LOS VENDEDORES "Y" DIAS DESPUES
 		Calendar fechaDeudas = (Calendar)fecha.clone();
-		fechaDeudas.add(Calendar.MONTH, +inputs[3]);
+		fechaDeudas.add(Calendar.MONTH, (int) +inputs[3]);
 		
 		String enunciado2 = " Se salda la deuda con los vendedores de " +compra+ ".\n"
 				+ "CUENTAS PGC: 400.Proveedores; 572. Bancos e instituciones de crédito c/c vista, euros.\n";
 
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
-		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores", (inputs[1]-inputs[2]), damePrioridad(400)));
 		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos proveedores", (inputs[1]-inputs[2]), damePrioridad(572)));
-					
+		if (inputs[3]<12){
+			dameCuenta(523).añadirDebe(new Anotacion(fecha, "Deuda saldada", (inputs[1]-inputs[2]),damePrioridad(523)));
+		}else{
+			dameCuenta(173).añadirDebe(new Anotacion(fecha, "Deuda saldada", (inputs[1]-inputs[2]), damePrioridad(173)));
+		}
 	}
 
 }

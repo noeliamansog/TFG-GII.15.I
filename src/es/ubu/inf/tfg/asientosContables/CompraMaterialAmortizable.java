@@ -7,13 +7,14 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class CompraMaterialAmortizable extends Asiento{
 	
-	public CompraMaterialAmortizable(Calendar f, int[] i) {
+	public CompraMaterialAmortizable(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 		String compra = null;
-
 		
-		switch (inputs[0]){
+		int com = (int)inputs[0];
+		
+		switch (com){
 			case 0: compra = "maquinaria"; break;
 			case 1: compra = "mobiliario de oficina"; break;
 			case 2:	compra = "equipos para procesos de información"; break;
@@ -24,7 +25,7 @@ public class CompraMaterialAmortizable extends Asiento{
 				 + "El importe de la compra se abonará a los " +inputs[2]+ " días. La compra "
 				 + "se amortiza linealmente en " +inputs[3]+ " años.\n";
 		
-		switch (inputs[0]){
+		switch (com){
 			case 0: enunciado1 = enunciado1 + "CUENTAS PGC: 213. Maquinaria; 400. Proveedores.\n";
 					dameCuenta(213).añadirDebe(new Anotacion(fecha, "Maquinaria", inputs[1], damePrioridad(213)));
 					dameCuenta(400).añadirHaber(new Anotacion(fecha, "Maquinaria", inputs[1], damePrioridad(400)));	
@@ -47,7 +48,7 @@ public class CompraMaterialAmortizable extends Asiento{
 	
 		//SE SALDAN LAS DEUDAS CON LOS PROVEEDORES "Y" DIAS DESPUES
 		Calendar fechaDeudas = (Calendar)fecha.clone();
-		fechaDeudas.add(Calendar.DAY_OF_YEAR, +inputs[2]);
+		fechaDeudas.add(Calendar.DAY_OF_YEAR, (int) +inputs[2]);
 		
 		String enunciado2 = " Se salda la deuda con los proveedores de " +compra+ ".\n"
 				+ "CUENTAS PGC: 400. Proveedores; 572. Bancos e instituciones de crédito c/c vista, euros. \n";

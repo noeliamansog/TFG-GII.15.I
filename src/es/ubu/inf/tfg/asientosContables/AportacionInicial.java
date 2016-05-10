@@ -5,7 +5,7 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class AportacionInicial extends Asiento {
 	
-	public AportacionInicial(Calendar f, int [] i) {
+	public AportacionInicial(Calendar f, double [] i) {
 		fecha = f;
 		inputs = i;
 

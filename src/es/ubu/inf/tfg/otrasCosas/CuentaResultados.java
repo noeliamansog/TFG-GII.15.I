@@ -27,19 +27,22 @@ public class CuentaResultados extends Asiento{
 	static double valorGastosFinancieros;
 	static double valorIngresosFinancieros;
 	static double excedente;
+	private double impuestos;
 	static double impuestosSobreBeneficios;
 	private Calendar fecha;
-	private int impuestoSociedad;
+
 	
 	
 	
-	public CuentaResultados(Calendar fecha, int impuestoSociedad){
+	public CuentaResultados(Calendar fechaEnunciado, Calendar fecha, double impuestoSociedad){
 		this.fecha = fecha;
-		this.impuestoSociedad = impuestoSociedad;
 		valorGastos=0;
 		valorIngresos=0;
 		valorGastosFinancieros = 0;
 		valorIngresosFinancieros = 0;
+		excedente=0;
+		impuestosSobreBeneficios=0;
+		impuestos=0;
 		
 		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
@@ -77,9 +80,42 @@ public class CuentaResultados extends Asiento{
 			  }
 		  }
 		}
+		//Si el expediente <0
+		excedente = (valorIngresos - valorGastos)+(valorIngresosFinancieros-valorGastosFinancieros);
+	    if(excedente>0){
+	    	impuestos =(excedente*impuestoSociedad)/100;
+	    }else{
+	    	impuestos=0;
+	    }
+	       	
+	    if (impuestos > 0){
+	    	System.out.println("ENTRA ENTRA .. IMPUESTOS: " + impuestos);
+	       	dameCuenta(630).añadirDebe(new Anotacion(fecha, "Impuestos", impuestos, damePrioridad(630)));
+	       	Anotacion anotacion = new Anotacion(fecha, "Impuestos", impuestos, damePrioridad(4752));
+	       	dameCuenta(630).añadirDebe(anotacion);
+	       	int indice = dameCuenta(630).debe.indexOf(anotacion);
+	       	gastos.add(dameCuenta(630).debe.get(indice));
+	       	
+	       	dameCuenta(630).añadirHaber(new Anotacion(fecha, "Impuestos", impuestos, damePrioridad(630)));
+	       	anotacion = new Anotacion(fecha, "Impuestos", impuestos, damePrioridad(4752));
+	       	dameCuenta(630).añadirHaber(anotacion);
+	       	indice = dameCuenta(630).haber.indexOf(anotacion);
+	       	ingresos.add(dameCuenta(630).haber.get(indice));
+	       	
+	       	       	
+	        anotacion = new Anotacion(fechaEnunciado, "Impuestos", impuestos, damePrioridad(4752));
+	       	dameCuenta(4752).añadirHaber(anotacion);
+	       	indice = dameCuenta(4752).haber.indexOf(anotacion);
+	       	ingresos.add(dameCuenta(4752).haber.get(indice));
+	       	
+	   }
+		 
+		 
 	}
+	
 	public void imprimeCuentaResultados(){
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+       	
 		
 		Collections.sort(gastos);
 		Collections.sort(ingresos);
@@ -92,7 +128,7 @@ public class CuentaResultados extends Asiento{
             documento.open();
             documento.addTitle("Cuenta de Resultados"); 
             documento.addAuthor("Noelia Manso García"); 
-            
+                  
             
             //CUENTA RESULTADOS
             PdfPTable cuentaResultados = new PdfPTable(1);
@@ -217,7 +253,7 @@ public class CuentaResultados extends Asiento{
            	//EXCEDENTE ANTES DE IMPUESTOS
            	PdfPTable resultado = new PdfPTable(3);
            	
-           	excedente = (valorIngresos - valorGastos)+(valorIngresosFinancieros-valorGastosFinancieros);
+           	
             PdfPCell excedenteImpuestos = new PdfPCell (new Paragraph("EXCEDENTE ANTES DE IMPUESTOS:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
             excedenteImpuestos.setColspan(2);
             excedenteImpuestos.setPadding (10.0f);
@@ -230,12 +266,12 @@ public class CuentaResultados extends Asiento{
            	resultado.addCell(calculoExcedente);
            	
            	
-           	//IMPUESTOS SOBRE BENEFICIOS
+           	//IMPUESTOS SOBRE BENEFICIOS 
             PdfPCell impuestosBeneficios = new PdfPCell (new Paragraph("IMPUESTOS SOBRE BENEFICIOS:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
             impuestosBeneficios.setColspan(2);
             impuestosBeneficios.setPadding (10.0f);
             impuestosBeneficios.setBackgroundColor(BaseColor.GRAY);
-           	PdfPCell calculoImpuestos = new PdfPCell (new Paragraph((excedente*impuestoSociedad)/100 +"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell calculoImpuestos = new PdfPCell (new Paragraph(impuestos +"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	calculoImpuestos.setColspan(2);
            	calculoImpuestos.setPadding (10.0f);
            	calculoImpuestos.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -249,7 +285,7 @@ public class CuentaResultados extends Asiento{
             total.setColspan(2);
             total.setPadding (10.0f);
             total.setBackgroundColor(BaseColor.YELLOW);
-           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(excedente-((excedente*impuestoSociedad)/100) + "€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(excedente-impuestos + "€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	calculoTotal.setPadding (10.0f);
            	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
            	resultado.addCell(total);

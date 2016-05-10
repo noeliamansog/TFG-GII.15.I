@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class CompraIntangibleNoAmortizable extends Asiento {
 
-	public CompraIntangibleNoAmortizable(Calendar f, int[] i) {
+	public CompraIntangibleNoAmortizable(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 		

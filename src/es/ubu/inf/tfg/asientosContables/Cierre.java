@@ -8,7 +8,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class Cierre extends Asiento{
 
-	public Cierre(Calendar f, int[] i) {
+	public Cierre(Calendar f, double[] i) {
 		fecha = f;
 		inputs = i;
 		

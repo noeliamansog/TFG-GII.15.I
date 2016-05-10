@@ -5,7 +5,7 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class Dividendos extends Asiento {
 	
-	public Dividendos(Calendar f, int [] i) {
+	public Dividendos(Calendar f, double [] i) {
 		fecha =f;
 		inputs=i;
 

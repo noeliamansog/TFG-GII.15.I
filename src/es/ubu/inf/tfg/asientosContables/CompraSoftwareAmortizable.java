@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class CompraSoftwareAmortizable extends Asiento{
 	
-	public CompraSoftwareAmortizable(Calendar f, int[] i) {
+	public CompraSoftwareAmortizable(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 				
@@ -18,21 +18,21 @@ public class CompraSoftwareAmortizable extends Asiento{
 	
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		dameCuenta(206).añadirDebe(new Anotacion(fecha, "App informática", inputs[0], damePrioridad(206)));
-		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores App informática", inputs[0], damePrioridad(400)));
+		dameCuenta(206).añadirDebe(new Anotacion(fecha, "Software", inputs[0], damePrioridad(206)));
+		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores Software", inputs[0], damePrioridad(400)));
 		
 		
 		//SE SALDAN LAS DEUDAS CON LOS PROVEEDORES "Y" DIAS DESPUES:
 		Calendar fechaDeudas = (Calendar)fecha.clone();
-		fechaDeudas.add(Calendar.DAY_OF_YEAR, +inputs[1]);
+		fechaDeudas.add(Calendar.DAY_OF_YEAR, (int) +inputs[1]);
 		
 		String enunciado2 = " Se salda la deuda con los proveedores de software.\n"
 				+ "CUENTAS PGC: 400. Proveedores; 572. Bancos e instituciones de crédito c/c vista, euros. \n";
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
-		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores APP informática", inputs[0], damePrioridad(400)));
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos APP informática", inputs[0], damePrioridad(572)));
+		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores Software", inputs[0], damePrioridad(400)));
+		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Software", inputs[0], damePrioridad(572)));
 		
 
 		
@@ -48,8 +48,8 @@ public class CompraSoftwareAmortizable extends Asiento{
 			
 			enunciados.add(new Enunciado(fechaAmortizacion, enunciado3));
 			
-			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización APP informática", (inputs[0]/inputs[2]), damePrioridad(680)));
-			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada APP informática", (inputs[0]/inputs[2]), damePrioridad(280)));
+			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización Software", (inputs[0]/inputs[2]), damePrioridad(680)));
+			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada Software", (inputs[0]/inputs[2]), damePrioridad(280)));
 
 		}		
 	}

@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class NuevoSocio extends Asiento {
 
-	public NuevoSocio(Calendar f, int[] i) {
+	public NuevoSocio(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 

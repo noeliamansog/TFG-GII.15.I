@@ -16,10 +16,10 @@ import es.ubu.inf.tfg.asientosContables.*;
 import es.ubu.inf.tfg.otrasCosas.*;
 
 public class SupuestoContable {
-	public static int impuestoSociedad = 30;
-	public static int IVA = 10;
-	public static int numEmpleados = 2;
-	public static int numAcciones = numEmpleados;
+	public static double impuestoSociedad = 30;
+	public static double IVA = 10;
+	public static double numEmpleados = 2;
+	public static double numAcciones = numEmpleados;
 	public static Calendar fecha = Calendar.getInstance();
 	
 	public static void main(String args[]) {
@@ -28,77 +28,77 @@ public class SupuestoContable {
 			
 
 		//APORTACIÓN INICIAL
-		int [] inputsAportacion = {numEmpleados, 50000};
+		double [] inputsAportacion = {numEmpleados, 50000};
 		AportacionInicial aportacion = new AportacionInicial(fecha, inputsAportacion);
 		todosEnunciados.add(aportacion.enunciados);
 		
 		//PRESTAMO
-		int [] inputsPrestamo = {60000, 1, 1, 10, 5};
+		double [] inputsPrestamo = {60000, 1, 1, 10, 5};
 		Prestamo prestamo = new Prestamo(fecha, inputsPrestamo);
 		todosEnunciados.add(prestamo.enunciados);
 	
 		//COMPRA_MATERIAL_NO_AMORTIZABLE
-		int [] inputsMaterialNoAmortizable = {0, 120000, 60000, 2};
+		double [] inputsMaterialNoAmortizable = {0, 120000, 60000, 2};
 		CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(fecha, inputsMaterialNoAmortizable);
 		todosEnunciados.add(materialNoAmortizable.enunciados);
 		
 		//COMPRA_MATERIAL_AMORTIZABLE
-		int [] inputsMaterialAmortizable = {1, 8000, 30, 4};
+		double [] inputsMaterialAmortizable = {1, 8000, 30, 4};
 		CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(fecha, inputsMaterialAmortizable);
 		todosEnunciados.add(materialAmortizable.enunciados);
 		
 		//COMPRA_INTANGIBLE_NO_AMORTIZABLE
-		int [] inputsIntangibleNoAmortizable = {1000};
+		double [] inputsIntangibleNoAmortizable = {1000};
 		CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fecha, inputsIntangibleNoAmortizable);
 		todosEnunciados.add(intangibleNoAmortizable.enunciados);
 		
 		//COMPRA_SOFTWARE_AMORTIZABLE
-		int [] inputsSoftwareAmortizable = {3000, 60, 3};
+		double [] inputsSoftwareAmortizable = {3000, 60, 3};
 		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fecha, inputsSoftwareAmortizable);
 		todosEnunciados.add(softwareAmortizable.enunciados);
 		
 		//COMPRA_PROPIEDAD_INDUSTRIAL_AMORTIZABLE
-		int [] inputsPropiedadIndustrialAmortizable = {1500, 90, 3};
+		double [] inputsPropiedadIndustrialAmortizable = {1500, 90, 3};
 		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fecha, inputsPropiedadIndustrialAmortizable);
 		todosEnunciados.add(propiedadIndustrialAmortizable.enunciados);
 		
 		//COMPRA_MERCADERIAS
-		int [] inputsCompraMercaderias = {20000, IVA, 60};
+		double [] inputsCompraMercaderias = {20000, IVA, 60};
 		CompraMercaderias compraMercaderias = new CompraMercaderias(fecha, inputsCompraMercaderias);
 		todosEnunciados.add(compraMercaderias.enunciados);
 		
 		//VENTA_MERCADERIAS
-		int [] inputsVentaMercaderias = {30000, IVA, 30};
+		double [] inputsVentaMercaderias = {30000, IVA, 30};
 		VentaMercaderias ventaMercaderias = new VentaMercaderias(fecha, inputsVentaMercaderias);
 		todosEnunciados.add(ventaMercaderias.enunciados);
 		
 		//VENTA_PROYECTO
-		int [] inputsVentaProyecto = {20000, IVA, 30};
+		double [] inputsVentaProyecto = {200000, IVA, 30};
 		VentaProyecto ventaProyecto = new VentaProyecto(fecha, inputsVentaProyecto);
 		todosEnunciados.add(ventaProyecto.enunciados);
 		
 		//SUELDOS_EMPLEADOS
-		int [] inputsSueldoEmpleado = {numEmpleados, 10000, 3350, 10, 5};
+		double [] inputsSueldoEmpleado = {numEmpleados, 10000, 3350, 10, 5};
 		SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(fecha, inputsSueldoEmpleado);
 		todosEnunciados.add(sueldoEmpleado.enunciados);
 		
 		//SUELDO_INGENIERO
-		int [] inputsSueldoIngeniero = {30000, 30};
+		double [] inputsSueldoIngeniero = {30000, 30};
 		SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(fecha, inputsSueldoIngeniero);
 		todosEnunciados.add(sueldoIngeniero.enunciados);
 		
 		//INTERESES
-		int [] inputsIntereses = {300};
+		double [] inputsIntereses = {300};
 		Interes intereses = new Interes(fecha, inputsIntereses);
 		todosEnunciados.add(intereses.enunciados);
 		
 		//NUEVOS_SOCIOS
-		int [] inputsNuevoSocio = {10000, numAcciones};
+		double [] inputsNuevoSocio = {10000, numAcciones};
 		NuevoSocio nuevoSocio = new NuevoSocio(fecha, inputsNuevoSocio);
 		todosEnunciados.add(nuevoSocio.enunciados);
 		
 		//CIERRE
-		int [] inputsCierre = {impuestoSociedad};
+		double [] inputsCierre = {impuestoSociedad};
 		Cierre cierre = new Cierre (fecha, inputsCierre);
 		todosEnunciados.add(cierre.enunciados);
 		
@@ -116,13 +116,13 @@ public class SupuestoContable {
 		 todosEnunciados.add(pagoTodoPrestamo.enunciados);
 		
 		//DIVIDENDOS
-		int [] inputsDividendos = {20, 15};
+		double [] inputsDividendos = {20, 15};
 		Dividendos dividendos = new Dividendos (fecha, inputsDividendos);
 		todosEnunciados.add(dividendos.enunciados);
 
 		
 		//INVENTARIO
-		int [] inputsInventario = {2000};
+		double [] inputsInventario = {2000};
 		Inventario inventario = new Inventario (fecha, inputsInventario);
 		todosEnunciados.add(inventario.enunciados);
 
@@ -134,14 +134,15 @@ public class SupuestoContable {
 		Calendar fechaLimite =  Calendar.getInstance();
 		fechaLimite.set(2016, 11, 31);
 		
-		CuentaResultados cuentaResultados = new CuentaResultados (fechaLimite, impuestoSociedad);
+		CuentaResultados cuentaResultados = new CuentaResultados (fecha, fechaLimite, impuestoSociedad);
 		cuentaResultados.imprimeCuentaResultados();
+		
+		Tesoreria tesoreria = new Tesoreria (fechaLimite);
+		tesoreria.imprimeTesoreria();
 		
 		Balance balance = new Balance(fechaLimite);
 		balance.imprimeBalance();
 		
-		Tesoreria tesoreria = new Tesoreria (fechaLimite);
-		tesoreria.imprimeTesoreria();
 	}
 	
 	public static ArrayList<Enunciado> ordenaEnunciadosPorFecha(ArrayList<ArrayList<Enunciado>>todosEnunciados){

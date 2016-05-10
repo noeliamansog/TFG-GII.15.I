@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class Interes extends Asiento{
 
-	public Interes(Calendar f, int[] i) {
+	public Interes(Calendar f, double[] i) {
 		fecha =f;
 		inputs=i;
 
