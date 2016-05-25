@@ -7,14 +7,16 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class CompraSoftwareAmortizable extends Asiento{
 	
-	public CompraSoftwareAmortizable(Calendar f, double[] i) {
+	public CompraSoftwareAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
 				
 		String enunciado1 = " La empresa compra una aplicación informática por valor de " +inputs[0]+ "€. "
 				 + "El importe de la compra se abonará a los " +inputs[1]+ " días. El software se amortiza linealmente "
-				 + "en " +inputs[2]+ " años.\n"
-				 + "CUENTAS PGC: 206. Aplicaciones informáticas; 400. Proveedores \n";
+				 + "en " +inputs[2]+ " años.\n";
+		if (enunciadoCuentas){
+			enunciado1 = enunciado1 + "CUENTAS PGC: 206. Aplicaciones informáticas; 400. Proveedores \n";
+		}
 	
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
@@ -26,8 +28,10 @@ public class CompraSoftwareAmortizable extends Asiento{
 		Calendar fechaDeudas = (Calendar)fecha.clone();
 		fechaDeudas.add(Calendar.DAY_OF_YEAR, (int) +inputs[1]);
 		
-		String enunciado2 = " Se salda la deuda con los proveedores de software.\n"
-				+ "CUENTAS PGC: 400. Proveedores; 572. Bancos e instituciones de crédito c/c vista, euros. \n";
+		String enunciado2 = " Se salda la deuda con los proveedores de software.\n";
+		if (enunciadoCuentas){
+			enunciado2 = enunciado2 + "CUENTAS PGC: 400. Proveedores; 572. Bancos e instituciones de crédito c/c vista, euros. \n";
+		}
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
@@ -43,8 +47,10 @@ public class CompraSoftwareAmortizable extends Asiento{
 			Calendar fechaAmortizacion = (Calendar)fecha.clone();
 			fechaAmortizacion.set(fechaAmortizacion.get(Calendar.YEAR), 11, 31);
 			fechaAmortizacion.add(Calendar.YEAR, +j);
-			enunciado3 = " Se añade la amortización del software al final del año.\n"
-					+"CUENTAS PGC: 280. Amortización acumulada del inmovilizado intangible; 680. Amortización del inmovilizado intangible.\n";
+			enunciado3 = " Se añade la amortización del software al final del año.\n";
+			if (enunciadoCuentas){
+				enunciado3 = enunciado3 +"CUENTAS PGC: 280. Amortización acumulada del inmovilizado intangible; 680. Amortización del inmovilizado intangible.\n";
+			}
 			
 			enunciados.add(new Enunciado(fechaAmortizacion, enunciado3));
 			

@@ -5,14 +5,16 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class Dividendos extends Asiento {
 	
-	public Dividendos(Calendar f, double [] i) {
+	public Dividendos(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
 
 		String enunciado1 = " Se decide repartir dividendos por valor del " +inputs[0]+ "% del resultado del "
-				+ "ejercicio anterior (sobre los cuales se practica una retención del " +inputs[1]+ "%). El resto se lleva a Reserva Legal.\n"
-    			+ "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 129. Resultados del ejercicio;"
-    			+ "112. Reserva legar; 4751. H.P acreedor por retenciones practicadas; 12. Resultados pendientes de aplicación.\n";
+				+ "ejercicio anterior (sobre los cuales se practica una retención del " +inputs[1]+ "%). El resto se lleva a Reserva Legal.\n";
+		if (enunciadoCuentas){
+			enunciado1 = enunciado1 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 129. Resultados del ejercicio;"
+									+ "112. Reserva legar; 4751. H.P acreedor por retenciones practicadas; 12. Resultados pendientes de aplicación.\n";
+		}
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		

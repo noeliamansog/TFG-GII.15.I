@@ -42,7 +42,7 @@ public class Balance extends Asiento{
 		while(it.hasNext()){
 		  Integer key = (Integer) it.next();
 		  Cuenta cuenta = cuentas.get(key);
-		  
+
 		  //Activo No Corriente
 		  if(cuenta.prioridad>=1 && cuenta.prioridad<=30){
 			  activoNoCorriente.add(cuenta);
@@ -154,7 +154,7 @@ public class Balance extends Asiento{
           	//PASIVO
           	PdfPTable pasivo = new PdfPTable(2);
   
-          	PdfPCell celdaPasivo =new PdfPCell (new Paragraph("PASIVO", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
+          	PdfPCell celdaPasivo =new PdfPCell (new Paragraph("PATRIMONIO NETO + PASIVO", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
           	celdaPasivo.setColspan(2);
           	celdaPasivo.setHorizontalAlignment(Element.ALIGN_CENTER);
           	celdaPasivo.setPadding (10.0f);

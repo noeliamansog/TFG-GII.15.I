@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class Asiento {
 	
 	public ArrayList<Enunciado> enunciados = new ArrayList<Enunciado>();
+	public boolean enunciadoCuentas;
 	public Calendar fecha;
 	public double[] inputs;
 	protected static HashMap<Integer, Cuenta> cuentas = new HashMap<Integer, Cuenta>();
@@ -26,12 +27,12 @@ public class Asiento {
 			cuentas.put(codigo, cuenta);
 		}
 		
-		for(int i=0; i<cuenta.debe.size(); i++){
+		/*for(int i=0; i<cuenta.debe.size(); i++){
 			System.out.println("CUENTA: "+ cuenta.codigo +" "+ cuenta.debe.get(i).nombre +"\t CANTIDAD EN EL DEBE: " + cuenta.debe.get(i).cantidad);
 		}
 		for(int i=0; i<cuenta.haber.size(); i++){
 			System.out.println("CUENTA: "+ cuenta.codigo +" "+ cuenta.haber.get(i).nombre +"\t CANTIDAD EN EL HABER: " + cuenta.haber.get(i).cantidad);
-		}
+		}*/
 		
 		return cuenta;
 	}

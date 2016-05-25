@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Iterator;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -22,36 +21,37 @@ public class Tesoreria extends Asiento{
 	static ArrayList<Anotacion> pagos = new ArrayList<Anotacion>();
 	static double valorCobros;
 	static double valorPagos;
+	static double saldoTesoreria;
+	private Calendar fechaDesde;
+	private Calendar fechaHasta;
 	
-	public Tesoreria(Calendar fecha){
-		this.fecha = fecha;
+	public Tesoreria(Calendar fechaDesde, Calendar fechaHasta){
+		this.fechaDesde = fechaDesde;
+		this.fechaHasta = fechaHasta;
 		valorCobros=0;
 		valorPagos=0;
 
-		Iterator<Integer> it = cuentas.keySet().iterator();
-		while(it.hasNext()){
-		  Integer key = (Integer) it.next();
-		  Cuenta cuenta = cuentas.get(key);
+		Cuenta cuenta = dameCuenta(572);
 		  
-		  //Cobros
-		  if (!(cuenta.haber.isEmpty())){
-			  for(int i=0; i<cuenta.haber.size(); i++){
-				  if (cuenta.haber.get(i).fecha.before(fecha)){
-					  cobros.add(cuenta.haber.get(i));
-					  valorCobros += cuenta.haber.get(i).cantidad;
-				  }
-			  }
-		  }
-		  //Gastos
-		  if (!(cuenta.debe.isEmpty())){
-			  for(int i=0; i<cuenta.debe.size(); i++){
-				  if (cuenta.debe.get(i).fecha.before(fecha)){
-					  pagos.add(cuenta.debe.get(i));
-					  valorPagos += cuenta.debe.get(i).cantidad;
-				  }
-			  }
-		  }
-		}	
+		//Cobros
+		if (!(cuenta.debe.isEmpty())){
+			for(int i=0; i<cuenta.debe.size(); i++){
+				if (cuenta.debe.get(i).fecha.before(fechaHasta) && cuenta.debe.get(i).fecha.after(fechaDesde)){
+					cobros.add(cuenta.debe.get(i));
+					valorCobros += cuenta.debe.get(i).cantidad;
+				}
+			 }
+		}
+		//Pagos
+		if (!(cuenta.haber.isEmpty())){
+			for(int i=0; i<cuenta.haber.size(); i++){
+				if (cuenta.haber.get(i).fecha.before(fechaHasta) && cuenta.haber.get(i).fecha.after(fechaDesde)){
+					pagos.add(cuenta.haber.get(i));
+					valorPagos += cuenta.haber.get(i).cantidad;
+				}
+			}
+		}
+		saldoTesoreria = valorCobros-valorPagos;
 	}
 	
 	public void imprimeTesoreria(){
@@ -72,7 +72,7 @@ public class Tesoreria extends Asiento{
             //TESORERIA
             PdfPTable tesoreria = new PdfPTable(1);
             
-            PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA hasta "+formateador.format(fecha.getTime()), FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+            PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA  \n desde "+formateador.format(fechaDesde.getTime())+" hasta "+formateador.format(fechaHasta.getTime()), FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
             celda.setBackgroundColor(BaseColor.DARK_GRAY);
@@ -100,7 +100,7 @@ public class Tesoreria extends Asiento{
             //Pagos
             PdfPTable tablaPagos = new PdfPTable(3);
             
-            PdfPCell celdaPagos =new PdfPCell (new Paragraph("GASTOS", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
+            PdfPCell celdaPagos =new PdfPCell (new Paragraph("PAGOS", FontFactory.getFont("arial",14,Font.BOLD, BaseColor.BLACK)));
             celdaPagos.setColspan(3);
             celdaPagos.setHorizontalAlignment(Element.ALIGN_CENTER);
             celdaPagos.setPadding (10.0f);
@@ -121,7 +121,7 @@ public class Tesoreria extends Asiento{
             total.setColspan(2);
             total.setPadding (10.0f);
             total.setBackgroundColor(BaseColor.YELLOW);
-           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(valorCobros-valorPagos+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(saldoTesoreria +"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	calculoTotal.setPadding (10.0f);
            	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
            	saldoTotal.addCell(total);
@@ -140,4 +140,5 @@ public class Tesoreria extends Asiento{
             System.exit(-1);
         }
 	}
+	
 }

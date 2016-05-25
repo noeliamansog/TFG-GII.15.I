@@ -7,15 +7,17 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 	
-	public CompraPropiedadIndustrialaAmortizable(Calendar f, double[] i) {
+	public CompraPropiedadIndustrialaAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
 
 				
 		String enunciado1 = " La empresa adquiere el derecho a usar un logotipo, por "
 				+ "lo cual paga " +inputs[0]+ "€. El importe de la compra se abonará a los " +inputs[1]+ " días. "
-				+ "La propiedad industrial se amortiza linealmente en " +inputs[2]+ " años.\n"
-				+ "CUENTAS PGC: 203. Propiedad industrial; 400. Proveedores \n";
+				+ "La propiedad industrial se amortiza linealmente en " +inputs[2]+ " años.\n";
+		if (enunciadoCuentas){
+			enunciado1 = enunciado1 + "CUENTAS PGC: 203. Propiedad industrial; 400. Proveedores \n";
+		}
 	
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
@@ -27,13 +29,15 @@ public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 		Calendar fechaDeudas = (Calendar)fecha.clone();
 		fechaDeudas.add(Calendar.DAY_OF_YEAR, (int) +inputs[1]);
 		
-		String enunciado2 = " Se salda la deuda con los proveedores de la propiedad industrial.\n"
-				+ "CUENTAS PGC: 400. Proveedores; 572. Bancos e instituciones de crédito c/c vista, euros. \n";
+		String enunciado2 = " Se salda la deuda con los proveedores de la propiedad industrial.\n";
+		if (enunciadoCuentas){
+			enunciado2 = enunciado2 + "CUENTAS PGC: 400. Proveedores; 572. Bancos e instituciones de crédito c/c vista, euros. \n";
+		}
 		
 		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
 		dameCuenta(400).añadirDebe(new Anotacion(fechaDeudas, "Proveedores Propiedad industrial", inputs[0], damePrioridad(400)));
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Bancos Propiedad industrial", inputs[0], damePrioridad(572)));
+		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Proveedores Propiedad industrial", inputs[0], damePrioridad(572)));
 		
 
 		
@@ -44,8 +48,10 @@ public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 			Calendar fechaAmortizacion = (Calendar)fecha.clone();
 			fechaAmortizacion.set(fechaAmortizacion.get(Calendar.YEAR), 11, 31);
 			fechaAmortizacion.add(Calendar.YEAR, +j);
-			enunciado3 = " Se añade la amortización de la propiedad industrial al final del año.\n"
-					+"CUENTAS PGC: 280. Amortización acumulada del inmovilizado intangible; 680. Amortización del inmovilizado intangible.\n";
+			enunciado3 = " Se añade la amortización de la propiedad industrial al final del año.\n";
+			if (enunciadoCuentas){
+				enunciado3 = enunciado3 +"CUENTAS PGC: 280. Amortización acumulada del inmovilizado intangible; 680. Amortización del inmovilizado intangible.\n";
+			}
 			
 			enunciados.add(new Enunciado(fechaAmortizacion, enunciado3));
 			

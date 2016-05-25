@@ -5,12 +5,14 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class PagoDeudasHacienda extends Asiento {
 	
-	public PagoDeudasHacienda(Calendar f, double [] i) {
+	public PagoDeudasHacienda(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
 
-		String enunciado1 = " Se paga la deuda con Hacienda.\n"
-    			+ "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 4751. H.P acreedor por retenciones practicas.\n";
+		String enunciado1 = " Se paga la deuda con Hacienda.\n";
+		if (enunciadoCuentas){
+			enunciado1 = enunciado1 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 4751. H.P acreedor por retenciones practicas.\n";
+		}
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		

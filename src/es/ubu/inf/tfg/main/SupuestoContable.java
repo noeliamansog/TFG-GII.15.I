@@ -24,125 +24,162 @@ public class SupuestoContable {
 	
 	public static void main(String args[]) {
 
-		ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();
-			
-
+		ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();	
+		
+		boolean enunciadoCuentas = true;
+		
 		//APORTACIÓN INICIAL
 		double [] inputsAportacion = {numEmpleados, 50000};
-		AportacionInicial aportacion = new AportacionInicial(fecha, inputsAportacion);
+		AportacionInicial aportacion = new AportacionInicial(fecha, inputsAportacion, enunciadoCuentas);
 		todosEnunciados.add(aportacion.enunciados);
 		
-		//PRESTAMO
-		double [] inputsPrestamo = {60000, 1, 1, 10, 5};
-		Prestamo prestamo = new Prestamo(fecha, inputsPrestamo);
+		//PRESTAMO		
+		Calendar fechaSig1 = (Calendar)fecha.clone();
+		fechaSig1.add(Calendar.DAY_OF_YEAR, +1);
+		
+		double [] inputsPrestamo = {60000, 0, 1, 10, 5};
+		Prestamo prestamo = new Prestamo(fechaSig1, inputsPrestamo, enunciadoCuentas);
 		todosEnunciados.add(prestamo.enunciados);
 	
 		//COMPRA_MATERIAL_NO_AMORTIZABLE
+		Calendar fechaSig2 = (Calendar)fecha.clone();
+		fechaSig2.add(Calendar.DAY_OF_YEAR, +2);
 		double [] inputsMaterialNoAmortizable = {0, 120000, 60000, 2};
-		CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(fecha, inputsMaterialNoAmortizable);
+		CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(fechaSig2, inputsMaterialNoAmortizable, enunciadoCuentas);
 		todosEnunciados.add(materialNoAmortizable.enunciados);
 		
 		//COMPRA_MATERIAL_AMORTIZABLE
+		Calendar fechaSig3 = (Calendar)fecha.clone();
+		fechaSig3.add(Calendar.DAY_OF_YEAR, +3);
 		double [] inputsMaterialAmortizable = {1, 8000, 30, 4};
-		CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(fecha, inputsMaterialAmortizable);
+		CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(fechaSig3, inputsMaterialAmortizable, enunciadoCuentas);
 		todosEnunciados.add(materialAmortizable.enunciados);
 		
 		//COMPRA_INTANGIBLE_NO_AMORTIZABLE
+		Calendar fechaSig4 = (Calendar)fecha.clone();
+		fechaSig4.add(Calendar.DAY_OF_YEAR, +4);
 		double [] inputsIntangibleNoAmortizable = {1000};
-		CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fecha, inputsIntangibleNoAmortizable);
+		CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fechaSig4, inputsIntangibleNoAmortizable, enunciadoCuentas);
 		todosEnunciados.add(intangibleNoAmortizable.enunciados);
 		
 		//COMPRA_SOFTWARE_AMORTIZABLE
+		Calendar fechaSig5 = (Calendar)fecha.clone();
+		fechaSig5.add(Calendar.DAY_OF_YEAR, +5);
 		double [] inputsSoftwareAmortizable = {3000, 60, 3};
-		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fecha, inputsSoftwareAmortizable);
+		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fechaSig5, inputsSoftwareAmortizable, enunciadoCuentas);
 		todosEnunciados.add(softwareAmortizable.enunciados);
 		
 		//COMPRA_PROPIEDAD_INDUSTRIAL_AMORTIZABLE
+		Calendar fechaSig6 = (Calendar)fecha.clone();
+		fechaSig6.add(Calendar.DAY_OF_YEAR, +6);
 		double [] inputsPropiedadIndustrialAmortizable = {1500, 90, 3};
-		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fecha, inputsPropiedadIndustrialAmortizable);
+		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fechaSig6, inputsPropiedadIndustrialAmortizable, enunciadoCuentas);
 		todosEnunciados.add(propiedadIndustrialAmortizable.enunciados);
 		
 		//COMPRA_MERCADERIAS
+		Calendar fechaSig7 = (Calendar)fecha.clone();
+		fechaSig7.add(Calendar.DAY_OF_YEAR, +7);
 		double [] inputsCompraMercaderias = {20000, IVA, 60};
-		CompraMercaderias compraMercaderias = new CompraMercaderias(fecha, inputsCompraMercaderias);
+		CompraMercaderias compraMercaderias = new CompraMercaderias(fechaSig7, inputsCompraMercaderias, enunciadoCuentas);
 		todosEnunciados.add(compraMercaderias.enunciados);
 		
 		//VENTA_MERCADERIAS
+		Calendar fechaSig8 = (Calendar)fecha.clone();
+		fechaSig8.add(Calendar.DAY_OF_YEAR, +8);
 		double [] inputsVentaMercaderias = {30000, IVA, 30};
-		VentaMercaderias ventaMercaderias = new VentaMercaderias(fecha, inputsVentaMercaderias);
+		VentaMercaderias ventaMercaderias = new VentaMercaderias(fechaSig8, inputsVentaMercaderias, enunciadoCuentas);
 		todosEnunciados.add(ventaMercaderias.enunciados);
 		
 		//VENTA_PROYECTO
+		Calendar fechaSig9 = (Calendar)fecha.clone();
+		fechaSig9.add(Calendar.DAY_OF_YEAR, +9);
 		double [] inputsVentaProyecto = {200000, IVA, 30};
-		VentaProyecto ventaProyecto = new VentaProyecto(fecha, inputsVentaProyecto);
+		VentaProyecto ventaProyecto = new VentaProyecto(fechaSig9, inputsVentaProyecto, enunciadoCuentas);
 		todosEnunciados.add(ventaProyecto.enunciados);
 		
 		//SUELDOS_EMPLEADOS
+		Calendar fechaSig10 = (Calendar)fecha.clone();
+		fechaSig10.add(Calendar.DAY_OF_YEAR, +10);
 		double [] inputsSueldoEmpleado = {numEmpleados, 10000, 3350, 10, 5};
-		SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(fecha, inputsSueldoEmpleado);
+		SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(fechaSig10, inputsSueldoEmpleado, enunciadoCuentas);
 		todosEnunciados.add(sueldoEmpleado.enunciados);
 		
 		//SUELDO_INGENIERO
+		Calendar fechaSig11 = (Calendar)fecha.clone();
+		fechaSig11.add(Calendar.DAY_OF_YEAR, +11);
 		double [] inputsSueldoIngeniero = {30000, 30};
-		SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(fecha, inputsSueldoIngeniero);
+		SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(fechaSig11, inputsSueldoIngeniero, enunciadoCuentas);
 		todosEnunciados.add(sueldoIngeniero.enunciados);
 		
 		//INTERESES
-		double [] inputsIntereses = {300};
-		Interes intereses = new Interes(fecha, inputsIntereses);
+		Calendar fechaSig12 = (Calendar)fecha.clone();
+		fechaSig12.add(Calendar.DAY_OF_YEAR, +12);
+		double [] inputsIntereses = {300, 80};
+		Interes intereses = new Interes(fechaSig12, inputsIntereses, enunciadoCuentas);
 		todosEnunciados.add(intereses.enunciados);
 		
 		//NUEVOS_SOCIOS
-		double [] inputsNuevoSocio = {10000, numAcciones};
-		NuevoSocio nuevoSocio = new NuevoSocio(fecha, inputsNuevoSocio);
+		Calendar fechaSig13 = (Calendar)fecha.clone();
+		fechaSig13.add(Calendar.DAY_OF_YEAR, +13);
+		double [] inputsNuevoSocio = {60000, numAcciones};
+		NuevoSocio nuevoSocio = new NuevoSocio(fechaSig13, inputsNuevoSocio, enunciadoCuentas);
 		todosEnunciados.add(nuevoSocio.enunciados);
 		
-		//CIERRE
-		double [] inputsCierre = {impuestoSociedad};
-		Cierre cierre = new Cierre (fecha, inputsCierre);
-		todosEnunciados.add(cierre.enunciados);
-		
+
 		/*
 		//PAGO DEUDAS HACIENDA
-		 PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fecha, null);
+		 PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fecha, null, enunciadoCuentas);
 		 todosEnunciados.add(deudasHacienda.enunciados);
 		 
 		//PAGO DEUDAS SEGURIDAD SOCIAL
-		 PagoDeudasSS deudasSS = new PagoDeudasSS(fecha, null);
+		 PagoDeudasSS deudasSS = new PagoDeudasSS(fecha, null, enunciadoCuentas);
 		 todosEnunciados.add(deudasSS.enunciados);
 		 
-		//PAGO TODALIDAD PRESTAMO
-		 PagoTodoPrestamo pagoTodoPrestamo = new PagoTodoPrestamo(fecha, null);
-		 todosEnunciados.add(pagoTodoPrestamo.enunciados);
 		
 		//DIVIDENDOS
 		double [] inputsDividendos = {20, 15};
-		Dividendos dividendos = new Dividendos (fecha, inputsDividendos);
+		Dividendos dividendos = new Dividendos (fecha, inputsDividendos, enunciadoCuentas);
 		todosEnunciados.add(dividendos.enunciados);
 
 		
 		//INVENTARIO
 		double [] inputsInventario = {2000};
-		Inventario inventario = new Inventario (fecha, inputsInventario);
+		Inventario inventario = new Inventario (fecha, inputsInventario, enunciadoCuentas);
 		todosEnunciados.add(inventario.enunciados);
 
 		*/
 		
+			
+		//Rango de fechas
+		Calendar fechaDesde =  Calendar.getInstance();
+		//fechaDesde.set(2016,11,31);
+		Calendar fechaHasta = Calendar.getInstance();
+		fechaHasta.set(2018,11,31);
+		
+		//ENUNCIADO
 		ArrayList<Enunciado> todosEnunciadosOrdenados = ordenaEnunciadosPorFecha(todosEnunciados);
-		imprimeEnunciados(todosEnunciadosOrdenados);
+		imprimeEnunciados(todosEnunciadosOrdenados, fechaHasta);
 		
-		Calendar fechaLimite =  Calendar.getInstance();
-		fechaLimite.set(2016, 11, 31);
-		
-		CuentaResultados cuentaResultados = new CuentaResultados (fecha, fechaLimite, impuestoSociedad);
+		//CUENTA DE PERDIDAS Y GANANCIAS
+		CuentaResultados cuentaResultados = new CuentaResultados (fecha, fechaDesde, fechaHasta, impuestoSociedad);
 		cuentaResultados.imprimeCuentaResultados();
 		
-		Tesoreria tesoreria = new Tesoreria (fechaLimite);
+		//TESORERIA
+		Tesoreria tesoreria = new Tesoreria (fechaDesde, fechaHasta);
 		tesoreria.imprimeTesoreria();
 		
-		Balance balance = new Balance(fechaLimite);
+		//BALANCE
+		Balance balance = new Balance(fechaHasta);
 		balance.imprimeBalance();
 		
+		
+		//CIERRE
+		Calendar fechaSig14 = (Calendar)fecha.clone();
+		fechaSig14.add(Calendar.DAY_OF_YEAR, +14);
+		double [] inputsCierre = {impuestoSociedad};
+		Cierre cierre = new Cierre (fechaSig14, inputsCierre, enunciadoCuentas);
+		todosEnunciados.add(cierre.enunciados);
+			
 	}
 	
 	public static ArrayList<Enunciado> ordenaEnunciadosPorFecha(ArrayList<ArrayList<Enunciado>>todosEnunciados){
@@ -156,7 +193,7 @@ public class SupuestoContable {
 		return ordenada;
 	}
 	
-	public static void imprimeEnunciados (ArrayList<Enunciado> todosEnunciadosOrdenados){
+	public static void imprimeEnunciados (ArrayList<Enunciado> todosEnunciadosOrdenados, Calendar fechaLimite){
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar fech;
 		String enun;
@@ -172,10 +209,12 @@ public class SupuestoContable {
 			documento.add(par);
 			
 			for(int i=0; i<todosEnunciadosOrdenados.size(); i++){
-				fech= todosEnunciadosOrdenados.get(i).getFecha();
-				enun = todosEnunciadosOrdenados.get(i).getEnunciado();
-				documento.add(new Paragraph(formateador.format(fech.getTime())+ " " + enun));
-				documento.add(new Paragraph("\n"));	
+				if(todosEnunciadosOrdenados.get(i).fecha.before(fechaLimite)){
+					fech= todosEnunciadosOrdenados.get(i).getFecha();
+					enun = todosEnunciadosOrdenados.get(i).getEnunciado();
+					documento.add(new Paragraph(formateador.format(fech.getTime())+ " " + enun));
+					documento.add(new Paragraph("\n"));	
+				}
 			}
 			
 			documento.add(new Paragraph("\n\nSe pide: \n"

@@ -5,14 +5,16 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class AportacionInicial extends Asiento {
 	
-	public AportacionInicial(Calendar f, double [] i) {
+	public AportacionInicial(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha = f;
 		inputs = i;
 
 		String enunciado1 = " Cada uno de los " +inputs[0]+ " socios fundadores realiza una aportación inicial en "
     			+ "efectivo a favor de la empresa por importe de " +inputs[1]+ "€ (" +(inputs[0])*(inputs[1])+ "€ en total). "
-    			+ "Cada socio tiene una acción. La empresa ingresa el dinero recibido en su cuenta corriente. \n"
-    			+ "CUENTAS PGC: 100. Capital social; 572. Bancos e instituciones de crédito c/c vista, euros. \n";
+    			+ "Cada socio tiene una acción. La empresa ingresa el dinero recibido en su cuenta corriente. \n";
+		if (enunciadoCuentas){
+			enunciado1 = enunciado1 + "CUENTAS PGC: 100. Capital social; 572. Bancos e instituciones de crédito c/c vista, euros. \n";
+		}
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 

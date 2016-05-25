@@ -8,7 +8,7 @@ import es.ubu.inf.tfg.otrasCosas.Enunciado;
 
 public class Cierre extends Asiento{
 
-	public Cierre(Calendar f, double[] i) {
+	public Cierre(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha = f;
 		inputs = i;
 		
@@ -16,10 +16,12 @@ public class Cierre extends Asiento{
 		fechaFinAno.set(fechaFinAno.get(Calendar.YEAR), 11, 31);
 		
 		String enunciado1 = " Se cierra el ejercicio (contabilizando las amortizaciones pertinentes "
-				+ " y realizando la liquidación del IVA), y deja a deber a Hacienda el impuesto de sociedades " +inputs[0]+ "% del beneficio).\n"
-		 		+ "CUENTAS PGC: 129. Resultados del ejercicio; 12. Resultados pendientes de aplicación.\n";
-				/*+ "CUENTAS PGC: 477. H.P. IVA repercutido. 4700. H.P. deudor por IVA. "
-		 		+ "472. H.P. IVA soportado. 4750 H.P Acreedor por IVA. \n";*/
+				+ " y realizando la liquidación del IVA), y deja a deber a Hacienda el impuesto de sociedades " +inputs[0]+ "% del beneficio).\n";
+		if (enunciadoCuentas){
+			enunciado1 = enunciado1 + "CUENTAS PGC: 129. Resultados del ejercicio; 12. Resultados pendientes de aplicación.\n";
+								  /*+ "CUENTAS PGC: 477. H.P. IVA repercutido. 4700. H.P. deudor por IVA. "
+		 	  						+ "472. H.P. IVA soportado. 4750 H.P Acreedor por IVA. \n";*/
+		}
 		
 
 		enunciados.add(new Enunciado(fechaFinAno, enunciado1));

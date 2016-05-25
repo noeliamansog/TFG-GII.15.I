@@ -5,13 +5,15 @@ import es.ubu.inf.tfg.otrasCosas.*;
 
 public class Inventario extends Asiento {
 	
-	public Inventario(Calendar f, double [] i) {
+	public Inventario(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
 
 		String enunciado1 = " Se hace inventario de mercaderías. Se estima un valor de coste "
-				+ "de "+inputs[0]+ "€. \n"
-    			+ "CUENTAS PGC: 300. Mercaderías; 610. Variación de existencias de mercaderías.\n";
+				+ "de "+inputs[0]+ "€. \n";
+		if (enunciadoCuentas){
+			enunciado1 = enunciado1 + "CUENTAS PGC: 300. Mercaderías; 610. Variación de existencias de mercaderías.\n";
+		}
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 

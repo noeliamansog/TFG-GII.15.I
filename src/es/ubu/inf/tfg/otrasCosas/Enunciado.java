@@ -5,8 +5,8 @@ import java.util.Calendar;
 
 public class Enunciado implements Comparable<Enunciado>{
 	
-	private Calendar fecha;
-	private String enunciado;
+	public Calendar fecha;
+	public String enunciado;
 	
     SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
     
@@ -15,9 +15,6 @@ public class Enunciado implements Comparable<Enunciado>{
         this.enunciado = enunciado;
     }
     
-    public String toString() {
-        return this.formateador.format(fecha.getTime()) + " " + this.enunciado;
-    }
     
     public Calendar getFecha() {
         return fecha;
