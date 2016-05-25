@@ -93,8 +93,8 @@ public class Tesoreria extends Asiento{
          	   Calendar fechaCobros= cobros.get(i).fecha;
          	   tablaCobros.addCell(formateador.format(fechaCobros.getTime()));
          	   tablaCobros.addCell(cobros.get(i).nombre);
-         	   tablaCobros.addCell(cobros.get(i).cantidad+"€");
-             } 
+         	   tablaCobros.addCell(Math.round(cobros.get(i).cantidad)*100/100+"€");
+             }
             
             
             //Pagos
@@ -111,7 +111,7 @@ public class Tesoreria extends Asiento{
          	   Calendar fechaPagos= pagos.get(i).fecha;
          	   tablaPagos.addCell(formateador.format(fechaPagos.getTime()));
          	   tablaPagos.addCell(pagos.get(i).nombre);
-         	   tablaPagos.addCell(pagos.get(i).cantidad+"€");
+         	   tablaPagos.addCell(Math.round(pagos.get(i).cantidad)*100/100+"€");
              } 
             
             
@@ -121,7 +121,7 @@ public class Tesoreria extends Asiento{
             total.setColspan(2);
             total.setPadding (10.0f);
             total.setBackgroundColor(BaseColor.YELLOW);
-           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(saldoTesoreria +"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(Math.round(saldoTesoreria)*100/100 +"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	calculoTotal.setPadding (10.0f);
            	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
            	saldoTotal.addCell(total);

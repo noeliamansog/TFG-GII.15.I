@@ -4,10 +4,10 @@ import java.util.Calendar;
 
 public class Anotacion  implements Comparable<Anotacion>{
 
-	Calendar fecha;
-	String nombre;
-	double cantidad;
-	int prioridad;
+	public Calendar fecha;
+	public String nombre;
+	public double cantidad;
+	public int prioridad;
 	
 	public Anotacion (Calendar fecha, String nombre, double cantidad, int prioridad){
 		this.fecha = fecha;

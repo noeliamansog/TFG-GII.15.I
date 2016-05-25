@@ -22,7 +22,6 @@ public class Cierre extends Asiento{
 								  /*+ "CUENTAS PGC: 477. H.P. IVA repercutido. 4700. H.P. deudor por IVA. "
 		 	  						+ "472. H.P. IVA soportado. 4750 H.P Acreedor por IVA. \n";*/
 		}
-		
 
 		enunciados.add(new Enunciado(fechaFinAno, enunciado1));
 		

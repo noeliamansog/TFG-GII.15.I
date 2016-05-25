@@ -6,12 +6,12 @@ import java.util.HashMap;
 
 public class Cuenta implements Comparable<Cuenta>{
 	
-	protected int codigo = 0;
-	protected String nombre;
-	protected int prioridad;
+	public int codigo = 0;
+	public String nombre;
+	public int prioridad;
 	public ArrayList<Anotacion> debe = new ArrayList<Anotacion>();
 	public ArrayList<Anotacion> haber = new ArrayList<Anotacion>();
-	protected HashMap<Integer, Boolean> saldoDebeMenosHaber = new HashMap<Integer, Boolean>();
+	public HashMap<Integer, Boolean> saldoDebeMenosHaber = new HashMap<Integer, Boolean>();
 	
 	public Cuenta(int codigo, String nombre, int prioridad){
 		this.codigo = codigo;

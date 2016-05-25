@@ -27,12 +27,10 @@ public class CuentaResultados extends Asiento{
 	static double valorGastosFinancieros;
 	static double valorIngresosFinancieros;
 	static double excedente;
-	private double impuestos;
-	static double impuestosSobreBeneficios;
+	static double impuestos;
+	static double resultadoTotal;
 	private Calendar fechaDesde;
 	private Calendar fechaHasta;
-
-	
 	
 	
 	public CuentaResultados(Calendar fechaEnunciado, Calendar fechaDesde, Calendar fechaHasta, double impuestoSociedad){
@@ -43,8 +41,8 @@ public class CuentaResultados extends Asiento{
 		valorGastosFinancieros = 0;
 		valorIngresosFinancieros = 0;
 		excedente=0;
-		impuestosSobreBeneficios=0;
 		impuestos=0;
+		resultadoTotal=0;
 		
 		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
@@ -105,16 +103,16 @@ public class CuentaResultados extends Asiento{
 	        anotacion = new Anotacion(fechaEnunciado, "Impuestos", impuestos, damePrioridad(4752));
 	       	dameCuenta(4752).añadirHaber(anotacion);
 	       	indice = dameCuenta(4752).haber.indexOf(anotacion);
-	       	ingresos.add(dameCuenta(4752).haber.get(indice));
-	       	
+	       	ingresos.add(dameCuenta(4752).haber.get(indice));	
 	   }
-		 
+	    
+	    resultadoTotal = excedente-impuestos;
+	    dameCuenta(129).añadirHaber(new Anotacion (fechaDesde, "Resultado ejercicio", resultadoTotal, damePrioridad(129)));
 		 
 	}
 	
 	public void imprimeCuentaResultados(){
-		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-       	
+		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");	
 		
 		Collections.sort(gastos);
 		Collections.sort(ingresos);
@@ -161,8 +159,8 @@ public class CuentaResultados extends Asiento{
         	   Calendar fechaGastos= gastos.get(i).fecha;
         	   ingresosGastosActividad.addCell(formateador.format(fechaGastos.getTime()));
         	   ingresosGastosActividad.addCell(gastos.get(i).nombre);
-        	   ingresosGastosActividad.addCell(gastos.get(i).cantidad+"€");
-            } 
+        	   ingresosGastosActividad.addCell(Math.round(gastos.get(i).cantidad)*100/100+"€");
+            }
             
             //INGRESOS
             PdfPCell celdaIngresos = new PdfPCell (new Paragraph("INGRESOS DE LA ACTIVIDAD", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
@@ -176,7 +174,7 @@ public class CuentaResultados extends Asiento{
         	   Calendar fechaIngresos = ingresos.get(i).fecha;
         	   ingresosGastosActividad.addCell(formateador.format(fechaIngresos.getTime()));
         	   ingresosGastosActividad.addCell(ingresos.get(i).nombre);
-        	   ingresosGastosActividad.addCell(ingresos.get(i).cantidad+"€");
+        	   ingresosGastosActividad.addCell(Math.round(ingresos.get(i).cantidad)*100/100+"€");
             } 
             
             //TOTAL INGRESOS Y GASTOS DE LA ACTIVIDAD
@@ -184,7 +182,7 @@ public class CuentaResultados extends Asiento{
             resulActividad.setColspan(2);
             resulActividad.setPadding (10.0f);
             resulActividad.setBackgroundColor(BaseColor.CYAN);
-           	PdfPCell excedenteAct = new PdfPCell (new Paragraph(valorIngresos - valorGastos+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell excedenteAct = new PdfPCell (new Paragraph(Math.round(valorIngresos - valorGastos)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	excedenteAct.setColspan(2);
            	excedenteAct.setPadding (10.0f);
            	excedenteAct.setBackgroundColor(BaseColor.CYAN);
@@ -217,7 +215,7 @@ public class CuentaResultados extends Asiento{
         	   Calendar fechaGastosFinancieros= gastosFinancieros.get(i).fecha;
         	   ingresosGastosFinancieros.addCell(formateador.format(fechaGastosFinancieros.getTime()));
         	   ingresosGastosFinancieros.addCell(gastosFinancieros.get(i).nombre);
-        	   ingresosGastosFinancieros.addCell(gastosFinancieros.get(i).cantidad+"€");
+        	   ingresosGastosFinancieros.addCell(Math.round(gastosFinancieros.get(i).cantidad)*100/100+"€");
             } 
             
             //INGRESOS
@@ -232,7 +230,7 @@ public class CuentaResultados extends Asiento{
         	   Calendar fechaIngresosFinancieros= ingresosFinancieros.get(i).fecha;
         	   ingresosGastosFinancieros.addCell(formateador.format(fechaIngresosFinancieros.getTime()));
         	   ingresosGastosFinancieros.addCell(ingresosFinancieros.get(i).nombre);
-        	   ingresosGastosFinancieros.addCell(ingresosFinancieros.get(i).cantidad+"€");
+        	   ingresosGastosFinancieros.addCell(Math.round(ingresosFinancieros.get(i).cantidad)*100/100+"€");
             } 
             
             //TOTAL INGRESOS Y GASTOS DE LA ACTIVIDAD
@@ -240,7 +238,7 @@ public class CuentaResultados extends Asiento{
             resulFinanciero.setColspan(2);
             resulFinanciero.setPadding (10.0f);
             resulFinanciero.setBackgroundColor(BaseColor.CYAN);
-           	PdfPCell excedenteFinan = new PdfPCell (new Paragraph(valorIngresosFinancieros-valorGastosFinancieros+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell excedenteFinan = new PdfPCell (new Paragraph(Math.round(valorIngresosFinancieros-valorGastosFinancieros)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	excedenteFinan.setColspan(2);
            	excedenteFinan.setPadding (10.0f);
            	excedenteFinan.setBackgroundColor(BaseColor.CYAN);
@@ -250,14 +248,12 @@ public class CuentaResultados extends Asiento{
            	
            	
            	//EXCEDENTE ANTES DE IMPUESTOS
-           	PdfPTable resultado = new PdfPTable(3);
-           	
-           	
+           	PdfPTable resultado = new PdfPTable(3);      	
             PdfPCell excedenteImpuestos = new PdfPCell (new Paragraph("EXCEDENTE ANTES DE IMPUESTOS:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
             excedenteImpuestos.setColspan(2);
             excedenteImpuestos.setPadding (10.0f);
             excedenteImpuestos.setBackgroundColor(BaseColor.GRAY);
-           	PdfPCell calculoExcedente = new PdfPCell (new Paragraph(excedente+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell calculoExcedente = new PdfPCell (new Paragraph(Math.round(excedente)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	calculoExcedente.setColspan(2);
            	calculoExcedente.setPadding (10.0f);
            	calculoExcedente.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -270,7 +266,7 @@ public class CuentaResultados extends Asiento{
             impuestosBeneficios.setColspan(2);
             impuestosBeneficios.setPadding (10.0f);
             impuestosBeneficios.setBackgroundColor(BaseColor.GRAY);
-           	PdfPCell calculoImpuestos = new PdfPCell (new Paragraph(impuestos +"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell calculoImpuestos = new PdfPCell (new Paragraph(Math.round(impuestos)*100/100 +"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	calculoImpuestos.setColspan(2);
            	calculoImpuestos.setPadding (10.0f);
            	calculoImpuestos.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -284,7 +280,7 @@ public class CuentaResultados extends Asiento{
             total.setColspan(2);
             total.setPadding (10.0f);
             total.setBackgroundColor(BaseColor.YELLOW);
-           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(excedente-impuestos + "€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell calculoTotal = new PdfPCell (new Paragraph(Math.round(resultadoTotal)*100/100 + "€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	calculoTotal.setPadding (10.0f);
            	calculoTotal.setBackgroundColor(BaseColor.YELLOW);
            	resultado.addCell(total);

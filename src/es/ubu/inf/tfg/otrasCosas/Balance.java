@@ -119,11 +119,11 @@ public class Balance extends Asiento{
             celdaActivoNoCorriente.setPadding (10.0f);
             celdaActivoNoCorriente.setBackgroundColor(BaseColor.LIGHT_GRAY);
             activo.addCell(celdaActivoNoCorriente);
-            activo.addCell(valorActivoNoCorriente+"€");         
+            activo.addCell((Math.round(valorActivoNoCorriente)*100)/100+"€");        
 
             for(int i=0; i<activoNoCorriente.size(); i++){
         	   activo.addCell(activoNoCorriente.get(i).nombre);
-       		   activo.addCell(activoNoCorriente.get(i).getSaldo(fecha)+"€");
+       		   activo.addCell(Math.round(activoNoCorriente.get(i).getSaldo(fecha))*100/100+"€");
             } 
            
             //Activo Corriente
@@ -131,11 +131,11 @@ public class Balance extends Asiento{
             celdaActivoCorriente.setPadding (10.0f);
             celdaActivoCorriente.setBackgroundColor(BaseColor.LIGHT_GRAY);
             activo.addCell(celdaActivoCorriente);
-            activo.addCell(valorActivoCorriente+"€");
+            activo.addCell((Math.round(valorActivoCorriente)*100)/100+"€");
            
             for(int i=0; i<activoCorriente.size(); i++){
             	activo.addCell(activoCorriente.get(i).nombre);
-            	activo.addCell(activoCorriente.get(i).getSaldo(fecha)+"€");
+            	activo.addCell(Math.round(activoCorriente.get(i).getSaldo(fecha))*100/100+"€");
             } 
           
             //CELDA TOTAL ACTIVO
@@ -143,7 +143,7 @@ public class Balance extends Asiento{
             PdfPCell resulActivo = new PdfPCell (new Paragraph("TOTAL ACTIVO:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	resulActivo.setPadding (10.0f);
            	resulActivo.setBackgroundColor(BaseColor.YELLOW);
-           	PdfPCell cantidadActivo = new PdfPCell (new Paragraph(totalActivo+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell cantidadActivo = new PdfPCell (new Paragraph(Math.round(totalActivo)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	cantidadActivo.setColspan(2);
            	cantidadActivo.setPadding (10.0f);
            	cantidadActivo.setBackgroundColor(BaseColor.YELLOW);
@@ -166,11 +166,11 @@ public class Balance extends Asiento{
           	celdaPN.setPadding (10.0f);
           	celdaPN.setBackgroundColor(BaseColor.LIGHT_GRAY);
           	pasivo.addCell(celdaPN);
-          	pasivo.addCell(valorPatrimonioNeto+"€");     
+          	pasivo.addCell((Math.round(valorPatrimonioNeto)*100)/100+"€");     
 
           	for(int i=0; i<patrimonioNeto.size(); i++){
           		pasivo.addCell(patrimonioNeto.get(i).nombre);
-          		pasivo.addCell(patrimonioNeto.get(i).getSaldo(fecha)+"€");
+          		pasivo.addCell(Math.round(patrimonioNeto.get(i).getSaldo(fecha))*100/100+"€");
           	} 
           
           	//Pasivo No Corriente
@@ -182,7 +182,7 @@ public class Balance extends Asiento{
 
           	for(int i=0; i<pasivoNoCorriente.size(); i++){
           		pasivo.addCell(pasivoNoCorriente.get(i).nombre);
-          		pasivo.addCell(pasivoNoCorriente.get(i).getSaldo(fecha)+"€");
+          		pasivo.addCell(Math.round(pasivoNoCorriente.get(i).getSaldo(fecha))*100/100+"€");
           	} 
          
           	//Pasivo Corriente
@@ -190,11 +190,11 @@ public class Balance extends Asiento{
           	celdaPasivoCorriente.setPadding (10.0f);
           	celdaPasivoCorriente.setBackgroundColor(BaseColor.LIGHT_GRAY);
           	pasivo.addCell(celdaPasivoCorriente);
-          	pasivo.addCell(valorPasivoCorriente+"€");
+          	pasivo.addCell((Math.round(valorPasivoCorriente)*100)/100+"€"); 
         
           	for(int i=0; i<pasivoCorriente.size(); i++){
           		pasivo.addCell(pasivoCorriente.get(i).nombre);
-          		pasivo.addCell(pasivoCorriente.get(i).getSaldo(fecha)+"€");
+          		pasivo.addCell(Math.round(pasivoCorriente.get(i).getSaldo(fecha))*100/100+"€");
           	}
           	
           	//CELDA TOTAL PASIVO
@@ -202,7 +202,7 @@ public class Balance extends Asiento{
           	PdfPCell resulPasivo = new PdfPCell (new Paragraph("TOTAL PATRIMONIO NETO Y PASIVO:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
           	resulPasivo.setPadding (10.0f);
           	resulPasivo.setBackgroundColor(BaseColor.YELLOW);
-          	PdfPCell cantidadPasivo = new PdfPCell (new Paragraph(totalPasivo+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+          	PdfPCell cantidadPasivo = new PdfPCell (new Paragraph(Math.round(totalPasivo)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
           	cantidadPasivo.setColspan(2);
           	cantidadPasivo.setPadding (10.0f);
           	cantidadPasivo.setBackgroundColor(BaseColor.YELLOW);
