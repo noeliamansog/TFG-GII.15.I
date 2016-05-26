@@ -22,6 +22,7 @@ public class Tesoreria extends Asiento{
 	static double valorCobros;
 	static double valorPagos;
 	static double saldoTesoreria;
+	static double saldoInicial;
 	private int año;
 	private Calendar fechaDesde;
 	private Calendar fechaHasta;
@@ -34,6 +35,10 @@ public class Tesoreria extends Asiento{
 		fechaHasta.set(año,11,31);
 		valorCobros=0;
 		valorPagos=0;
+		//Saldo de la cuenta de tesoreria del año anterior
+		Calendar fechaAñoAnterior = (Calendar) fechaHasta.clone();
+		fechaAñoAnterior.add(Calendar.YEAR, -1);
+		saldoInicial = dameCuenta(572).getSaldo(fechaAñoAnterior);
 
 		Cuenta cuenta = dameCuenta(572);
 		  
@@ -67,7 +72,7 @@ public class Tesoreria extends Asiento{
 		Document documento = new Document();
 		
 		try{			
-            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/Tesorería.pdf"));
+            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/Tesorería"+año+".pdf"));
             
             documento.open();
             documento.addTitle("Tesorería"); 
@@ -93,6 +98,10 @@ public class Tesoreria extends Asiento{
             celdaCobros.setBackgroundColor(BaseColor.GRAY);
             tablaCobros.addCell(celdaCobros);
             
+            
+            tablaCobros.addCell(formateador.format(fechaDesde.getTime()));
+            tablaCobros.addCell("Saldo inicial");
+            tablaCobros.addCell(Math.round(saldoInicial)*100/100+"€");
             for(int i=0; i<cobros.size(); i++){
          	   Calendar fechaCobros= cobros.get(i).fecha;
          	   tablaCobros.addCell(formateador.format(fechaCobros.getTime()));

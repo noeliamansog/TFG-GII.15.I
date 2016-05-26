@@ -26,8 +26,8 @@ public class Asiento {
 			cuenta = new Cuenta(codigo, todasCuentas.get(codigo).nombre, todasCuentas.get(codigo).prioridad);
 			cuentas.put(codigo, cuenta);
 		}
-		
-		/*for(int i=0; i<cuenta.debe.size(); i++){
+		/*
+		for(int i=0; i<cuenta.debe.size(); i++){
 			System.out.println("CUENTA: "+ cuenta.codigo +" "+ cuenta.debe.get(i).nombre +"\t CANTIDAD EN EL DEBE: " + cuenta.debe.get(i).cantidad);
 		}
 		for(int i=0; i<cuenta.haber.size(); i++){
@@ -41,13 +41,21 @@ public class Asiento {
 		return todasCuentas.get(codigo).prioridad;	
 	}
 
+	public void cierraCuenta(int codigo, Anotacion anotacion, boolean debe){
+		Cuenta cuenta = cuentas.get(codigo);
+		if(debe){
+			cuenta.añadirHaber(anotacion);
+		}else{
+			cuenta.añadirDebe(anotacion);
+		}
+	}
 	public void inicializarTodasCuentas() {
 		// INICIALIZMAOS TODAS LAS CUENTAS CON SU CODIGO, SU NOMBRE Y SU PRIORIDAD
 		todasCuentas.put(12,new Cuenta(12, "Resultados pendientes de aplicación", -11));
 
 		todasCuentas.put(100, new Cuenta (100, "Capital social", -1));
 		todasCuentas.put(110, new Cuenta (110, "Prima de emisión o asunción", -7));
-		todasCuentas.put(112, new Cuenta (112, "Reserva legar", -6));
+		todasCuentas.put(112, new Cuenta (112, "Reserva legal", -6));
 		todasCuentas.put(129, new Cuenta (129, "Resultado del ejercicio", -10));
 		todasCuentas.put(170, new Cuenta (170, "Deudas a largo plazo con entidades de crédito", -21));
 		todasCuentas.put(173, new Cuenta (173, "Proveedores de inmovilizado a largo plazo", -23));
@@ -69,10 +77,10 @@ public class Asiento {
 
 		todasCuentas.put(400, new Cuenta (400, "Proveedores", -40));
 		todasCuentas.put(430, new Cuenta (430, "Clientes", 42));
-		todasCuentas.put(472, new Cuenta (472, "H.P. IVA Soportado", 0));
-		todasCuentas.put(473, new Cuenta (472, "Hacienda Pública, retenciones y pagos a cuenta.", 48));
+		todasCuentas.put(472, new Cuenta (472, "H.P. IVA Soportado", 100));
+		todasCuentas.put(473, new Cuenta (473, "Hacienda Pública, retenciones y pagos a cuenta.", 48));
 		todasCuentas.put(476, new Cuenta (476, "Organismos de la S.S acreedores", -50));
-		todasCuentas.put(477, new Cuenta (477, "H.P. IVA Repercutido", 0));
+		todasCuentas.put(477, new Cuenta (477, "H.P. IVA Repercutido", 100));
 
 		todasCuentas.put(523, new Cuenta (523, "Proveedores de inmovilizado a corto plazo", -35));
 		todasCuentas.put(572, new Cuenta (572, "Bancos e instituciones de crédito c/c vista, euros", 59));

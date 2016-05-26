@@ -20,8 +20,8 @@ public class CompraMercaderias extends Asiento{
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
 		dameCuenta(600).añadirDebe(new Anotacion(fecha, "Compra mercaderias", inputs[0], damePrioridad(600)));
-		dameCuenta(472).añadirDebe(new Anotacion(fecha, "H.P IVA Soportado", inputs[1], damePrioridad(472)));
-		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores mercaderias", inputs[0],damePrioridad(400)));
+		dameCuenta(472).añadirDebe(new Anotacion(fecha, "H.P IVA Soportado", (inputs[1]*inputs[0])/100, damePrioridad(472)));
+		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores mercaderias", inputs[0]*(1+inputs[1]/100),damePrioridad(400)));
 				
 				
 		//SE SALDAN LAS DEUDAS CON LOS PROVEEDORES "Y" DIAS DESPUES:

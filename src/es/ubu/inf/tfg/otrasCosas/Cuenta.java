@@ -48,6 +48,18 @@ public class Cuenta implements Comparable<Cuenta>{
 			return contHaber-contDebe;
 		}
 	}
+	
+	/*Funcion que te de todas las anotaciones con fecha y valor:
+	public void dameAnotación (){
+		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+		
+		for(int i=0; i<debe.size(); i++){
+			System.out.println("En el DEBE: "+debe.get(i).nombre+ " con fecha: " +formateador.format(debe.get(i).fecha.getTime()) +" con cantidad: "+debe.get(i).cantidad);
+		}
+		for(int i=0; i<haber.size(); i++){
+			System.out.println("En el HABER: "+haber.get(i).nombre+ " con fecha: " +formateador.format(haber.get(i).fecha.getTime()) +" con cantidad: "+haber.get(i).cantidad);
+		}
+	}*/
 
 	
 	public void inicializarSaldoDebeMenosHaber(){
@@ -81,7 +93,7 @@ public class Cuenta implements Comparable<Cuenta>{
 		saldoDebeMenosHaber.put(472, true);
 		saldoDebeMenosHaber.put(473, true);
 		saldoDebeMenosHaber.put(476, false);
-		saldoDebeMenosHaber.put(477, true);
+		saldoDebeMenosHaber.put(477, false);
 
 		saldoDebeMenosHaber.put(523, false);
 		saldoDebeMenosHaber.put(572, true);

@@ -19,9 +19,9 @@ public class VentaProyecto extends Asiento {
 			
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		dameCuenta(430).añadirDebe(new Anotacion(fecha, "Clientes proyecto", inputs[0], damePrioridad(430)));
+		dameCuenta(430).añadirDebe(new Anotacion(fecha, "Clientes proyecto", inputs[0]*(1+inputs[1]/100), damePrioridad(430)));
 		dameCuenta(705).añadirHaber(new Anotacion(fecha, "Prestaciones de servicios", inputs[0], damePrioridad(705)));
-		dameCuenta(477).añadirHaber(new Anotacion(fecha, "IVA proyecto", inputs[1], damePrioridad(477)));
+		dameCuenta(477).añadirHaber(new Anotacion(fecha, "IVA proyecto", (inputs[0]*inputs[1])/100, damePrioridad(477)));
 			
 		
 		//SE SALDAN LAS DEUDAS CON LA EMPRESA "Y" DIAS DESPUES:

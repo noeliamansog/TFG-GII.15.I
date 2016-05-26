@@ -34,7 +34,7 @@ public class CuentaResultados extends Asiento{
 	static double resultadoTotal;
 	
 	
-	public CuentaResultados(Calendar fechaEnunciado, int año, double impuestoSociedad){
+	public CuentaResultados(int año, double impuestoSociedad){
 		this.año=año;
 		fechaDesde =  Calendar.getInstance();
 		fechaDesde.set(año,0,1);
@@ -49,23 +49,46 @@ public class CuentaResultados extends Asiento{
 		resultadoTotal=0;
 		
 		
+		//funcion cerrar: mirar el saldo, en que lado esta,, y que haga ese apunte en el otro lado
+		
 		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
 		  Integer key = (Integer) it.next();
 		  Cuenta cuenta = cuentas.get(key);
 
+		  //CREAR MEOTOD CERRAR: cogo el saldo de cada cuenta y pongo esa misma cantidad en el contrario para cerrarlo.
+		  
+		  /*610 Variacion de exitencias --> A veces es un gasto y a veces es un ingreso.
+		   * La considero siempre Gasto(debe) y compruebo su saldo, si es positivo es gasto 
+		   * y lo cierro añadiendo el saldo en haber, si es negativo es un ingreso 
+		   * y añado el saldo en debe para cerrarlo */
+		  
 		  if(cuenta.prioridad==0){
 			  //Gastos
 			  if (!(cuenta.debe.isEmpty())){
 				  for(int i=0; i<cuenta.debe.size(); i++){
 					  if (cuenta.debe.get(i).fecha.before(fechaHasta) && cuenta.debe.get(i).fecha.after(fechaDesde)){
+						  /*if (cuenta.codigo==610){
+							  if (cuenta.debe.get(i).cantidad>0){
+								  gastos.add(cuenta.debe.get(i));
+								  valorGastos += cuenta.debe.get(i).cantidad;
+								  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), true);
+							  }
+							  else{
+								  ingresos.add(cuenta.debe.get(i));
+								  valorIngresos += cuenta.debe.get(i).cantidad;
+								  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), false);
+							  }
+						  }*/
 						  if (cuenta.codigo==769 || cuenta.codigo==662){
 							  gastosFinancieros.add(cuenta.debe.get(i));
 							  valorGastosFinancieros += cuenta.debe.get(i).cantidad;
+							  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), true);
 						  }else{
 							  gastos.add(cuenta.debe.get(i));
 							  valorGastos += cuenta.debe.get(i).cantidad;
-						  }
+							  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), true);
+						  }	
 					  }
 				  }
 			  }
@@ -73,13 +96,25 @@ public class CuentaResultados extends Asiento{
 			  if (!(cuenta.haber.isEmpty())){
 				  for(int i=0; i<cuenta.haber.size(); i++){
 					  if (cuenta.haber.get(i).fecha.before(fechaHasta) && cuenta.haber.get(i).fecha.after(fechaDesde)){
+						  /*if (cuenta.codigo==610){
+							  if (cuenta.haber.get(i).cantidad>0){
+								  gastos.add(cuenta.haber.get(i));
+								  valorGastos += cuenta.haber.get(i).cantidad;
+							  }
+							  else{
+								  ingresos.add(cuenta.haber.get(i));
+								  valorIngresos += cuenta.haber.get(i).cantidad;
+							  }
+						  }*/
 						  if (cuenta.codigo==769 || cuenta.codigo==662){
 							  ingresosFinancieros.add(cuenta.haber.get(i));
 							  valorIngresosFinancieros += cuenta.haber.get(i).cantidad;
+							  cierraCuenta(cuenta.codigo, cuenta.haber.get(i), false);
 						  }else{
 							  ingresos.add(cuenta.haber.get(i));
 							  valorIngresos += cuenta.haber.get(i).cantidad;
-						  }
+							  cierraCuenta(cuenta.codigo, cuenta.haber.get(i), false);
+						  }			  
 					  }
 				  }
 			  }
@@ -105,7 +140,7 @@ public class CuentaResultados extends Asiento{
 	       	ingresos.add(dameCuenta(630).haber.get(indice));
 	       	
 	       	       	
-	        anotacion = new Anotacion(fechaEnunciado, "Impuestos", impuestos, damePrioridad(4752));
+	        anotacion = new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(4752));
 	       	dameCuenta(4752).añadirHaber(anotacion);
 	       	indice = dameCuenta(4752).haber.indexOf(anotacion);
 	       	ingresos.add(dameCuenta(4752).haber.get(indice));	
@@ -125,7 +160,7 @@ public class CuentaResultados extends Asiento{
 		Document documento = new Document();
 		
 		try{			
-            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/CuentaResultados.pdf"));
+            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/CuentaResultados"+año+".pdf"));
             
             documento.open();
             documento.addTitle("Cuenta de Resultados"); 
@@ -185,11 +220,11 @@ public class CuentaResultados extends Asiento{
             PdfPCell resulActividad = new PdfPCell (new Paragraph("EXCEDENTE DE LA ACTIVIDAD:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
             resulActividad.setColspan(2);
             resulActividad.setPadding (10.0f);
-            resulActividad.setBackgroundColor(BaseColor.CYAN);
+            resulActividad.setBackgroundColor(BaseColor.PINK);
            	PdfPCell excedenteAct = new PdfPCell (new Paragraph(Math.round(valorIngresos - valorGastos)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	excedenteAct.setColspan(2);
            	excedenteAct.setPadding (10.0f);
-           	excedenteAct.setBackgroundColor(BaseColor.CYAN);
+           	excedenteAct.setBackgroundColor(BaseColor.PINK);
            	ingresosGastosActividad.addCell(resulActividad);
            	ingresosGastosActividad.addCell(excedenteAct);
             
@@ -241,11 +276,11 @@ public class CuentaResultados extends Asiento{
             PdfPCell resulFinanciero = new PdfPCell (new Paragraph("EXCEDENTE DE LAS OPERACIONES FINANCIERAS:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
             resulFinanciero.setColspan(2);
             resulFinanciero.setPadding (10.0f);
-            resulFinanciero.setBackgroundColor(BaseColor.CYAN);
+            resulFinanciero.setBackgroundColor(BaseColor.PINK);
            	PdfPCell excedenteFinan = new PdfPCell (new Paragraph(Math.round(valorIngresosFinancieros-valorGastosFinancieros)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	excedenteFinan.setColspan(2);
            	excedenteFinan.setPadding (10.0f);
-           	excedenteFinan.setBackgroundColor(BaseColor.CYAN);
+           	excedenteFinan.setBackgroundColor(BaseColor.PINK);
            	ingresosGastosFinancieros.addCell(resulFinanciero);
            	ingresosGastosFinancieros.addCell(excedenteFinan);
            	

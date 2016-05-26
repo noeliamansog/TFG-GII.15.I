@@ -36,13 +36,18 @@ public class Cierre extends Asiento{
 			
 		}
 		
-
-		/*DE MOMENTO EL IVA LO DEJAMOS
-		dameCuenta(477).añadirDebe(new Anotacion(fechaFinAno, "H.P. IVA repercutido ", inputs[0]));
-		dameCuenta(4700).añadirDebe(new Anotacion(fechaFinAno, "H.P. deudor por IVA ", inputs[0]));
+		double saldoIVARepercutido = dameCuenta(477).getSaldo(fechaFinAno);
+		double saldoIVASoportado = dameCuenta(472).getSaldo(fechaFinAno);
 		
-		dameCuenta(472).añadirHaber(new Anotacion(fechaFinAno, "H.P. IVA soportado ", inputs[0]));
-		dameCuenta(4750).añadirHaber(new Anotacion(fechaFinAno, "H.P Acreedor por IVA", inputs[0]));*/
+		dameCuenta(477).añadirDebe(new Anotacion(fechaFinAno, "H.P. IVA repercutido ", saldoIVARepercutido, damePrioridad(477)));
+		dameCuenta(472).añadirHaber(new Anotacion(fechaFinAno, "H.P. IVA soportado ", saldoIVASoportado, damePrioridad(472)));
+		
+		if(saldoIVARepercutido > saldoIVASoportado){
+			dameCuenta(4750).añadirHaber(new Anotacion(fechaFinAno, "H.P Acreedor por IVA", saldoIVARepercutido-saldoIVASoportado, damePrioridad(4750)));
+			
+		}else{
+			dameCuenta(4700).añadirDebe(new Anotacion(fechaFinAno, "H.P. deudor por IVA ", saldoIVASoportado-saldoIVARepercutido, damePrioridad(4700)));	
+		}
 	}
 
 }

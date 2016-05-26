@@ -20,164 +20,205 @@ public class SupuestoContable {
 	public static double IVA = 10;
 	public static double numEmpleados = 2;
 	public static double numAcciones = numEmpleados;
-	public static Calendar fecha = Calendar.getInstance();
 	
 	public static void main(String args[]) {
 
 		ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();	
+		ArrayList<Calendar> todasFechas = new ArrayList<Calendar>();
 		
 		//Opcion de poner enunciados con las cuentas PGC
 		boolean enunciadoCuentas = true;
-		//Año para las tablas cuentaResultados, Tesorería y Balance
-		int año = 2016;
-		//Fecha limite para el enunciado
-		Calendar fechaLimite = Calendar.getInstance();
-		fechaLimite.set(2016,11,31);
+		
+		//Año para las tablas
+		int annoFin = 2017;
+		int annoInicio;
+		int anno;
 		
 		//APORTACIÓN INICIAL
+		Calendar fechaAportacion = Calendar.getInstance();
 		double [] inputsAportacion = {numEmpleados, 50000};
-		AportacionInicial aportacion = new AportacionInicial(fecha, inputsAportacion, enunciadoCuentas);
+		AportacionInicial aportacion = new AportacionInicial(fechaAportacion, inputsAportacion, enunciadoCuentas);
 		todosEnunciados.add(aportacion.enunciados);
+		todasFechas.add(fechaAportacion);
 		
 		//PRESTAMO		
-		Calendar fechaSig1 = (Calendar)fecha.clone();
-		fechaSig1.add(Calendar.DAY_OF_YEAR, +1);
-		
+		Calendar fechaPrestamo = Calendar.getInstance();
+		fechaPrestamo.add(Calendar.DAY_OF_YEAR, +1);
 		double [] inputsPrestamo = {60000, 0, 1, 10, 5};
-		Prestamo prestamo = new Prestamo(fechaSig1, inputsPrestamo, enunciadoCuentas);
+		Prestamo prestamo = new Prestamo(fechaPrestamo, inputsPrestamo, enunciadoCuentas);
 		todosEnunciados.add(prestamo.enunciados);
+		todasFechas.add(fechaPrestamo);
 	
 		//COMPRA_MATERIAL_NO_AMORTIZABLE
-		Calendar fechaSig2 = (Calendar)fecha.clone();
-		fechaSig2.add(Calendar.DAY_OF_YEAR, +2);
+		Calendar fechaCompraMatNoAmort = Calendar.getInstance();
+		fechaCompraMatNoAmort.add(Calendar.DAY_OF_YEAR, +2);
 		double [] inputsMaterialNoAmortizable = {0, 120000, 60000, 2};
-		CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(fechaSig2, inputsMaterialNoAmortizable, enunciadoCuentas);
+		CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(fechaCompraMatNoAmort, inputsMaterialNoAmortizable, enunciadoCuentas);
 		todosEnunciados.add(materialNoAmortizable.enunciados);
+		todasFechas.add(fechaCompraMatNoAmort);
 		
 		//COMPRA_MATERIAL_AMORTIZABLE
-		Calendar fechaSig3 = (Calendar)fecha.clone();
-		fechaSig3.add(Calendar.DAY_OF_YEAR, +3);
+		Calendar fechaCompraMatAmort = Calendar.getInstance();
+		fechaCompraMatAmort.add(Calendar.DAY_OF_YEAR, +3);
 		double [] inputsMaterialAmortizable = {1, 8000, 30, 4};
-		CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(fechaSig3, inputsMaterialAmortizable, enunciadoCuentas);
+		CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(fechaCompraMatAmort, inputsMaterialAmortizable, enunciadoCuentas);
 		todosEnunciados.add(materialAmortizable.enunciados);
+		todasFechas.add(fechaCompraMatAmort);
 		
 		//COMPRA_INTANGIBLE_NO_AMORTIZABLE
-		Calendar fechaSig4 = (Calendar)fecha.clone();
-		fechaSig4.add(Calendar.DAY_OF_YEAR, +4);
+		Calendar fechaCompraInNoAmort = Calendar.getInstance();
+		fechaCompraInNoAmort.add(Calendar.DAY_OF_YEAR, +4);
 		double [] inputsIntangibleNoAmortizable = {1000};
-		CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fechaSig4, inputsIntangibleNoAmortizable, enunciadoCuentas);
+		CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fechaCompraInNoAmort, inputsIntangibleNoAmortizable, enunciadoCuentas);
 		todosEnunciados.add(intangibleNoAmortizable.enunciados);
+		todasFechas.add(fechaCompraInNoAmort);
 		
 		//COMPRA_SOFTWARE_AMORTIZABLE
-		Calendar fechaSig5 = (Calendar)fecha.clone();
-		fechaSig5.add(Calendar.DAY_OF_YEAR, +5);
+		Calendar fechaCompraSW = Calendar.getInstance();
+		fechaCompraSW.add(Calendar.DAY_OF_YEAR, +5);
 		double [] inputsSoftwareAmortizable = {3000, 60, 3};
-		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fechaSig5, inputsSoftwareAmortizable, enunciadoCuentas);
+		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fechaCompraSW, inputsSoftwareAmortizable, enunciadoCuentas);
 		todosEnunciados.add(softwareAmortizable.enunciados);
+		todasFechas.add(fechaCompraSW);
 		
 		//COMPRA_PROPIEDAD_INDUSTRIAL_AMORTIZABLE
-		Calendar fechaSig6 = (Calendar)fecha.clone();
-		fechaSig6.add(Calendar.DAY_OF_YEAR, +6);
+		Calendar fechaCompraPI = Calendar.getInstance();
+		fechaCompraPI.add(Calendar.DAY_OF_YEAR, +6);
 		double [] inputsPropiedadIndustrialAmortizable = {1500, 90, 3};
-		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fechaSig6, inputsPropiedadIndustrialAmortizable, enunciadoCuentas);
+		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fechaCompraPI, inputsPropiedadIndustrialAmortizable, enunciadoCuentas);
 		todosEnunciados.add(propiedadIndustrialAmortizable.enunciados);
+		todasFechas.add(fechaCompraPI);
 		
 		//COMPRA_MERCADERIAS
-		Calendar fechaSig7 = (Calendar)fecha.clone();
-		fechaSig7.add(Calendar.DAY_OF_YEAR, +7);
+		Calendar fechaCompraMercaderias = Calendar.getInstance();
+		fechaCompraMercaderias.add(Calendar.DAY_OF_YEAR, +7);
 		double [] inputsCompraMercaderias = {20000, IVA, 60};
-		CompraMercaderias compraMercaderias = new CompraMercaderias(fechaSig7, inputsCompraMercaderias, enunciadoCuentas);
+		CompraMercaderias compraMercaderias = new CompraMercaderias(fechaCompraMercaderias, inputsCompraMercaderias, enunciadoCuentas);
 		todosEnunciados.add(compraMercaderias.enunciados);
+		todasFechas.add(fechaCompraMercaderias);
 		
 		//VENTA_MERCADERIAS
-		Calendar fechaSig8 = (Calendar)fecha.clone();
-		fechaSig8.add(Calendar.DAY_OF_YEAR, +8);
+		Calendar fechaVentaMercaderias = Calendar.getInstance();
+		fechaVentaMercaderias.add(Calendar.DAY_OF_YEAR, +8);
 		double [] inputsVentaMercaderias = {30000, IVA, 30};
-		VentaMercaderias ventaMercaderias = new VentaMercaderias(fechaSig8, inputsVentaMercaderias, enunciadoCuentas);
+		VentaMercaderias ventaMercaderias = new VentaMercaderias(fechaVentaMercaderias, inputsVentaMercaderias, enunciadoCuentas);
 		todosEnunciados.add(ventaMercaderias.enunciados);
+		todasFechas.add(fechaVentaMercaderias);
 		
 		//VENTA_PROYECTO
-		Calendar fechaSig9 = (Calendar)fecha.clone();
-		fechaSig9.add(Calendar.DAY_OF_YEAR, +9);
+		Calendar fechaVentaProy = Calendar.getInstance();
+		fechaVentaProy.add(Calendar.DAY_OF_YEAR, +9);
 		double [] inputsVentaProyecto = {200000, IVA, 30};
-		VentaProyecto ventaProyecto = new VentaProyecto(fechaSig9, inputsVentaProyecto, enunciadoCuentas);
+		VentaProyecto ventaProyecto = new VentaProyecto(fechaVentaProy, inputsVentaProyecto, enunciadoCuentas);
 		todosEnunciados.add(ventaProyecto.enunciados);
+		todasFechas.add(fechaVentaProy);
 		
 		//SUELDOS_EMPLEADOS
-		Calendar fechaSig10 = (Calendar)fecha.clone();
-		fechaSig10.add(Calendar.DAY_OF_YEAR, +10);
+		Calendar fechaSueldoEmp = Calendar.getInstance();
+		fechaSueldoEmp.add(Calendar.DAY_OF_YEAR, +10);
 		double [] inputsSueldoEmpleado = {numEmpleados, 10000, 3350, 10, 5};
-		SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(fechaSig10, inputsSueldoEmpleado, enunciadoCuentas);
+		SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(fechaSueldoEmp, inputsSueldoEmpleado, enunciadoCuentas);
 		todosEnunciados.add(sueldoEmpleado.enunciados);
+		todasFechas.add(fechaSueldoEmp);
 		
 		//SUELDO_INGENIERO
-		Calendar fechaSig11 = (Calendar)fecha.clone();
-		fechaSig11.add(Calendar.DAY_OF_YEAR, +11);
+		Calendar fechaSueldoIng = Calendar.getInstance();
+		fechaSueldoIng.add(Calendar.DAY_OF_YEAR, +11);
 		double [] inputsSueldoIngeniero = {30000, 30};
-		SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(fechaSig11, inputsSueldoIngeniero, enunciadoCuentas);
+		SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(fechaSueldoIng, inputsSueldoIngeniero, enunciadoCuentas);
 		todosEnunciados.add(sueldoIngeniero.enunciados);
+		todasFechas.add(fechaSueldoIng);
 		
 		//INTERESES
-		Calendar fechaSig12 = (Calendar)fecha.clone();
-		fechaSig12.add(Calendar.DAY_OF_YEAR, +12);
+		Calendar fechaIntereses = Calendar.getInstance();
+		fechaIntereses.add(Calendar.DAY_OF_YEAR, +12);
 		double [] inputsIntereses = {300, 80};
-		Interes intereses = new Interes(fechaSig12, inputsIntereses, enunciadoCuentas);
+		Interes intereses = new Interes(fechaIntereses, inputsIntereses, enunciadoCuentas);
 		todosEnunciados.add(intereses.enunciados);
+		todasFechas.add(fechaIntereses);
 		
 		//NUEVOS_SOCIOS
-		Calendar fechaSig13 = (Calendar)fecha.clone();
-		fechaSig13.add(Calendar.DAY_OF_YEAR, +13);
+		Calendar fechaNuevosSoc = Calendar.getInstance();
+		fechaNuevosSoc.add(Calendar.DAY_OF_YEAR, +13);
 		double [] inputsNuevoSocio = {60000, numAcciones};
-		NuevoSocio nuevoSocio = new NuevoSocio(fechaSig13, inputsNuevoSocio, enunciadoCuentas);
+		NuevoSocio nuevoSocio = new NuevoSocio(fechaNuevosSoc, inputsNuevoSocio, enunciadoCuentas);
 		todosEnunciados.add(nuevoSocio.enunciados);
+		todasFechas.add(fechaNuevosSoc);
 		
 		//PAGO DEUDAS HACIENDA
-		PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fecha, null, enunciadoCuentas);
+		Calendar fechaDeudasHP = Calendar.getInstance();
+		fechaDeudasHP.add(Calendar.DAY_OF_YEAR, +14);
+		PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fechaDeudasHP, null, enunciadoCuentas);
 		todosEnunciados.add(deudasHacienda.enunciados);
+		todasFechas.add(fechaDeudasHP);
 		 
 		//PAGO DEUDAS SEGURIDAD SOCIAL
-		PagoDeudasSS deudasSS = new PagoDeudasSS(fecha, null, enunciadoCuentas);
+		Calendar fechaDeudasSS = Calendar.getInstance();
+		fechaDeudasSS.add(Calendar.DAY_OF_YEAR, +15);
+		PagoDeudasSS deudasSS = new PagoDeudasSS(fechaDeudasSS, null, enunciadoCuentas);
 		todosEnunciados.add(deudasSS.enunciados); 
+		todasFechas.add(fechaDeudasSS);
 		
 		//DIVIDENDOS
-		double [] inputsDividendos = {20, 15};
-		Dividendos dividendos = new Dividendos (fecha, inputsDividendos, enunciadoCuentas);
+		Calendar fechaDividendos = Calendar.getInstance();
+		fechaDividendos.add(Calendar.YEAR, +1);
+		double [] inputsDividendos = {50, 20};
+		Dividendos dividendos = new Dividendos (fechaDividendos, inputsDividendos, enunciadoCuentas);
 		todosEnunciados.add(dividendos.enunciados);
+		todasFechas.add(fechaDividendos);
 		
 		//INVENTARIO
+		Calendar fechaInventario = Calendar.getInstance();
+		fechaInventario.add(Calendar.YEAR, +1);
 		double [] inputsInventario = {2000};
-		Inventario inventario = new Inventario (fecha, inputsInventario, enunciadoCuentas);
+		Inventario inventario = new Inventario (fechaInventario, inputsInventario, enunciadoCuentas);
 		todosEnunciados.add(inventario.enunciados);
-
+		todasFechas.add(fechaInventario);
+		
+		//CIERRE
+		Calendar fechaCierre = Calendar.getInstance();
+		fechaCierre.set(annoFin,11,31);
+		double [] inputsCierre = {impuestoSociedad};
+		Cierre cierre = new Cierre (fechaCierre, inputsCierre, enunciadoCuentas);
+		todosEnunciados.add(cierre.enunciados);
+		todasFechas.add(fechaCierre);
 		
 		
 		
 		//ENUNCIADO
-		imprimeEnunciados(todosEnunciados, fechaLimite);
+		imprimeEnunciados(todosEnunciados, annoFin);
 		
-		//CUENTA DE PERDIDAS Y GANANCIAS
-		CuentaResultados cuentaResultados = new CuentaResultados (fecha, año, impuestoSociedad);
-		cuentaResultados.imprimeCuentaResultados();
 		
-		//TESORERIA
-		Tesoreria tesoreria = new Tesoreria (año);
-		tesoreria.imprimeTesoreria();
-		
-		//CIERRE
-		Calendar fechaSig14 = (Calendar)fecha.clone();
-		fechaSig14.add(Calendar.DAY_OF_YEAR, +14);
-		double [] inputsCierre = {impuestoSociedad};
-		Cierre cierre = new Cierre (fechaSig14, inputsCierre, enunciadoCuentas);
-		todosEnunciados.add(cierre.enunciados);
-				
-		//BALANCE
-		Balance balance = new Balance(año);
-		balance.imprimeBalance();
-				
+		//Calculamos el año de la fecha mas vieja
+		annoInicio=2999;
+		for (int i=0; i<todasFechas.size(); i++){
+			if (todasFechas.get(i).get(Calendar.YEAR) < annoInicio){
+				annoInicio=todasFechas.get(i).get(Calendar.YEAR);
+			}
+		}
+
+		anno = annoInicio;
+		for(int i=0; i<=(annoFin-annoInicio); i++){
+			//CUENTA DE PERDIDAS Y GANANCIAS
+			CuentaResultados cuentaResultados = new CuentaResultados (anno, impuestoSociedad);
+			cuentaResultados.imprimeCuentaResultados();
+			
+			//TESORERIA
+			Tesoreria tesoreria = new Tesoreria (anno);
+			tesoreria.imprimeTesoreria();
+			
+			//BALANCE
+			Balance balance = new Balance(anno);
+			balance.imprimeBalance();
+			
+			anno = anno + 1;
+		}		
 	}
 	
 	
-	public static void imprimeEnunciados (ArrayList<ArrayList<Enunciado>>todosEnunciados, Calendar fechaLimite){
+	public static void imprimeEnunciados (ArrayList<ArrayList<Enunciado>>todosEnunciados, int año){
+		Calendar fechaLimite = Calendar.getInstance();
+		fechaLimite.set(año,11,31);
 		ArrayList<Enunciado> todosEnunciadosOrdenados = new ArrayList<Enunciado>();
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar fech;
@@ -221,7 +262,7 @@ public class SupuestoContable {
 				 + "  d) Analizar la liquidez de la empresa mediante ratios para cada uno de los años.\n"
 				 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.\n"
 				 + "  f) Indique cuál es el valor nominal, el valor contable y el valor de emisión de la nueva "
-				 + "acción emitida el " +formateador.format(fecha.getTime())
+				 + "acción emitida el " +formateador.format(fechaLimite.getTime())
 				 + ". ¿Cuál sería el valor de mercado de las acciones? \n"));
 			
 			documento.close();
