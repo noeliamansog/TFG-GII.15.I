@@ -12,7 +12,7 @@ public class VentaProyecto extends Asiento {
 		inputs=i;
 		
 		String enunciado1 = " La empresa entrega un proyecto a un cliente, por el cual factura " +inputs[0]+ "€ "
-				+ "más un " +inputs[1]+ "% de IVA. Se acuerda que el cliente pague en " +inputs[2]+ " días. El cliente paga al contado. \n";
+				+ "más un " +inputs[1]+ "% de IVA. Se acuerda que el cliente pague en " +(int)inputs[2]+ " días. El cliente paga al contado. \n";
 		if (enunciadoCuentas){
 			enunciado1 = enunciado1+ "CUENTAS PGC: 430. Clientes; 705. Prestaciones de servicios; 477. H.P. IVA Repercutido.\n";  
 		}

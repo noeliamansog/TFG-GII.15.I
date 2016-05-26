@@ -22,8 +22,8 @@ public class CompraMaterialAmortizable extends Asiento{
 		}
 		
 		String enunciado1 = " La empresa compra " +compra+ " por valor de " +inputs[1]+ "€. "
-				 + "El importe de la compra se abonará a los " +inputs[2]+ " días. La compra "
-				 + "se amortiza linealmente en " +inputs[3]+ " años.\n";
+				 + "El importe de la compra se abonará a los " +(int)inputs[2]+ " días. La compra "
+				 + "se amortiza linealmente en " +(int)inputs[3]+ " años.\n";
 		
 		switch (com){
 			case 0: 

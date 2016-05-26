@@ -1,7 +1,6 @@
 package es.ubu.inf.tfg.otrasCosas;
 
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -18,23 +17,44 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class Balance extends Asiento{
-	static ArrayList<Cuenta> activoNoCorriente = new ArrayList<Cuenta>();
-	static ArrayList<Cuenta> activoCorriente = new ArrayList<Cuenta>();
-	static ArrayList<Cuenta> patrimonioNeto = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> activoNoCorrienteMaterial = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> activoNoCorrienteIntangible = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> activoNoCorrienteFinanciero = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> activoCorrienteExistencias = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> activoCorrienteRealizable = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> activoCorrienteDisponible = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> patrimonioNetoCapital = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> patrimonioNetoReservas = new ArrayList<Cuenta>();
+	static ArrayList<Cuenta> patrimonioNetoSubvenciones = new ArrayList<Cuenta>();
 	static ArrayList<Cuenta> pasivoNoCorriente = new ArrayList<Cuenta>();
 	static ArrayList<Cuenta> pasivoCorriente = new ArrayList<Cuenta>();	
-	
-	static double valorActivoNoCorriente;
-	static double valorActivoCorriente;
-	static double valorPatrimonioNeto;
+	private int año;
+	private Calendar fecha;
+	static double valorActivoNoCorrienteMaterial;
+	static double valorActivoNoCorrienteIntangible;
+	static double valorActivoNoCorrienteFinanciero;
+	static double valorActivoCorrienteExistencias;
+	static double valorActivoCorrienteRealizable;
+	static double valorActivoCorrienteDisponible;
+	static double valorPatrimonioNetoCapital;
+	static double valorPatrimonioNetoReservas;
+	static double valorPatrimonioNetoSubvenciones;
 	static double valorPasivoNoCorriente;
 	static double valorPasivoCorriente;
 	
-	public Balance(Calendar fecha){
-		this.fecha = fecha;
-		valorActivoNoCorriente = 0;
-		valorActivoCorriente = 0;
-		valorPatrimonioNeto = 0;
+	public Balance(int año){
+		this.año=año;
+		fecha = Calendar.getInstance();
+		fecha.set(año,11,31);
+		valorActivoNoCorrienteMaterial = 0;
+		valorActivoNoCorrienteIntangible = 0;
+		valorActivoNoCorrienteFinanciero = 0;
+		valorActivoCorrienteExistencias = 0;
+		valorActivoCorrienteRealizable = 0;
+		valorActivoCorrienteDisponible = 0;
+		valorPatrimonioNetoCapital = 0;
+		valorPatrimonioNetoReservas = 0;
+		valorPatrimonioNetoSubvenciones = 0;
 		valorPasivoNoCorriente = 0;
 		valorPasivoCorriente = 0;
 		
@@ -43,22 +63,57 @@ public class Balance extends Asiento{
 		  Integer key = (Integer) it.next();
 		  Cuenta cuenta = cuentas.get(key);
 
-		  //Activo No Corriente
-		  if(cuenta.prioridad>=1 && cuenta.prioridad<=30){
-			  activoNoCorriente.add(cuenta);
-			  valorActivoNoCorriente += cuenta.getSaldo(fecha);
+		  //Activo No Corriente Material
+		  if(cuenta.prioridad>=1 && cuenta.prioridad<=10){
+			  activoNoCorrienteMaterial.add(cuenta);
+			  valorActivoNoCorrienteMaterial += cuenta.getSaldo(fecha);
 		  }
 		  
-		  //Activo Corriente
-		  if(cuenta.prioridad>=31 && cuenta.prioridad<=60){
-			  activoCorriente.add(cuenta);
-			  valorActivoCorriente += cuenta.getSaldo(fecha);
+		  //Activo No Corriente Intangible
+		  if(cuenta.prioridad>=11 && cuenta.prioridad<=20){
+			  activoNoCorrienteIntangible.add(cuenta);
+			  valorActivoNoCorrienteIntangible += cuenta.getSaldo(fecha);
 		  }
 		  
-		  //Patrimonio Neto
-		  if(cuenta.prioridad<=-1 && cuenta.prioridad>=-20){
-			  patrimonioNeto.add(cuenta);
-			  valorPatrimonioNeto += cuenta.getSaldo(fecha);
+		  //Activo No Corriente Financiero
+		  if(cuenta.prioridad>=21 && cuenta.prioridad<=30){
+			  activoNoCorrienteFinanciero.add(cuenta);
+			  valorActivoNoCorrienteFinanciero += cuenta.getSaldo(fecha);
+		  }
+		  
+		  //Activo Corriente Existencias
+		  if(cuenta.prioridad>=31 && cuenta.prioridad<=40){
+			  activoCorrienteExistencias.add(cuenta);
+			  valorActivoCorrienteExistencias += cuenta.getSaldo(fecha);
+		  }
+		  
+		  //Activo Corriente Realizable
+		  if(cuenta.prioridad>=41 && cuenta.prioridad<=50){
+			  activoCorrienteRealizable.add(cuenta);
+			  valorActivoCorrienteRealizable += cuenta.getSaldo(fecha);
+		  }
+		  //Activo Corriente Disponible
+		  if(cuenta.prioridad>=51 && cuenta.prioridad<=60){
+			  activoCorrienteDisponible.add(cuenta);
+			  valorActivoCorrienteDisponible += cuenta.getSaldo(fecha);
+		  }
+		  
+		  //Patrimonio Neto Capital
+		  if(cuenta.prioridad<=-1 && cuenta.prioridad>=-5){
+			  patrimonioNetoCapital.add(cuenta);
+			  valorPatrimonioNetoCapital += cuenta.getSaldo(fecha);
+		  }
+		  
+		  //Patrimonio Neto Reservas
+		  if(cuenta.prioridad<=-6 && cuenta.prioridad>=-15){
+			  patrimonioNetoReservas.add(cuenta);
+			  valorPatrimonioNetoReservas += cuenta.getSaldo(fecha);
+		  }
+		  
+		  //Patrimonio Neto Subvenciones
+		  if(cuenta.prioridad<=-16 && cuenta.prioridad>=-20){
+			  patrimonioNetoSubvenciones.add(cuenta);
+			  valorPatrimonioNetoSubvenciones += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Pasivo No Corriente
@@ -77,11 +132,16 @@ public class Balance extends Asiento{
 	}
 	
 	public void imprimeBalance(){
-		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		
-		Collections.sort(activoNoCorriente);
-		Collections.sort(activoCorriente);
-		Collections.sort(patrimonioNeto);
+		Collections.sort(activoNoCorrienteMaterial);
+		Collections.sort(activoNoCorrienteIntangible);
+		Collections.sort(activoNoCorrienteFinanciero);
+		Collections.sort(activoCorrienteExistencias);
+		Collections.sort(activoCorrienteRealizable);
+		Collections.sort(activoCorrienteDisponible);
+		Collections.sort(patrimonioNetoCapital);
+		Collections.sort(patrimonioNetoReservas);
+		Collections.sort(patrimonioNetoSubvenciones);
 		Collections.sort(pasivoNoCorriente);
 		Collections.sort(pasivoCorriente);
 				
@@ -97,7 +157,7 @@ public class Balance extends Asiento{
             //BALANCE
             PdfPTable balance = new PdfPTable(1);
             
-            PdfPCell celda =new PdfPCell (new Paragraph("BALANCE ABREVIADO hasta "+formateador.format(fecha.getTime()), FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+            PdfPCell celda =new PdfPCell (new Paragraph("BALANCE ABREVIADO \n del año "+año, FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
             celda.setBackgroundColor(BaseColor.DARK_GRAY);
@@ -119,27 +179,60 @@ public class Balance extends Asiento{
             celdaActivoNoCorriente.setPadding (10.0f);
             celdaActivoNoCorriente.setBackgroundColor(BaseColor.LIGHT_GRAY);
             activo.addCell(celdaActivoNoCorriente);
-            activo.addCell((Math.round(valorActivoNoCorriente)*100)/100+"€");        
+            activo.addCell((Math.round(valorActivoNoCorrienteMaterial + valorActivoNoCorrienteIntangible + valorActivoNoCorrienteFinanciero)*100)/100+"€");        
 
-            for(int i=0; i<activoNoCorriente.size(); i++){
-        	   activo.addCell(activoNoCorriente.get(i).nombre);
-       		   activo.addCell(Math.round(activoNoCorriente.get(i).getSaldo(fecha))*100/100+"€");
+            for(int i=0; i<activoNoCorrienteMaterial.size(); i++){
+        	   activo.addCell(activoNoCorrienteMaterial.get(i).nombre);
+       		   activo.addCell(Math.round(activoNoCorrienteMaterial.get(i).getSaldo(fecha))*100/100+"€");
             } 
+            activo.addCell(" ");
+            activo.addCell(" ");
+            
+            for(int i=0; i<activoNoCorrienteIntangible.size(); i++){
+        	   activo.addCell(activoNoCorrienteIntangible.get(i).nombre);
+       		   activo.addCell(Math.round(activoNoCorrienteIntangible.get(i).getSaldo(fecha))*100/100+"€");
+            } 
+            activo.addCell(" ");
+            activo.addCell(" ");
+            
+            for(int i=0; i<activoNoCorrienteFinanciero.size(); i++){
+        	   activo.addCell(activoNoCorrienteFinanciero.get(i).nombre);
+       		   activo.addCell(Math.round(activoNoCorrienteFinanciero.get(i).getSaldo(fecha))*100/100+"€");
+            } 
+            activo.addCell(" ");
+            activo.addCell(" ");
            
             //Activo Corriente
             PdfPCell celdaActivoCorriente =new PdfPCell (new Paragraph("ACTIVO CORRIENTE", FontFactory.getFont("arial",9,Font.BOLD, BaseColor.BLACK)));
             celdaActivoCorriente.setPadding (10.0f);
             celdaActivoCorriente.setBackgroundColor(BaseColor.LIGHT_GRAY);
             activo.addCell(celdaActivoCorriente);
-            activo.addCell((Math.round(valorActivoCorriente)*100)/100+"€");
+            activo.addCell((Math.round(valorActivoCorrienteExistencias + valorActivoCorrienteRealizable + valorActivoCorrienteDisponible)*100)/100+"€");
            
-            for(int i=0; i<activoCorriente.size(); i++){
-            	activo.addCell(activoCorriente.get(i).nombre);
-            	activo.addCell(Math.round(activoCorriente.get(i).getSaldo(fecha))*100/100+"€");
+            for(int i=0; i<activoCorrienteExistencias.size(); i++){
+            	activo.addCell(activoCorrienteExistencias.get(i).nombre);
+            	activo.addCell(Math.round(activoCorrienteExistencias.get(i).getSaldo(fecha))*100/100+"€");
             } 
+            activo.addCell(" ");
+            activo.addCell(" ");
+            
+            for(int i=0; i<activoCorrienteRealizable.size(); i++){
+            	activo.addCell(activoCorrienteRealizable.get(i).nombre);
+            	activo.addCell(Math.round(activoCorrienteRealizable.get(i).getSaldo(fecha))*100/100+"€");
+            } 
+            activo.addCell(" ");
+            activo.addCell(" ");
+            
+            for(int i=0; i<activoCorrienteDisponible.size(); i++){
+            	activo.addCell(activoCorrienteDisponible.get(i).nombre);
+            	activo.addCell(Math.round(activoCorrienteDisponible.get(i).getSaldo(fecha))*100/100+"€");
+            } 
+            activo.addCell(" ");
+            activo.addCell(" ");
+            
           
             //CELDA TOTAL ACTIVO
-            double totalActivo = valorActivoNoCorriente+valorActivoCorriente;
+            double totalActivo = (valorActivoNoCorrienteMaterial + valorActivoNoCorrienteIntangible + valorActivoNoCorrienteFinanciero) + (valorActivoCorrienteExistencias + valorActivoCorrienteRealizable + valorActivoCorrienteDisponible);
             PdfPCell resulActivo = new PdfPCell (new Paragraph("TOTAL ACTIVO:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	resulActivo.setPadding (10.0f);
            	resulActivo.setBackgroundColor(BaseColor.YELLOW);
@@ -166,12 +259,28 @@ public class Balance extends Asiento{
           	celdaPN.setPadding (10.0f);
           	celdaPN.setBackgroundColor(BaseColor.LIGHT_GRAY);
           	pasivo.addCell(celdaPN);
-          	pasivo.addCell((Math.round(valorPatrimonioNeto)*100)/100+"€");     
+          	pasivo.addCell((Math.round(valorPatrimonioNetoCapital + valorPatrimonioNetoReservas + valorPatrimonioNetoSubvenciones)*100)/100+"€");     
 
-          	for(int i=0; i<patrimonioNeto.size(); i++){
-          		pasivo.addCell(patrimonioNeto.get(i).nombre);
-          		pasivo.addCell(Math.round(patrimonioNeto.get(i).getSaldo(fecha))*100/100+"€");
-          	} 
+          	for(int i=0; i<patrimonioNetoCapital.size(); i++){
+          		pasivo.addCell(patrimonioNetoCapital.get(i).nombre);
+          		pasivo.addCell(Math.round(patrimonioNetoCapital.get(i).getSaldo(fecha))*100/100+"€");
+          	}  
+            pasivo.addCell(" ");
+            pasivo.addCell(" ");
+            
+          	for(int i=0; i<patrimonioNetoReservas.size(); i++){
+          		pasivo.addCell(patrimonioNetoReservas.get(i).nombre);
+          		pasivo.addCell(Math.round(patrimonioNetoReservas.get(i).getSaldo(fecha))*100/100+"€");
+          	}  
+          	pasivo.addCell(" ");
+          	pasivo.addCell(" ");
+            
+          	for(int i=0; i<patrimonioNetoSubvenciones.size(); i++){
+          		pasivo.addCell(patrimonioNetoSubvenciones.get(i).nombre);
+          		pasivo.addCell(Math.round(patrimonioNetoSubvenciones.get(i).getSaldo(fecha))*100/100+"€");
+          	}  
+          	pasivo.addCell(" ");
+          	pasivo.addCell(" ");
           
           	//Pasivo No Corriente
           	PdfPCell celdaPasivoNoCorriente =new PdfPCell (new Paragraph("PASIVO NO CORRIENTE", FontFactory.getFont("arial",9,Font.BOLD, BaseColor.BLACK)));
@@ -184,6 +293,8 @@ public class Balance extends Asiento{
           		pasivo.addCell(pasivoNoCorriente.get(i).nombre);
           		pasivo.addCell(Math.round(pasivoNoCorriente.get(i).getSaldo(fecha))*100/100+"€");
           	} 
+          	pasivo.addCell(" ");
+          	pasivo.addCell(" ");
          
           	//Pasivo Corriente
           	PdfPCell celdaPasivoCorriente =new PdfPCell (new Paragraph("PASIVO CORRIENTE", FontFactory.getFont("arial",9,Font.BOLD, BaseColor.BLACK)));
@@ -196,9 +307,11 @@ public class Balance extends Asiento{
           		pasivo.addCell(pasivoCorriente.get(i).nombre);
           		pasivo.addCell(Math.round(pasivoCorriente.get(i).getSaldo(fecha))*100/100+"€");
           	}
+          	pasivo.addCell(" ");
+          	pasivo.addCell(" ");
           	
           	//CELDA TOTAL PASIVO
-          	double totalPasivo = valorPatrimonioNeto + valorPasivoNoCorriente + valorPasivoCorriente;
+          	double totalPasivo = (valorPatrimonioNetoCapital + valorPatrimonioNetoReservas + valorPatrimonioNetoSubvenciones) + valorPasivoNoCorriente + valorPasivoCorriente;
           	PdfPCell resulPasivo = new PdfPCell (new Paragraph("TOTAL PATRIMONIO NETO Y PASIVO:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
           	resulPasivo.setPadding (10.0f);
           	resulPasivo.setBackgroundColor(BaseColor.YELLOW);

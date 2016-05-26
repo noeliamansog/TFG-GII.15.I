@@ -12,7 +12,7 @@ public class VentaMercaderias extends Asiento {
 		inputs=i;
 		
 		String enunciado1 = " La empresa efectúa una venta de mercaderías por importe de " +inputs[0]+ "€ más un " +inputs[1]+ "% de IVA. " 
-				 + "Se acuerda que el cliente pague en " +inputs[2]+ " días. El cliente paga al contado. \n";
+				 + "Se acuerda que el cliente pague en " +(int)inputs[2]+ " días. El cliente paga al contado. \n";
 		if (enunciadoCuentas){
 			enunciado1 = enunciado1 + "CUENTAS PGC: 430. Clientes; 700. Venta de mercaderías; 477. H.P. IVA Repercutido. \n";  
 		}

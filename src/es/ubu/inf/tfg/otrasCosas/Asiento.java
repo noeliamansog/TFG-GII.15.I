@@ -43,7 +43,7 @@ public class Asiento {
 
 	public void inicializarTodasCuentas() {
 		// INICIALIZMAOS TODAS LAS CUENTAS CON SU CODIGO, SU NOMBRE Y SU PRIORIDAD
-		todasCuentas.put(12,new Cuenta(12, "Resultados pendientes de aplicación.", -11));
+		todasCuentas.put(12,new Cuenta(12, "Resultados pendientes de aplicación", -11));
 
 		todasCuentas.put(100, new Cuenta (100, "Capital social", -1));
 		todasCuentas.put(110, new Cuenta (110, "Prima de emisión o asunción", -7));

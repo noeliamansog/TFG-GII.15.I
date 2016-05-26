@@ -12,8 +12,8 @@ public class CompraSoftwareAmortizable extends Asiento{
 		inputs=i;
 				
 		String enunciado1 = " La empresa compra una aplicación informática por valor de " +inputs[0]+ "€. "
-				 + "El importe de la compra se abonará a los " +inputs[1]+ " días. El software se amortiza linealmente "
-				 + "en " +inputs[2]+ " años.\n";
+				 + "El importe de la compra se abonará a los " +(int)inputs[1]+ " días. El software se amortiza linealmente "
+				 + "en " +(int)inputs[2]+ " años.\n";
 		if (enunciadoCuentas){
 			enunciado1 = enunciado1 + "CUENTAS PGC: 206. Aplicaciones informáticas; 400. Proveedores \n";
 		}

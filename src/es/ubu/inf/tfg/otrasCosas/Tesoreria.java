@@ -22,12 +22,16 @@ public class Tesoreria extends Asiento{
 	static double valorCobros;
 	static double valorPagos;
 	static double saldoTesoreria;
+	private int año;
 	private Calendar fechaDesde;
 	private Calendar fechaHasta;
 	
-	public Tesoreria(Calendar fechaDesde, Calendar fechaHasta){
-		this.fechaDesde = fechaDesde;
-		this.fechaHasta = fechaHasta;
+	public Tesoreria(int año){
+		this.año=año;
+		fechaDesde =  Calendar.getInstance();
+		fechaDesde.set(año,0,1);
+		fechaHasta =  Calendar.getInstance();
+		fechaHasta.set(año,11,31);
 		valorCobros=0;
 		valorPagos=0;
 
@@ -72,7 +76,7 @@ public class Tesoreria extends Asiento{
             //TESORERIA
             PdfPTable tesoreria = new PdfPTable(1);
             
-            PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA  \n desde "+formateador.format(fechaDesde.getTime())+" hasta "+formateador.format(fechaHasta.getTime()), FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+            PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA  \n del año "+año+"" , FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
             celda.setBackgroundColor(BaseColor.DARK_GRAY);

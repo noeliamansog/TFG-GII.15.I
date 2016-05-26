@@ -13,8 +13,8 @@ public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 
 				
 		String enunciado1 = " La empresa adquiere el derecho a usar un logotipo, por "
-				+ "lo cual paga " +inputs[0]+ "€. El importe de la compra se abonará a los " +inputs[1]+ " días. "
-				+ "La propiedad industrial se amortiza linealmente en " +inputs[2]+ " años.\n";
+				+ "lo cual paga " +inputs[0]+ "€. El importe de la compra se abonará a los " +(int)inputs[1]+ " días. "
+				+ "La propiedad industrial se amortiza linealmente en " +(int)inputs[2]+ " años.\n";
 		if (enunciadoCuentas){
 			enunciado1 = enunciado1 + "CUENTAS PGC: 203. Propiedad industrial; 400. Proveedores \n";
 		}

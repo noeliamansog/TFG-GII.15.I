@@ -11,7 +11,7 @@ public class SueldosEmpleados extends Asiento {
 		fecha =f;
 		inputs=i;
 	
-		String enunciado1 = " La empresa paga a cada uno de sus " +inputs[0]+ " empleados " +inputs[1]+ "€ de sueldo bruto al año. "
+		String enunciado1 = " La empresa paga a cada uno de sus " +(int)inputs[0]+ " empleados " +inputs[1]+ "€ de sueldo bruto al año. "
 			 + "Por cada uno de sus empleados la empresa cotiza " +inputs[2]+ "€ a la Seguridad Social (cuota patronal), "
 			 + "que pagará al año que viene. Se retiene el " +inputs[3]+ "% del salario bruto por I.R.P.F. y "
 			 + "el " +inputs[4]+ "% del salario bruto en concepto de Seguridad Social a cargo del trabajador (cuota obrera). \n";

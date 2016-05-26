@@ -22,6 +22,9 @@ public class CuentaResultados extends Asiento{
 	static ArrayList<Anotacion> ingresos = new ArrayList<Anotacion>();
 	static ArrayList<Anotacion> gastosFinancieros = new ArrayList<Anotacion>();
 	static ArrayList<Anotacion> ingresosFinancieros = new ArrayList<Anotacion>();
+	private int año;
+	private Calendar fechaDesde;
+	private Calendar fechaHasta;
 	static double valorGastos;
 	static double valorIngresos;
 	static double valorGastosFinancieros;
@@ -29,13 +32,14 @@ public class CuentaResultados extends Asiento{
 	static double excedente;
 	static double impuestos;
 	static double resultadoTotal;
-	private Calendar fechaDesde;
-	private Calendar fechaHasta;
 	
 	
-	public CuentaResultados(Calendar fechaEnunciado, Calendar fechaDesde, Calendar fechaHasta, double impuestoSociedad){
-		this.fechaDesde = fechaDesde;
-		this.fechaHasta = fechaHasta;
+	public CuentaResultados(Calendar fechaEnunciado, int año, double impuestoSociedad){
+		this.año=año;
+		fechaDesde =  Calendar.getInstance();
+		fechaDesde.set(año,0,1);
+		fechaHasta =  Calendar.getInstance();
+		fechaHasta.set(año,11,31);
 		valorGastos=0;
 		valorIngresos=0;
 		valorGastosFinancieros = 0;
@@ -43,6 +47,7 @@ public class CuentaResultados extends Asiento{
 		excedente=0;
 		impuestos=0;
 		resultadoTotal=0;
+		
 		
 		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
@@ -129,8 +134,7 @@ public class CuentaResultados extends Asiento{
             
             //CUENTA RESULTADOS
             PdfPTable cuentaResultados = new PdfPTable(1);
-            
-            PdfPCell celda =new PdfPCell (new Paragraph("CUENTA RESULTADOS  \n desde "+formateador.format(fechaDesde.getTime())+" hasta "+formateador.format(fechaHasta.getTime()), FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+			PdfPCell celda =new PdfPCell (new Paragraph("CUENTA RESULTADOS \n del año "+año+"", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
             celda.setBackgroundColor(BaseColor.DARK_GRAY);

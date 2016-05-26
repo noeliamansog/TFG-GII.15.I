@@ -26,7 +26,13 @@ public class SupuestoContable {
 
 		ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();	
 		
+		//Opcion de poner enunciados con las cuentas PGC
 		boolean enunciadoCuentas = true;
+		//Año para las tablas cuentaResultados, Tesorería y Balance
+		int año = 2016;
+		//Fecha limite para el enunciado
+		Calendar fechaLimite = Calendar.getInstance();
+		fechaLimite.set(2016,11,31);
 		
 		//APORTACIÓN INICIAL
 		double [] inputsAportacion = {numEmpleados, 50000};
@@ -125,53 +131,37 @@ public class SupuestoContable {
 		NuevoSocio nuevoSocio = new NuevoSocio(fechaSig13, inputsNuevoSocio, enunciadoCuentas);
 		todosEnunciados.add(nuevoSocio.enunciados);
 		
-
-		/*
 		//PAGO DEUDAS HACIENDA
-		 PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fecha, null, enunciadoCuentas);
-		 todosEnunciados.add(deudasHacienda.enunciados);
+		PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fecha, null, enunciadoCuentas);
+		todosEnunciados.add(deudasHacienda.enunciados);
 		 
 		//PAGO DEUDAS SEGURIDAD SOCIAL
-		 PagoDeudasSS deudasSS = new PagoDeudasSS(fecha, null, enunciadoCuentas);
-		 todosEnunciados.add(deudasSS.enunciados);
-		 
+		PagoDeudasSS deudasSS = new PagoDeudasSS(fecha, null, enunciadoCuentas);
+		todosEnunciados.add(deudasSS.enunciados); 
 		
 		//DIVIDENDOS
 		double [] inputsDividendos = {20, 15};
 		Dividendos dividendos = new Dividendos (fecha, inputsDividendos, enunciadoCuentas);
 		todosEnunciados.add(dividendos.enunciados);
-
 		
 		//INVENTARIO
 		double [] inputsInventario = {2000};
 		Inventario inventario = new Inventario (fecha, inputsInventario, enunciadoCuentas);
 		todosEnunciados.add(inventario.enunciados);
 
-		*/
 		
-			
-		//Rango de fechas
-		Calendar fechaDesde =  Calendar.getInstance();
-		//fechaDesde.set(2016,11,31);
-		Calendar fechaHasta = Calendar.getInstance();
-		fechaHasta.set(2018,11,31);
+		
 		
 		//ENUNCIADO
-		ArrayList<Enunciado> todosEnunciadosOrdenados = ordenaEnunciadosPorFecha(todosEnunciados);
-		imprimeEnunciados(todosEnunciadosOrdenados, fechaHasta);
+		imprimeEnunciados(todosEnunciados, fechaLimite);
 		
 		//CUENTA DE PERDIDAS Y GANANCIAS
-		CuentaResultados cuentaResultados = new CuentaResultados (fecha, fechaDesde, fechaHasta, impuestoSociedad);
+		CuentaResultados cuentaResultados = new CuentaResultados (fecha, año, impuestoSociedad);
 		cuentaResultados.imprimeCuentaResultados();
 		
 		//TESORERIA
-		Tesoreria tesoreria = new Tesoreria (fechaDesde, fechaHasta);
+		Tesoreria tesoreria = new Tesoreria (año);
 		tesoreria.imprimeTesoreria();
-		
-		//BALANCE
-		Balance balance = new Balance(fechaHasta);
-		balance.imprimeBalance();
-		
 		
 		//CIERRE
 		Calendar fechaSig14 = (Calendar)fecha.clone();
@@ -179,24 +169,27 @@ public class SupuestoContable {
 		double [] inputsCierre = {impuestoSociedad};
 		Cierre cierre = new Cierre (fechaSig14, inputsCierre, enunciadoCuentas);
 		todosEnunciados.add(cierre.enunciados);
-			
+				
+		//BALANCE
+		Balance balance = new Balance(año);
+		balance.imprimeBalance();
+				
 	}
 	
-	public static ArrayList<Enunciado> ordenaEnunciadosPorFecha(ArrayList<ArrayList<Enunciado>>todosEnunciados){
-		ArrayList<Enunciado> ordenada = new ArrayList<Enunciado>();
-		for(int i=0; i<todosEnunciados.size(); i++){
-			for(int j=0; j<todosEnunciados.get(i).size(); j++){
-				ordenada.add(todosEnunciados.get(i).get(j));				
-			}
-		}
-		Collections.sort(ordenada);
-		return ordenada;
-	}
 	
-	public static void imprimeEnunciados (ArrayList<Enunciado> todosEnunciadosOrdenados, Calendar fechaLimite){
+	public static void imprimeEnunciados (ArrayList<ArrayList<Enunciado>>todosEnunciados, Calendar fechaLimite){
+		ArrayList<Enunciado> todosEnunciadosOrdenados = new ArrayList<Enunciado>();
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar fech;
 		String enun;
+		
+		//Ordenamos cada enunciado de cada asiento por fecha
+		for(int i=0; i<todosEnunciados.size(); i++){
+			for(int j=0; j<todosEnunciados.get(i).size(); j++){
+				todosEnunciadosOrdenados.add(todosEnunciados.get(i).get(j));				
+			}
+		}
+		Collections.sort(todosEnunciadosOrdenados);
 		
 		Document documento = new Document();
 		

@@ -22,7 +22,7 @@ public class CompraMaterialNoAmortizable extends Asiento {
 		String enunciado1 = " La empresa compra " +compra+ " por importe de " +inputs[1]+ "€. "
      			+ "Este activo no es amortizable. Se abonan " +inputs[2]+ "€ mediante transferencia y "
      			+ "quedan " +(inputs[1]-inputs[2])+ "€ pendiente de pago. Se acuerda que la deuda se pagará "
-     			+ "en " +inputs[3]+ " meses. \n";
+     			+ "en " +(int)inputs[3]+ " meses. \n";
 			
 		if (inputs[0]==0){
 			if (enunciadoCuentas){

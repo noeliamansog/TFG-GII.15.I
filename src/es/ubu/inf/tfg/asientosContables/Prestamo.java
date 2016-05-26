@@ -36,7 +36,7 @@ public class Prestamo extends Asiento {
 		
 		String enunciado1 = " La empresa obtiene un préstamo por importe de " +inputs[0]+ "€, que se ingresa en la cuenta "
     			+ "corriente de la que es titular la empresa. El préstamo se devolverá en cuotas de " +tipoPrestamo+" "
-    			+mensualAnual+ " constantes, en " +inputs[3]+ " años, a un tipo de interés fijo del " +inputs[4]+ "% nominal. "
+    			+mensualAnual+ " constantes, en " +(int)inputs[3]+ " años, a un tipo de interés fijo del " +inputs[4]+ "% nominal. "
     			+ "El primer pago se realizará al cabo de un "+mesAno+" desde la concesión del préstamo. \n";
 		if (enunciadoCuentas){
 			enunciado1 = enunciado1 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 572. Bancos e instituciones de crédito c/c vista, euros; "
