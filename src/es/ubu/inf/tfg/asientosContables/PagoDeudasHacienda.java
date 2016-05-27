@@ -16,8 +16,7 @@ public class PagoDeudasHacienda extends Asiento {
 					+ "4752. H.P acreedora por impuesto sobre sociedades \n";
 		}
 		
-		enunciados.add(new Enunciado(fecha, enunciado1));
-		
+		enunciados.add(new Enunciado(fecha, enunciado1));	
 				
 		double saldo473 = dameCuenta(473).getSaldo(fecha);
 		dameCuenta(473).añadirHaber(new Anotacion(fecha, "H.P retenciones y pagos a cuenta", saldo473, damePrioridad(473)));
@@ -33,7 +32,6 @@ public class PagoDeudasHacienda extends Asiento {
 		
 		double saldo4752 = dameCuenta(4752).getSaldo(fecha);
 		dameCuenta(4752).añadirDebe(new Anotacion(fecha, "H.P acreedora por impuesto sobre sociedades", saldo4752, damePrioridad(4752)));
-		
 	
 		//Lo que debo a hacienda
 		double saldo = (saldo4750 + saldo4751 + saldo4752) - (saldo473 + saldo4700);

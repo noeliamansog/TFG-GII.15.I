@@ -22,14 +22,14 @@ public class SueldosEmpleados extends Asiento {
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 	
-	dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*inputs[1]), damePrioridad(640)));
-	dameCuenta(572).añadirHaber(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*inputs[1])-(((inputs[4]/100)*(inputs[0]*inputs[1]))+((inputs[3]/100)*((inputs[0]*inputs[1])))), damePrioridad(572)));
+		dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*inputs[1]), damePrioridad(640)));
+		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*inputs[1])-(((inputs[4]/100)*(inputs[0]*inputs[1]))+((inputs[3]/100)*((inputs[0]*inputs[1])))), damePrioridad(572)));
 	
-	dameCuenta(642).añadirDebe(new Anotacion(fecha, "S.S. a cargo de la empresa", (inputs[0]*inputs[2]), damePrioridad(642)));
-	dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", (inputs[0]*inputs[2]), damePrioridad(476)));
+		dameCuenta(642).añadirDebe(new Anotacion(fecha, "S.S. a cargo de la empresa", (inputs[0]*inputs[2]), damePrioridad(642)));
+		dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", (inputs[0]*inputs[2]), damePrioridad(476)));
 	
-	dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", ((inputs[4]/100)*(inputs[0]*inputs[1])), damePrioridad(476)));
-	dameCuenta(4751).añadirHaber(new Anotacion(fecha, "H.P acreedor por retenciones practicadas", ((inputs[3]/100)*((inputs[0]*inputs[1]))), damePrioridad(4751)));
+		dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", ((inputs[4]/100)*(inputs[0]*inputs[1])), damePrioridad(476)));
+		dameCuenta(4751).añadirHaber(new Anotacion(fecha, "H.P acreedor por retenciones practicadas", ((inputs[3]/100)*((inputs[0]*inputs[1]))), damePrioridad(4751)));
 
 	
 	}

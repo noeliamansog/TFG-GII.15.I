@@ -26,29 +26,13 @@ public class Asiento {
 			cuenta = new Cuenta(codigo, todasCuentas.get(codigo).nombre, todasCuentas.get(codigo).prioridad);
 			cuentas.put(codigo, cuenta);
 		}
-		/*
-		for(int i=0; i<cuenta.debe.size(); i++){
-			System.out.println("CUENTA: "+ cuenta.codigo +" "+ cuenta.debe.get(i).nombre +"\t CANTIDAD EN EL DEBE: " + cuenta.debe.get(i).cantidad);
-		}
-		for(int i=0; i<cuenta.haber.size(); i++){
-			System.out.println("CUENTA: "+ cuenta.codigo +" "+ cuenta.haber.get(i).nombre +"\t CANTIDAD EN EL HABER: " + cuenta.haber.get(i).cantidad);
-		}*/
-		
 		return cuenta;
 	}
 	
 	public int damePrioridad(int codigo){
 		return todasCuentas.get(codigo).prioridad;	
 	}
-
-	public void cierraCuenta(int codigo, Anotacion anotacion, boolean debe){
-		Cuenta cuenta = cuentas.get(codigo);
-		if(debe){
-			cuenta.añadirHaber(anotacion);
-		}else{
-			cuenta.añadirDebe(anotacion);
-		}
-	}
+	
 	public void inicializarTodasCuentas() {
 		// INICIALIZMAOS TODAS LAS CUENTAS CON SU CODIGO, SU NOMBRE Y SU PRIORIDAD
 		todasCuentas.put(12,new Cuenta(12, "Resultados pendientes de aplicación", -11));

@@ -49,19 +49,6 @@ public class Cuenta implements Comparable<Cuenta>{
 		}
 	}
 	
-	/*Funcion que te de todas las anotaciones con fecha y valor:
-	public void dameAnotación (){
-		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-		
-		for(int i=0; i<debe.size(); i++){
-			System.out.println("En el DEBE: "+debe.get(i).nombre+ " con fecha: " +formateador.format(debe.get(i).fecha.getTime()) +" con cantidad: "+debe.get(i).cantidad);
-		}
-		for(int i=0; i<haber.size(); i++){
-			System.out.println("En el HABER: "+haber.get(i).nombre+ " con fecha: " +formateador.format(haber.get(i).fecha.getTime()) +" con cantidad: "+haber.get(i).cantidad);
-		}
-	}*/
-
-	
 	public void inicializarSaldoDebeMenosHaber(){
 		// INICIALIZAMOS LAS CUENTAS CON UN BOOLEANO PARA SABER SI ESTÁN A LA IZQUIERDA O A LA DERECHA DE LA CUENTA
 		saldoDebeMenosHaber.put(12, false);

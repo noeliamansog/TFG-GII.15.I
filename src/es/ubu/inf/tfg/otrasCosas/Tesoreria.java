@@ -17,24 +17,32 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class Tesoreria extends Asiento{
-	static ArrayList<Anotacion> cobros = new ArrayList<Anotacion>();
-	static ArrayList<Anotacion> pagos = new ArrayList<Anotacion>();
+	private int ano;
+	private Calendar fechaDesde;
+	private Calendar fechaHasta;
+	
+	static ArrayList<Anotacion> cobros;
+	static ArrayList<Anotacion> pagos;
+	
 	static double valorCobros;
 	static double valorPagos;
 	static double saldoTesoreria;
 	static double saldoInicial;
-	private int año;
-	private Calendar fechaDesde;
-	private Calendar fechaHasta;
+
 	
-	public Tesoreria(int año){
-		this.año=año;
+	public Tesoreria(int ano){
+		this.ano=ano;
 		fechaDesde =  Calendar.getInstance();
-		fechaDesde.set(año,0,1);
+		fechaDesde.set(ano,0,1);
 		fechaHasta =  Calendar.getInstance();
-		fechaHasta.set(año,11,31);
+		fechaHasta.set(ano,11,31);
+		
+		cobros = new ArrayList<Anotacion>();
+		pagos = new ArrayList<Anotacion>();
+		
 		valorCobros=0;
 		valorPagos=0;
+		
 		//Saldo de la cuenta de tesoreria del año anterior
 		Calendar fechaAñoAnterior = (Calendar) fechaHasta.clone();
 		fechaAñoAnterior.add(Calendar.YEAR, -1);
@@ -72,7 +80,7 @@ public class Tesoreria extends Asiento{
 		Document documento = new Document();
 		
 		try{			
-            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/Tesorería"+año+".pdf"));
+            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/Tesorería"+ano+".pdf"));
             
             documento.open();
             documento.addTitle("Tesorería"); 
@@ -81,7 +89,7 @@ public class Tesoreria extends Asiento{
             //TESORERIA
             PdfPTable tesoreria = new PdfPTable(1);
             
-            PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA  \n del año "+año+"" , FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+            PdfPCell celda =new PdfPCell (new Paragraph("TESORERÍA  \n del año "+ano+"" , FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
             celda.setBackgroundColor(BaseColor.DARK_GRAY);
@@ -97,7 +105,6 @@ public class Tesoreria extends Asiento{
             celdaCobros.setPadding (10.0f);
             celdaCobros.setBackgroundColor(BaseColor.GRAY);
             tablaCobros.addCell(celdaCobros);
-            
             
             tablaCobros.addCell(formateador.format(fechaDesde.getTime()));
             tablaCobros.addCell("Saldo inicial");

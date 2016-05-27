@@ -123,11 +123,12 @@ public class Prestamo extends Asiento {
 					 dameCuenta(170).añadirDebe(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
 					 dameCuenta(662).añadirDebe(new Anotacion(fechaAñoSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));
-					 deudaViva = deudaViva - cuotaAmortizacion;
-	
-					 
+					 deudaViva = deudaViva - cuotaAmortizacion;					 
 				 }
 			 }
 		 }
 	}
 }
+
+
+

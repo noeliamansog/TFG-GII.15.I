@@ -17,20 +17,16 @@ public class Dividendos extends Asiento {
 		}
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
-		//dameCuenta(12).dameAnotación();
 		
 		double resultado = dameCuenta(12).getSaldo(fecha);
-		System.out.println("RESULTADO: "+ resultado);
-		
 		dameCuenta(12).añadirDebe(new Anotacion(fecha, "Reparto de dividendos",resultado, damePrioridad(12)));
 		
 		Calendar fechaAñoAnterior = (Calendar)fecha.clone();
 		fechaAñoAnterior.add(Calendar.YEAR, -1);
 		
 		dameCuenta(112).añadirHaber(new Anotacion(fecha, "Beneficios retenidos del año: "+fechaAñoAnterior.get(Calendar.YEAR), ((100-inputs[0])*resultado)/100, damePrioridad(112)));
-
-		dameCuenta(4751).añadirHaber(new Anotacion(fecha, "Retenciones practicadas por reparto de dividendos", (inputs[0]*resultado)*inputs[1]/100, damePrioridad(4751)));	
-		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Reparto dividendos", (inputs[0]*resultado)*(100-inputs[1])/100, damePrioridad(572)));
+		dameCuenta(4751).añadirHaber(new Anotacion(fecha, "Retenciones practicadas por reparto de dividendos", ((inputs[0]/100)*resultado)*inputs[1]/100, damePrioridad(4751)));	
+		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Reparto dividendos", ((inputs[0]/100)*resultado)*(100-inputs[1])/100, damePrioridad(572)));
 		
 	}
 }

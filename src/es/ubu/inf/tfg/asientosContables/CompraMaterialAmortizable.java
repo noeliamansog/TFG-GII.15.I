@@ -75,8 +75,7 @@ public class CompraMaterialAmortizable extends Asiento{
 		
 
 		
-		//SE AÑADE LA AMORTIZACIÓN AL FINAL DEL AÑO:
-					
+		//SE AÑADE LA AMORTIZACIÓN AL FINAL DEL AÑO:				
 		String enunciado3;
 		
 		for (int j=0; j<inputs[3]; j++){

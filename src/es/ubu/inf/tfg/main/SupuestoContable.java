@@ -27,12 +27,13 @@ public class SupuestoContable {
 		ArrayList<Calendar> todasFechas = new ArrayList<Calendar>();
 		
 		//Opcion de poner enunciados con las cuentas PGC
-		boolean enunciadoCuentas = true;
+		boolean enunciadoCuentas = false;
 		
 		//Año para las tablas
-		int annoFin = 2017;
-		int annoInicio;
-		int anno;
+		int annoFin = 2018;
+		int anoInicio;
+		int ano;
+
 		
 		//APORTACIÓN INICIAL
 		Calendar fechaAportacion = Calendar.getInstance();
@@ -145,16 +146,44 @@ public class SupuestoContable {
 		todosEnunciados.add(nuevoSocio.enunciados);
 		todasFechas.add(fechaNuevosSoc);
 		
+		//INVENTARIO
+		Calendar fechaInventario = Calendar.getInstance();
+		fechaInventario.set(annoFin-2,11,31);
+		double [] inputsInventario = {2000};
+		Inventario inventario = new Inventario (fechaInventario, inputsInventario, enunciadoCuentas);
+		todosEnunciados.add(inventario.enunciados);
+		todasFechas.add(fechaInventario);
+			
+		//CIERRRE
+		Calendar fechaCierre = Calendar.getInstance();
+		fechaCierre.set(2016,11,31);
+		double [] inputsCierre = {impuestoSociedad};
+		Cierre cierre = new Cierre (fechaCierre, inputsCierre, enunciadoCuentas);
+		todosEnunciados.add(cierre.enunciados);
+		todasFechas.add(fechaCierre);
+		
+		//CUENTA DE PERDIDAS Y GANANCIAS
+		CuentaResultados cuentaResultados = new CuentaResultados (2016, impuestoSociedad);
+		cuentaResultados.imprimeCuentaResultados();
+		
+		//TESORERIA
+		Tesoreria tesoreria = new Tesoreria (2016);
+		tesoreria.imprimeTesoreria();
+		
+		//BALANCE
+		Balance balance = new Balance(2016);
+		balance.imprimeBalance();
+		
 		//PAGO DEUDAS HACIENDA
 		Calendar fechaDeudasHP = Calendar.getInstance();
-		fechaDeudasHP.add(Calendar.DAY_OF_YEAR, +14);
+		fechaDeudasHP.add(Calendar.YEAR, +1);
 		PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fechaDeudasHP, null, enunciadoCuentas);
 		todosEnunciados.add(deudasHacienda.enunciados);
 		todasFechas.add(fechaDeudasHP);
 		 
 		//PAGO DEUDAS SEGURIDAD SOCIAL
 		Calendar fechaDeudasSS = Calendar.getInstance();
-		fechaDeudasSS.add(Calendar.DAY_OF_YEAR, +15);
+		fechaDeudasSS.add(Calendar.YEAR, +1);
 		PagoDeudasSS deudasSS = new PagoDeudasSS(fechaDeudasSS, null, enunciadoCuentas);
 		todosEnunciados.add(deudasSS.enunciados); 
 		todasFechas.add(fechaDeudasSS);
@@ -167,58 +196,72 @@ public class SupuestoContable {
 		todosEnunciados.add(dividendos.enunciados);
 		todasFechas.add(fechaDividendos);
 		
-		//INVENTARIO
-		Calendar fechaInventario = Calendar.getInstance();
-		fechaInventario.add(Calendar.YEAR, +1);
-		double [] inputsInventario = {2000};
-		Inventario inventario = new Inventario (fechaInventario, inputsInventario, enunciadoCuentas);
-		todosEnunciados.add(inventario.enunciados);
-		todasFechas.add(fechaInventario);
+		//CIERRRE
+		Calendar fechaCierre2 = Calendar.getInstance();
+		fechaCierre2.set(2017,11,31);
+		double [] inputsCierre2 = {impuestoSociedad};
+		Cierre cierre2 = new Cierre (fechaCierre2, inputsCierre2, enunciadoCuentas);
+		todosEnunciados.add(cierre2.enunciados);
+		todasFechas.add(fechaCierre2);
 		
-		//CIERRE
-		Calendar fechaCierre = Calendar.getInstance();
-		fechaCierre.set(annoFin,11,31);
-		double [] inputsCierre = {impuestoSociedad};
-		Cierre cierre = new Cierre (fechaCierre, inputsCierre, enunciadoCuentas);
-		todosEnunciados.add(cierre.enunciados);
-		todasFechas.add(fechaCierre);
+		//CUENTA DE PERDIDAS Y GANANCIAS
+		CuentaResultados cuentaResultados2 = new CuentaResultados (2017, impuestoSociedad);
+		cuentaResultados2.imprimeCuentaResultados();
+		
+		//TESORERIA
+		Tesoreria tesoreria2 = new Tesoreria (2017);
+		tesoreria2.imprimeTesoreria();
+		
+		//BALANCE
+		Balance balance2 = new Balance(2017);
+		balance2.imprimeBalance();
+			
+		//SI NO HAY DIVIDENDOS
+		
+		//Calculo el año de la fecha mas vieja
+		anoInicio=2999;
+		for (int i=0; i<todasFechas.size(); i++){
+			if (todasFechas.get(i).get(Calendar.YEAR) < anoInicio){
+				anoInicio=todasFechas.get(i).get(Calendar.YEAR);
+			}
+		}
+
+		ano = anoInicio;
+		for(int i=0; i<=(annoFin-anoInicio); i++){	
+			/*CIERRRE
+			Calendar fechaCierre = Calendar.getInstance();
+			fechaCierre.set(ano,11,31);
+			double [] inputsCierre = {impuestoSociedad};
+			Cierre cierre = new Cierre (fechaCierre, inputsCierre, enunciadoCuentas);
+			todosEnunciados.add(cierre.enunciados);
+			todasFechas.add(fechaCierre);*/
+			
+			/*//CUENTA DE PERDIDAS Y GANANCIAS
+			CuentaResultados cuentaResultados = new CuentaResultados (ano, impuestoSociedad);
+			cuentaResultados.imprimeCuentaResultados();
+			
+			//TESORERIA
+			Tesoreria tesoreria = new Tesoreria (ano);
+			tesoreria.imprimeTesoreria();
+			
+			//BALANCE
+			Balance balance = new Balance(ano);
+			balance.imprimeBalance();
+			
+			ano = ano + 1;*/
+		}	
 		
 		
 		
 		//ENUNCIADO
-		imprimeEnunciados(todosEnunciados, annoFin);
-		
-		
-		//Calculamos el año de la fecha mas vieja
-		annoInicio=2999;
-		for (int i=0; i<todasFechas.size(); i++){
-			if (todasFechas.get(i).get(Calendar.YEAR) < annoInicio){
-				annoInicio=todasFechas.get(i).get(Calendar.YEAR);
-			}
-		}
-
-		anno = annoInicio;
-		for(int i=0; i<=(annoFin-annoInicio); i++){
-			//CUENTA DE PERDIDAS Y GANANCIAS
-			CuentaResultados cuentaResultados = new CuentaResultados (anno, impuestoSociedad);
-			cuentaResultados.imprimeCuentaResultados();
-			
-			//TESORERIA
-			Tesoreria tesoreria = new Tesoreria (anno);
-			tesoreria.imprimeTesoreria();
-			
-			//BALANCE
-			Balance balance = new Balance(anno);
-			balance.imprimeBalance();
-			
-			anno = anno + 1;
-		}		
+		imprimeEnunciados(todosEnunciados, anoInicio, annoFin);
+	
 	}
 	
 	
-	public static void imprimeEnunciados (ArrayList<ArrayList<Enunciado>>todosEnunciados, int año){
+	public static void imprimeEnunciados (ArrayList<ArrayList<Enunciado>>todosEnunciados, int anoInicio, int anoFin){
 		Calendar fechaLimite = Calendar.getInstance();
-		fechaLimite.set(año,11,31);
+		fechaLimite.set(anoFin,11,31);
 		ArrayList<Enunciado> todosEnunciadosOrdenados = new ArrayList<Enunciado>();
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar fech;
@@ -239,10 +282,16 @@ public class SupuestoContable {
 			
 			documento.open();
 			
-			Paragraph par = new Paragraph("ENUNCIADO SUPUESTO CONTABLE:  \n \n", FontFactory.getFont("arial", 16, Font.BOLD, BaseColor.GRAY)); 
+			Paragraph par = new Paragraph("ENUNCIADO SUPUESTO CONTABLE:  \n \n", FontFactory.getFont("arial", 16, Font.BOLD, BaseColor.BLACK)); 
 			documento.add(par);
 			
+			int annoTemp=anoInicio;
 			for(int i=0; i<todosEnunciadosOrdenados.size(); i++){
+				if(todosEnunciadosOrdenados.get(i).fecha.get(Calendar.YEAR)==annoTemp && annoTemp<=anoFin){
+					Paragraph p = new Paragraph("Se tiene la siguiente información vinculada con la empresa correspondiente al año "+annoTemp+":\n\n", FontFactory.getFont("arial", 12, Font.BOLDITALIC, BaseColor.BLACK)); 
+					documento.add(p);
+					annoTemp++;
+				}
 				if(todosEnunciadosOrdenados.get(i).fecha.before(fechaLimite)){
 					fech= todosEnunciadosOrdenados.get(i).getFecha();
 					enun = todosEnunciadosOrdenados.get(i).getEnunciado();

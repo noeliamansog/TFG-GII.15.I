@@ -18,13 +18,15 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class CuentaResultados extends Asiento{
-	static ArrayList<Anotacion> gastos = new ArrayList<Anotacion>();
-	static ArrayList<Anotacion> ingresos = new ArrayList<Anotacion>();
-	static ArrayList<Anotacion> gastosFinancieros = new ArrayList<Anotacion>();
-	static ArrayList<Anotacion> ingresosFinancieros = new ArrayList<Anotacion>();
-	private int año;
+	private int ano;
 	private Calendar fechaDesde;
 	private Calendar fechaHasta;
+	
+	static ArrayList<Anotacion> gastos;
+	static ArrayList<Anotacion> ingresos;
+	static ArrayList<Anotacion> gastosFinancieros;
+	static ArrayList<Anotacion> ingresosFinancieros;
+
 	static double valorGastos;
 	static double valorIngresos;
 	static double valorGastosFinancieros;
@@ -34,12 +36,18 @@ public class CuentaResultados extends Asiento{
 	static double resultadoTotal;
 	
 	
-	public CuentaResultados(int año, double impuestoSociedad){
-		this.año=año;
+	public CuentaResultados(int ano, double impuestoSociedad){
+		this.ano=ano;
 		fechaDesde =  Calendar.getInstance();
-		fechaDesde.set(año,0,1);
+		fechaDesde.set(ano,0,1);
 		fechaHasta =  Calendar.getInstance();
-		fechaHasta.set(año,11,31);
+		fechaHasta.set(ano,11,31);
+		
+		gastos = new ArrayList<Anotacion>();
+		ingresos = new ArrayList<Anotacion>();
+		gastosFinancieros = new ArrayList<Anotacion>();
+		ingresosFinancieros = new ArrayList<Anotacion>();
+		
 		valorGastos=0;
 		valorIngresos=0;
 		valorGastosFinancieros = 0;
@@ -49,106 +57,72 @@ public class CuentaResultados extends Asiento{
 		resultadoTotal=0;
 		
 		
-		//funcion cerrar: mirar el saldo, en que lado esta,, y que haga ese apunte en el otro lado
-		
 		Iterator<Integer> it = cuentas.keySet().iterator();
 		while(it.hasNext()){
 		  Integer key = (Integer) it.next();
 		  Cuenta cuenta = cuentas.get(key);
-
-		  //CREAR MEOTOD CERRAR: cogo el saldo de cada cuenta y pongo esa misma cantidad en el contrario para cerrarlo.
-		  
-		  /*610 Variacion de exitencias --> A veces es un gasto y a veces es un ingreso.
-		   * La considero siempre Gasto(debe) y compruebo su saldo, si es positivo es gasto 
-		   * y lo cierro añadiendo el saldo en haber, si es negativo es un ingreso 
-		   * y añado el saldo en debe para cerrarlo */
-		  
+  
 		  if(cuenta.prioridad==0){
 			  //Gastos
 			  if (!(cuenta.debe.isEmpty())){
 				  for(int i=0; i<cuenta.debe.size(); i++){
 					  if (cuenta.debe.get(i).fecha.before(fechaHasta) && cuenta.debe.get(i).fecha.after(fechaDesde)){
-						  /*if (cuenta.codigo==610){
-							  if (cuenta.debe.get(i).cantidad>0){
-								  gastos.add(cuenta.debe.get(i));
-								  valorGastos += cuenta.debe.get(i).cantidad;
-								  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), true);
-							  }
-							  else{
-								  ingresos.add(cuenta.debe.get(i));
-								  valorIngresos += cuenta.debe.get(i).cantidad;
-								  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), false);
-							  }
-						  }*/
 						  if (cuenta.codigo==769 || cuenta.codigo==662){
 							  gastosFinancieros.add(cuenta.debe.get(i));
 							  valorGastosFinancieros += cuenta.debe.get(i).cantidad;
-							  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), true);
 						  }else{
 							  gastos.add(cuenta.debe.get(i));
 							  valorGastos += cuenta.debe.get(i).cantidad;
-							  cierraCuenta(cuenta.codigo, cuenta.debe.get(i), true);
 						  }	
+						  //Cierro la cuenta
+						  dameCuenta(cuenta.codigo).añadirHaber(cuenta.debe.get(i));
 					  }
 				  }
-			  }
-			  //Ingresos
-			  if (!(cuenta.haber.isEmpty())){
-				  for(int i=0; i<cuenta.haber.size(); i++){
-					  if (cuenta.haber.get(i).fecha.before(fechaHasta) && cuenta.haber.get(i).fecha.after(fechaDesde)){
-						  /*if (cuenta.codigo==610){
-							  if (cuenta.haber.get(i).cantidad>0){
-								  gastos.add(cuenta.haber.get(i));
-								  valorGastos += cuenta.haber.get(i).cantidad;
-							  }
-							  else{
+			  }else{
+				  //Ingresos
+				  if (!(cuenta.haber.isEmpty())){
+					  for(int i=0; i<cuenta.haber.size(); i++){
+						  if (cuenta.haber.get(i).fecha.before(fechaHasta) && cuenta.haber.get(i).fecha.after(fechaDesde)){
+							  if (cuenta.codigo==769 || cuenta.codigo==662){
+								  ingresosFinancieros.add(cuenta.haber.get(i));
+								  valorIngresosFinancieros += cuenta.haber.get(i).cantidad;
+							  }else{
 								  ingresos.add(cuenta.haber.get(i));
 								  valorIngresos += cuenta.haber.get(i).cantidad;
-							  }
-						  }*/
-						  if (cuenta.codigo==769 || cuenta.codigo==662){
-							  ingresosFinancieros.add(cuenta.haber.get(i));
-							  valorIngresosFinancieros += cuenta.haber.get(i).cantidad;
-							  cierraCuenta(cuenta.codigo, cuenta.haber.get(i), false);
-						  }else{
-							  ingresos.add(cuenta.haber.get(i));
-							  valorIngresos += cuenta.haber.get(i).cantidad;
-							  cierraCuenta(cuenta.codigo, cuenta.haber.get(i), false);
-						  }			  
+							  }			  
+							  //Cierro la cuenta
+							  dameCuenta(cuenta.codigo).añadirDebe(cuenta.haber.get(i));
+						  }
 					  }
 				  }
-			  }
+			 }
 		  }
 		}
-		//Si el expediente <0
+		
+		//Calculo expediente y los impuestos
 		excedente = (valorIngresos - valorGastos)+(valorIngresosFinancieros-valorGastosFinancieros);
 	    if(excedente>0){
 	    	impuestos =(excedente*impuestoSociedad)/100;
 	    }
 	       	
 	    if (impuestos > 0){
-	       	dameCuenta(630).añadirDebe(new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(630)));
-	       	Anotacion anotacion = new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(4752));
-	       	dameCuenta(630).añadirDebe(anotacion);
-	       	int indice = dameCuenta(630).debe.indexOf(anotacion);
-	       	gastos.add(dameCuenta(630).debe.get(indice));
-	       	
+	       	dameCuenta(630).añadirDebe(new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(630)));       	
 	       	dameCuenta(630).añadirHaber(new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(630)));
-	       	anotacion = new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(4752));
-	       	dameCuenta(630).añadirHaber(anotacion);
-	       	indice = dameCuenta(630).haber.indexOf(anotacion);
-	       	ingresos.add(dameCuenta(630).haber.get(indice));
-	       	
-	       	       	
-	        anotacion = new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(4752));
-	       	dameCuenta(4752).añadirHaber(anotacion);
-	       	indice = dameCuenta(4752).haber.indexOf(anotacion);
-	       	ingresos.add(dameCuenta(4752).haber.get(indice));	
+	       	dameCuenta(4752).añadirHaber(new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(4752)));
 	   }
 	    
 	    resultadoTotal = excedente-impuestos;
 	    dameCuenta(129).añadirHaber(new Anotacion (fechaDesde, "Resultado ejercicio", resultadoTotal, damePrioridad(129)));
-		 
+	    
+		//Cierro las cuentas
+		if(resultadoTotal>=0){
+			dameCuenta(129).añadirDebe(new Anotacion(fechaHasta, "Fin de año "+fechaHasta.get(Calendar.YEAR) , resultadoTotal, damePrioridad(129)));
+			dameCuenta(12).añadirHaber(new Anotacion(fechaHasta,"Fin de año "+fechaHasta.get(Calendar.YEAR), resultadoTotal, damePrioridad(12)));
+		}else{
+			dameCuenta(129).añadirHaber(new Anotacion(fechaHasta, "Fin de año "+fechaHasta.get(Calendar.YEAR), -resultadoTotal, damePrioridad(129)));
+			dameCuenta(12).añadirDebe(new Anotacion(fechaHasta,"Fin de año "+fechaHasta.get(Calendar.YEAR), -resultadoTotal, damePrioridad(12)));	
+		}
+	
 	}
 	
 	public void imprimeCuentaResultados(){
@@ -160,7 +134,7 @@ public class CuentaResultados extends Asiento{
 		Document documento = new Document();
 		
 		try{			
-            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/CuentaResultados"+año+".pdf"));
+            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/CuentaResultados"+ano+".pdf"));
             
             documento.open();
             documento.addTitle("Cuenta de Resultados"); 
@@ -169,11 +143,10 @@ public class CuentaResultados extends Asiento{
             
             //CUENTA RESULTADOS
             PdfPTable cuentaResultados = new PdfPTable(1);
-			PdfPCell celda =new PdfPCell (new Paragraph("CUENTA RESULTADOS \n del año "+año+"", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
+			PdfPCell celda =new PdfPCell (new Paragraph("CUENTA RESULTADOS \n del año "+ano+"", FontFactory.getFont("arial",22,Font.BOLD, BaseColor.BLACK)));
             celda.setHorizontalAlignment(Element.ALIGN_CENTER);
             celda.setPadding (12.0f);
-            celda.setBackgroundColor(BaseColor.DARK_GRAY);
-            
+            celda.setBackgroundColor(BaseColor.DARK_GRAY);  
             cuentaResultados.addCell(celda);
             
             //INGRESOS Y GASTOS DE LA ACTIVIDAD
@@ -227,9 +200,7 @@ public class CuentaResultados extends Asiento{
            	excedenteAct.setBackgroundColor(BaseColor.PINK);
            	ingresosGastosActividad.addCell(resulActividad);
            	ingresosGastosActividad.addCell(excedenteAct);
-            
-            
-            
+                    
             
             
            	//INGRESOS Y GASTOS FINANCIEROS
@@ -285,7 +256,6 @@ public class CuentaResultados extends Asiento{
            	ingresosGastosFinancieros.addCell(excedenteFinan);
            	
            	
-           	
            	//EXCEDENTE ANTES DE IMPUESTOS
            	PdfPTable resultado = new PdfPTable(3);      	
             PdfPCell excedenteImpuestos = new PdfPCell (new Paragraph("EXCEDENTE ANTES DE IMPUESTOS:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
@@ -310,8 +280,7 @@ public class CuentaResultados extends Asiento{
            	calculoImpuestos.setPadding (10.0f);
            	calculoImpuestos.setBackgroundColor(BaseColor.LIGHT_GRAY);
            	resultado.addCell(impuestosBeneficios);
-           	resultado.addCell(calculoImpuestos);
-           	
+           	resultado.addCell(calculoImpuestos);       	
            	
            	
             //RESULTADO TOTAL
@@ -325,7 +294,7 @@ public class CuentaResultados extends Asiento{
            	resultado.addCell(total);
            	resultado.addCell(calculoTotal);
                
-            // Agregamos la tabla al documento     
+            // Agregamos las tablas al documento     
            	documento.add(cuentaResultados);
             documento.add(ingresosGastosActividad);
             documento.add(ingresosGastosFinancieros);
