@@ -10,6 +10,9 @@ public class CompraMaterialAmortizable extends Asiento{
 	public CompraMaterialAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
+		nombre="compraMaterialAmortizable";
+	}
+	public void generar(Calendar f, double[] inputs){
 		String compra = null;
 		
 		int com = (int)inputs[0];

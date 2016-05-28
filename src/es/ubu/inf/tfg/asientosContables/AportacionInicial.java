@@ -8,7 +8,10 @@ public class AportacionInicial extends Asiento {
 	public AportacionInicial(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha = f;
 		inputs = i;
-
+		nombre = "aportacion";
+	}
+	
+	public void generar(Calendar f, double[] inputs){
 		String enunciado1 = " Cada uno de los " +(int)inputs[0]+ " socios fundadores realiza una aportación inicial en "
     			+ "efectivo a favor de la empresa por importe de " +inputs[1]+ "€ (" +inputs[0]*inputs[1]+ "€ en total). "
     			+ "Cada socio tiene una acción. La empresa ingresa el dinero recibido en su cuenta corriente. \n";

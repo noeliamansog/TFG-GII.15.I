@@ -10,7 +10,10 @@ public class Interes extends Asiento{
 	public Interes(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-
+		nombre = "intereses";	
+	}
+	
+	public void generar(Calendar f, double[] inputs){
 		String enunciado1 = " La empresa obtiene un ingreso de " +inputs[0]+ "€ por intereses devengados en la cuenta corriente "
 				+ "durante este año, de los cuales cobra el "+inputs[1]+"% (el resto lo retienen). \n";
 		if (enunciadoCuentas){
@@ -23,6 +26,7 @@ public class Interes extends Asiento{
 		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Intereses devengados", inputs[0]*(inputs[1]/100), damePrioridad(572)));
 		dameCuenta(473).añadirDebe(new Anotacion(fecha, "Hacienda Pública", inputs[0]*(1- inputs[1]/100), damePrioridad(473)));
 		dameCuenta(769).añadirHaber(new Anotacion(fecha, "Otros ingresos financieros", inputs[0], damePrioridad(769)));
+	
 		
 	}
 }

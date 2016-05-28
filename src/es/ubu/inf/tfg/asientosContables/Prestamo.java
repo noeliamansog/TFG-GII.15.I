@@ -10,6 +10,10 @@ public class Prestamo extends Asiento {
 	public Prestamo(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
+		nombre = "prestamo";	
+	}
+	
+	public void generar(Calendar f, double[] inputs){
 		String tipoPrestamo=null;
 		String mensualAnual=null;
 		String mesAno=null;
@@ -127,6 +131,7 @@ public class Prestamo extends Asiento {
 				 }
 			 }
 		 }
+		
 	}
 }
 

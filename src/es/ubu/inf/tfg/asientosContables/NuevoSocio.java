@@ -10,7 +10,10 @@ public class NuevoSocio extends Asiento {
 	public NuevoSocio(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-
+		nombre = "nuevosSocios";
+	}
+	
+	public void generar(Calendar f, double[] inputs){
 		double valorNominal = dameCuenta(100).getSaldo(fecha)/inputs[1];
 		
 		if (inputs[0]<valorNominal){

@@ -11,6 +11,10 @@ public class IVA extends Asiento{
 	public IVA(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha = f;
 		inputs = i;
+		nombre = "IVA";
+	}
+	
+	public void generar(Calendar f, double[] inputs){
 		double saldoIVARepercutido;
 		double saldoIVASoportado;
 		
@@ -37,6 +41,7 @@ public class IVA extends Asiento{
 		}else{
 			dameCuenta(4700).añadirDebe(new Anotacion(fechaFinAno, "H.P. deudor por IVA ", saldoIVASoportado-saldoIVARepercutido, damePrioridad(4700)));	
 		}
+		
 	}
 
 }

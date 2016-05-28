@@ -8,7 +8,11 @@ public class PagoDeudasHacienda extends Asiento {
 	public PagoDeudasHacienda(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-
+		nombre = "pagoDeudasHacienda";
+	}
+	
+	
+	public void generar(Calendar f, double[] inputs){
 		String enunciado1 = " Se saldan todas las deudas con Hacienda.\n";
 		if (enunciadoCuentas){
 			enunciado1 = enunciado1 + "CUENTAS PGC: 473.H.P retenciones y pagos a cuenta; 572. Bancos e instituciones de crédito c/c vista, euros;"
@@ -36,6 +40,6 @@ public class PagoDeudasHacienda extends Asiento {
 		//Lo que debo a hacienda
 		double saldo = (saldo4750 + saldo4751 + saldo4752) - (saldo473 + saldo4700);
 		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Bancos hacienda", saldo, damePrioridad(572)));
-		
+	
 	}
 }

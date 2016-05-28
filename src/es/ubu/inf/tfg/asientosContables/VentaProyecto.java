@@ -10,7 +10,11 @@ public class VentaProyecto extends Asiento {
 	public VentaProyecto(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		
+		nombre = "ventaProyecto";
+	}
+	
+	
+	public void generar(Calendar f, double[] inputs){
 		String enunciado1 = " La empresa entrega un proyecto a un cliente, por el cual factura " +inputs[0]+ "€ "
 				+ "más un " +inputs[1]+ "% de IVA. Se acuerda que el cliente pague en " +(int)inputs[2]+ " días. El cliente paga al contado. \n";
 		if (enunciadoCuentas){
@@ -37,5 +41,7 @@ public class VentaProyecto extends Asiento {
 
 		dameCuenta(572).añadirDebe(new Anotacion(fechaDeudas, "Clientes por prestaciones de servicios", inputs[0], damePrioridad(572)));
 		dameCuenta(430).añadirHaber(new Anotacion(fechaDeudas, "Prestaciones de servicios", inputs[0], damePrioridad(430)));	
+	
+		
 	}
 }

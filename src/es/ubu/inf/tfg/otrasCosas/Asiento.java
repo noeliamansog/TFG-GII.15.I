@@ -10,6 +10,7 @@ public class Asiento {
 	public boolean enunciadoCuentas;
 	public Calendar fecha;
 	public double[] inputs;
+	public String nombre;
 	protected static HashMap<Integer, Cuenta> cuentas = new HashMap<Integer, Cuenta>();
 	protected static HashMap<Integer, Cuenta> todasCuentas = new HashMap<Integer, Cuenta>();
 	

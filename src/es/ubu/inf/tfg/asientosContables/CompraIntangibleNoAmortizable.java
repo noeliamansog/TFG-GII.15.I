@@ -10,8 +10,11 @@ public class CompraIntangibleNoAmortizable extends Asiento {
 	public CompraIntangibleNoAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		
+		nombre = "compraIntangibleNoAmortizable";
+	}
 	
+	public void generar(Calendar f, double[] inputs){
+		
 		String enunciado1 = " La empresa compra a una Administración Pública el derecho de explotación de un terreno "
 		+ "por valor de " + inputs[0] + "€. Se paga al contado. \n";
 		if (enunciadoCuentas){

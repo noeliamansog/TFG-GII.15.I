@@ -8,7 +8,9 @@ public class PagoDeudasHaciendaSinRetenciones extends Asiento {
 	public PagoDeudasHaciendaSinRetenciones(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-
+	}
+	
+	public void generar(Calendar f, double[] inputs){
 		String enunciado1 = " Se saldan todas las deudas con Hacienda.\n";
 		if (enunciadoCuentas){
 			enunciado1 = enunciado1 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros;"

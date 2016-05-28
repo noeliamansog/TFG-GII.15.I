@@ -9,8 +9,10 @@ public class InteresSinRetenciones extends Asiento{
 
 	public InteresSinRetenciones(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
-		inputs=i;
-
+		inputs=i;	
+	}
+	
+	public void generar(Calendar f, double[] inputs){
 		String enunciado1 = " La empresa obtiene un ingreso de " +inputs[0]+ "€ por intereses devengados en la cuenta corriente "
 				+ "durante este año. \n";
 		if (enunciadoCuentas){
@@ -21,6 +23,6 @@ public class InteresSinRetenciones extends Asiento{
 
 		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Intereses devengados", inputs[0], damePrioridad(572)));
 		dameCuenta(769).añadirHaber(new Anotacion(fecha, "Otros ingresos financieros", inputs[0], damePrioridad(769)));
-		
+	
 	}
 }
