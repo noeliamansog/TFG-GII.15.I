@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.asientosContables;
+package es.ubu.inf.tfg.asientosContables.sinIVA;
 import java.util.Calendar;
 
 import es.ubu.inf.tfg.otrasCosas.Anotacion;
@@ -20,7 +20,7 @@ public class CompraMercaderiasSinIVA extends Asiento{
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
 		dameCuenta(600).añadirDebe(new Anotacion(fecha, "Compra mercaderias", inputs[0], damePrioridad(600)));
-		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores mercaderias", inputs[0],damePrioridad(400)));
+		dameCuenta(400).añadirHaber(new Anotacion(fecha, "Proveedores mercaderias", inputs[0], damePrioridad(400)));
 				
 				
 		//SE SALDAN LAS DEUDAS CON LOS PROVEEDORES "Y" DIAS DESPUES:
