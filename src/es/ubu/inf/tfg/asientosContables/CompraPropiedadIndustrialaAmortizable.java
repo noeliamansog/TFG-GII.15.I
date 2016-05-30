@@ -1,20 +1,17 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 	
 	public CompraPropiedadIndustrialaAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "compraPI";
+
 				
-	}
-	
-	public void generar(Calendar f, double[] inputs){
 		String enunciado1 = " La empresa adquiere el derecho a usar un logotipo, por "
 				+ "lo cual paga " +inputs[0]+ "€. El importe de la compra se abonará a los " +(int)inputs[1]+ " días. "
 				+ "La propiedad industrial se amortiza linealmente en " +(int)inputs[2]+ " años.\n";
@@ -61,6 +58,5 @@ public class CompraPropiedadIndustrialaAmortizable extends Asiento{
 			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización Propiedad industrial", (inputs[0]/inputs[2]), damePrioridad(680)));
 			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada Propiedad industrial", (inputs[0]/inputs[2]), damePrioridad(280)));				
 		}
-		
 	}
 }

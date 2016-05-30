@@ -1,19 +1,15 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class Prestamo extends Asiento {
 
 	public Prestamo(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "prestamo";	
-	}
-	
-	public void generar(Calendar f, double[] inputs){
 		String tipoPrestamo=null;
 		String mensualAnual=null;
 		String mesAno=null;
@@ -131,7 +127,6 @@ public class Prestamo extends Asiento {
 				 }
 			 }
 		 }
-		
 	}
 }
 

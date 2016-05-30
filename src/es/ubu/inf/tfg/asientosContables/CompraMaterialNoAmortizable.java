@@ -1,21 +1,17 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class CompraMaterialNoAmortizable extends Asiento {
 
 	public CompraMaterialNoAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "compraMaterialNoAmortizable";	
-	}
-	
-	public void generar(Calendar f, double[] inputs){
-
 		String compra=null;
+		
 		
 		if (inputs[0]==0){
 			compra = "un solar";
@@ -74,7 +70,6 @@ public class CompraMaterialNoAmortizable extends Asiento {
 		}else{
 			dameCuenta(173).añadirDebe(new Anotacion(fecha, "Deuda con proveedores de inmovilizado material", (inputs[1]-inputs[2]), damePrioridad(173)));
 		}
-		
 	}
 
 }

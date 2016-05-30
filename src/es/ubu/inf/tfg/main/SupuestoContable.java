@@ -21,11 +21,12 @@ import es.ubu.inf.tfg.asientosContables.sinRetenciones.DividendosSinRetenciones;
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.InteresSinRetenciones;
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.PagoDeudasHaciendaSinRetenciones;
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.SueldosEmpleadosSinRetenciones;
-import es.ubu.inf.tfg.otrasCosas.*;
+import es.ubu.inf.tfg.doc.*;
+import es.ubu.inf.tfg.tablasResultados.Balance;
+import es.ubu.inf.tfg.tablasResultados.CuentaResultados;
+import es.ubu.inf.tfg.tablasResultados.Tesoreria;
 
 public class SupuestoContable {
-	public static ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();	
-	public static ArrayList<Calendar> todasFechas = new ArrayList<Calendar>();
 	public static double impuestoSociedad = 30;
 	public static double IVA = 10;
 	public static double numEmpleados = 2;
@@ -35,12 +36,15 @@ public class SupuestoContable {
 	public static boolean conRetenciones;
 	
 	public static void main(String args[]) {
+
+		ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();	
+		ArrayList<Calendar> todasFechas = new ArrayList<Calendar>();
 		
-		//Prueba para comprobar dividendos
-		Dividendos dividendos1 = null;
+		Dividendos dividendos = null;
 		Dividendos dividendos2 = null;
-		DividendosSinRetenciones dividendosSinRetenciones1 = null;
-		DividendosSinRetenciones dividendosSinRetenciones2 = null;
+		// ... para todos los años... 
+		DividendosSinRetenciones dividendosSinReteneciones = null;
+		DividendosSinRetenciones dividendosSinReteneciones2 = null;
 		
 		//Opcion de poner enunciados con las cuentas PGC
 		enunciadoCuentas = false;
@@ -56,7 +60,6 @@ public class SupuestoContable {
 		int anoFin = 2018;
 		
 		
-		ArrayList<Asiento> asientos = new ArrayList<Asiento>();
 
 		//////////////////////////
 		////	 1º AÑO 	/////	
@@ -68,7 +71,6 @@ public class SupuestoContable {
 		AportacionInicial aportacion = new AportacionInicial(fechaAportacion, inputsAportacion, enunciadoCuentas);
 		todosEnunciados.add(aportacion.enunciados);
 		todasFechas.add(fechaAportacion);
-		asientos.add(aportacion);
 		
 		//PRESTAMO		
 		Calendar fechaPrestamo = Calendar.getInstance();
@@ -77,7 +79,6 @@ public class SupuestoContable {
 		Prestamo prestamo = new Prestamo(fechaPrestamo, inputsPrestamo, enunciadoCuentas);
 		todosEnunciados.add(prestamo.enunciados);
 		todasFechas.add(fechaPrestamo);
-		asientos.add(prestamo);
 	
 		//COMPRA_MATERIAL_NO_AMORTIZABLE
 		Calendar fechaCompraMatNoAmort = Calendar.getInstance();
@@ -86,7 +87,6 @@ public class SupuestoContable {
 		CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(fechaCompraMatNoAmort, inputsMaterialNoAmortizable, enunciadoCuentas);
 		todosEnunciados.add(materialNoAmortizable.enunciados);
 		todasFechas.add(fechaCompraMatNoAmort);
-		asientos.add(materialNoAmortizable);
 		
 		//COMPRA_MATERIAL_AMORTIZABLE
 		Calendar fechaCompraMatAmort = Calendar.getInstance();
@@ -95,7 +95,6 @@ public class SupuestoContable {
 		CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(fechaCompraMatAmort, inputsMaterialAmortizable, enunciadoCuentas);
 		todosEnunciados.add(materialAmortizable.enunciados);
 		todasFechas.add(fechaCompraMatAmort);
-		asientos.add(materialAmortizable);
 		
 		//COMPRA_INTANGIBLE_NO_AMORTIZABLE
 		Calendar fechaCompraInNoAmort = Calendar.getInstance();
@@ -104,7 +103,6 @@ public class SupuestoContable {
 		CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fechaCompraInNoAmort, inputsIntangibleNoAmortizable, enunciadoCuentas);
 		todosEnunciados.add(intangibleNoAmortizable.enunciados);
 		todasFechas.add(fechaCompraInNoAmort);
-		asientos.add(intangibleNoAmortizable);
 		
 		//COMPRA_SOFTWARE_AMORTIZABLE
 		Calendar fechaCompraSW = Calendar.getInstance();
@@ -113,7 +111,6 @@ public class SupuestoContable {
 		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fechaCompraSW, inputsSoftwareAmortizable, enunciadoCuentas);
 		todosEnunciados.add(softwareAmortizable.enunciados);
 		todasFechas.add(fechaCompraSW);
-		asientos.add(softwareAmortizable);
 		
 		//COMPRA_PROPIEDAD_INDUSTRIAL_AMORTIZABLE
 		Calendar fechaCompraPI = Calendar.getInstance();
@@ -122,7 +119,6 @@ public class SupuestoContable {
 		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fechaCompraPI, inputsPropiedadIndustrialAmortizable, enunciadoCuentas);
 		todosEnunciados.add(propiedadIndustrialAmortizable.enunciados);
 		todasFechas.add(fechaCompraPI);
-		asientos.add(propiedadIndustrialAmortizable);
 		
 		//COMPRA_MERCADERIAS
 		Calendar fechaCompraMercaderias = Calendar.getInstance();
@@ -133,14 +129,12 @@ public class SupuestoContable {
 			CompraMercaderias compraMercaderias = new CompraMercaderias(fechaCompraMercaderias, inputsCompraMercaderias, enunciadoCuentas);
 			todosEnunciados.add(compraMercaderias.enunciados);
 			todasFechas.add(fechaCompraMercaderias);
-			asientos.add(compraMercaderias);
 		}else{
 			//Sin IVA
 			double [] inputsCompraMercaderiasSinIVA = {20000, 60};
 			CompraMercaderiasSinIVA compraMercaderiasSinIVA = new CompraMercaderiasSinIVA(fechaCompraMercaderias, inputsCompraMercaderiasSinIVA, enunciadoCuentas);
 			todosEnunciados.add(compraMercaderiasSinIVA.enunciados);
 			todasFechas.add(fechaCompraMercaderias);
-			asientos.add(compraMercaderiasSinIVA);
 		}	
 		
 		//VENTA_MERCADERIAS
@@ -152,14 +146,12 @@ public class SupuestoContable {
 			VentaMercaderias ventaMercaderias = new VentaMercaderias(fechaVentaMercaderias, inputsVentaMercaderias, enunciadoCuentas);
 			todosEnunciados.add(ventaMercaderias.enunciados);
 			todasFechas.add(fechaVentaMercaderias);
-			asientos.add(ventaMercaderias);
 		}else{
 			//Sin IVA
 			double [] inputsVentaMercaderiasSinIVA = {30000, 30};
 			VentaMercaderiasSinIVA ventaMercaderiasSinIVA = new VentaMercaderiasSinIVA(fechaVentaMercaderias, inputsVentaMercaderiasSinIVA, enunciadoCuentas);
 			todosEnunciados.add(ventaMercaderiasSinIVA.enunciados);
 			todasFechas.add(fechaVentaMercaderias);
-			asientos.add(ventaMercaderiasSinIVA);
 		}
 		
 		//VENTA_PROYECTO
@@ -171,14 +163,12 @@ public class SupuestoContable {
 			VentaProyecto ventaProyecto = new VentaProyecto(fechaVentaProy, inputsVentaProyecto, enunciadoCuentas);
 			todosEnunciados.add(ventaProyecto.enunciados);
 			todasFechas.add(fechaVentaProy);
-			asientos.add(ventaProyecto);
 		}else{
 			//Sin IVA	
 			double [] inputsVentaProyectoSinIVA = {200000, 30};
 			VentaProyectoSinIVA ventaProyectoSinIVA = new VentaProyectoSinIVA(fechaVentaProy, inputsVentaProyectoSinIVA, enunciadoCuentas);
 			todosEnunciados.add(ventaProyectoSinIVA.enunciados);
 			todasFechas.add(fechaVentaProy);
-			asientos.add(ventaProyectoSinIVA);
 		}	
 		
 		//SUELDOS_EMPLEADOS
@@ -189,13 +179,11 @@ public class SupuestoContable {
 			SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(fechaSueldoEmp, inputsSueldoEmpleado, enunciadoCuentas);
 			todosEnunciados.add(sueldoEmpleado.enunciados);
 			todasFechas.add(fechaSueldoEmp);
-			asientos.add(sueldoEmpleado);
 		}else{
 			double [] inputsSueldoEmpleadoSinR = {numEmpleados, 10000, 3350};
 			SueldosEmpleadosSinRetenciones sueldoEmpleadoSinRetenciones = new SueldosEmpleadosSinRetenciones(fechaSueldoEmp, inputsSueldoEmpleadoSinR, enunciadoCuentas);
 			todosEnunciados.add(sueldoEmpleadoSinRetenciones.enunciados);
 			todasFechas.add(fechaSueldoEmp);
-			asientos.add(sueldoEmpleadoSinRetenciones);
 		}
 		
 		//SUELDO_INGENIERO
@@ -205,7 +193,6 @@ public class SupuestoContable {
 		SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(fechaSueldoIng, inputsSueldoIngeniero, enunciadoCuentas);
 		todosEnunciados.add(sueldoIngeniero.enunciados);
 		todasFechas.add(fechaSueldoIng);
-		asientos.add(sueldoIngeniero);
 		
 		//INTERESES
 		Calendar fechaIntereses = Calendar.getInstance();
@@ -215,13 +202,11 @@ public class SupuestoContable {
 			Interes intereses = new Interes(fechaIntereses, inputsIntereses, enunciadoCuentas);
 			todosEnunciados.add(intereses.enunciados);
 			todasFechas.add(fechaIntereses);
-			asientos.add(intereses);
 		}else{
 			double [] inputsInteresesSinR = {300};
 			InteresSinRetenciones interesesSinRetenciones = new InteresSinRetenciones(fechaIntereses, inputsInteresesSinR, enunciadoCuentas);
 			todosEnunciados.add(interesesSinRetenciones.enunciados);
 			todasFechas.add(fechaIntereses);
-			asientos.add(interesesSinRetenciones);
 		}
 		
 		//NUEVOS_SOCIOS
@@ -231,7 +216,6 @@ public class SupuestoContable {
 		NuevoSocio nuevoSocio = new NuevoSocio(fechaNuevosSoc, inputsNuevoSocio, enunciadoCuentas);
 		todosEnunciados.add(nuevoSocio.enunciados);
 		todasFechas.add(fechaNuevosSoc);
-		asientos.add(nuevoSocio);
 		
 		//INVENTARIO
 		Calendar fechaInventario = Calendar.getInstance();
@@ -240,7 +224,6 @@ public class SupuestoContable {
 		Inventario inventario = new Inventario (fechaInventario, inputsInventario, enunciadoCuentas);
 		todosEnunciados.add(inventario.enunciados);
 		todasFechas.add(fechaInventario);
-		asientos.add(inventario);
 			
 		//IVA
 		if (conIVA){
@@ -263,7 +246,7 @@ public class SupuestoContable {
 		Balance balance = new Balance(2016);
 		balance.imprimeBalance();
 		
-		/*
+		
 		
 		//////////////////////////
 		////	 2º AÑO 	/////	
@@ -300,20 +283,18 @@ public class SupuestoContable {
 		fechaDividendos.add(Calendar.YEAR, +1);
 		if(conRetenciones){
 			double [] inputsDividendos = {50, 20};
-			dividendos1 = new Dividendos (fechaDividendos, inputsDividendos, enunciadoCuentas);
-			todosEnunciados.add(dividendos1.enunciados);
+			dividendos = new Dividendos (fechaDividendos, inputsDividendos, enunciadoCuentas);
+			todosEnunciados.add(dividendos.enunciados);
 			todasFechas.add(fechaDividendos);
-			asientos.add(dividendos1);
 		}else{
 			double [] inputsDividendosSinR = {50};
-			dividendosSinRetenciones1 = new DividendosSinRetenciones (fechaDividendos, inputsDividendosSinR, enunciadoCuentas);
-			todosEnunciados.add(dividendosSinRetenciones1.enunciados);
+			dividendosSinReteneciones = new DividendosSinRetenciones (fechaDividendos, inputsDividendosSinR, enunciadoCuentas);
+			todosEnunciados.add(dividendosSinReteneciones.enunciados);
 			todasFechas.add(fechaDividendos);
-			asientos.add(dividendosSinRetenciones1);
 		}
 		
 		//NO_DIVIDENDOS
-		if(dividendos1 == null && dividendosSinRetenciones1==null){
+		if(dividendos == null && dividendosSinReteneciones==null){
 			NoDividendos noDividendos = new NoDividendos (Calendar.getInstance(), null, false);
 		}
 		
@@ -376,17 +357,15 @@ public class SupuestoContable {
 			dividendos2 = new Dividendos (fechaDividendos2, inputsDividendos2, enunciadoCuentas);
 			todosEnunciados.add(dividendos2.enunciados);
 			todasFechas.add(fechaDividendos2);
-			asientos.add(dividendos2);
 		}else{
 			double [] inputsDividendosSinR2 = {50};
-			dividendosSinRetenciones2 = new DividendosSinRetenciones (fechaDividendos2, inputsDividendosSinR2, enunciadoCuentas);
-			todosEnunciados.add(dividendosSinRetenciones2.enunciados);
+			dividendosSinReteneciones2 = new DividendosSinRetenciones (fechaDividendos2, inputsDividendosSinR2, enunciadoCuentas);
+			todosEnunciados.add(dividendosSinReteneciones2.enunciados);
 			todasFechas.add(fechaDividendos2);
-			asientos.add(dividendosSinRetenciones2);
 		}
 		
 		//NO_DIVIDENDOS
-		if(dividendos2 == null && dividendosSinRetenciones2==null){
+		if(dividendos2 == null && dividendosSinReteneciones2==null){
 			NoDividendos noDividendos2 = new NoDividendos (Calendar.getInstance(), null, false);
 		}
 		
@@ -410,223 +389,29 @@ public class SupuestoContable {
 		//BALANCE
 		Balance balance3 = new Balance(2018);
 		balance3.imprimeBalance();
-	
-		*/
+		
+		
 		//Calculo el año de la fecha mas vieja
 		anoInicio=2999;
 		for (int i=0; i<todasFechas.size(); i++){
 			if (todasFechas.get(i).get(Calendar.YEAR) < anoInicio){
 				anoInicio=todasFechas.get(i).get(Calendar.YEAR);
 			}
-		} 
-		
+		}
+
+		int ano = anoInicio;
+		for(int i=0; i<=(anoFin-anoInicio); i++){
 			
-		//GENERA
-		generaAno (asientos);
+			
+			
+			ano = ano + 1;
+		}	
+		
+		
 		
 		//ENUNCIADO
 		imprimeEnunciados(todosEnunciados, anoInicio, anoFin);
 	
-	}
-	
-	
-
-	
-	public static void generaAno (ArrayList<Asiento> asientos){
-		int primerAno = getPrimerAno(asientos);
-		int ultimoAno = getUltimoAno(asientos);
-		Dividendos dividendos;
-		DividendosSinRetenciones dividendosSinRetenciones;
-		
-		for (int j=0; j<=(ultimoAno-primerAno); j++){	
-			dividendos = null;
-			dividendosSinRetenciones = null;
-			for(int i=0; i<asientos.size(); i++){
-				switch(asientos.get(i).nombre){
-					case "aportacion": if(asientos.get(i).fecha.get(Calendar.YEAR) == primerAno){
-											AportacionInicial aportacion = new AportacionInicial(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-											aportacion.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-											todosEnunciados.add(aportacion.enunciados); 
-										}
-										break;					
-					case "prestamo": 	Prestamo prestamo = new Prestamo(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-										prestamo.generar(asientos.get(i).fecha, asientos.get(i).inputs);					
-										todosEnunciados.add(prestamo.enunciados); 
-										break;
-					case "compraMaterialNoAmortizable":	CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-														materialNoAmortizable.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-														todosEnunciados.add(materialNoAmortizable.enunciados); 
-											   			break;
-					case "compraMaterialAmortizable":	CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-											 			todosEnunciados.add(materialAmortizable.enunciados); 
-											 			break;
-					case "compraIntangibleNoAmortizable": CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-															intangibleNoAmortizable.generar(asientos.get(i).fecha, asientos.get(i).inputs);							  
-															todosEnunciados.add(intangibleNoAmortizable.enunciados); 
-															break;
-					case "compraSW": 	CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-										softwareAmortizable.generar(asientos.get(i).fecha, asientos.get(i).inputs);	 			
-										todosEnunciados.add(softwareAmortizable.enunciados); 
-							 			break;
-					case "compraPI": 	CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-										propiedadIndustrialAmortizable.generar(asientos.get(i).fecha, asientos.get(i).inputs);		 			
-										todosEnunciados.add(propiedadIndustrialAmortizable.enunciados);
-							 			break;
-					case "compraMercaderias": 
-											if(conIVA){
-												CompraMercaderias compraMercaderias = new CompraMercaderias(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												compraMercaderias.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(compraMercaderias.enunciados);
-											}else{
-												CompraMercaderiasSinIVA compraMercaderiasSinIVA = new CompraMercaderiasSinIVA(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												compraMercaderiasSinIVA.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(compraMercaderiasSinIVA.enunciados);
-											}
-											break;
-					case "ventaMercaderias": 
-											if(conIVA){
-												VentaMercaderias ventaMercaderias = new VentaMercaderias(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												ventaMercaderias.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(ventaMercaderias.enunciados);
-											}else{
-												VentaMercaderiasSinIVA ventaMercaderiasSinIVA = new VentaMercaderiasSinIVA(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												ventaMercaderiasSinIVA.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(ventaMercaderiasSinIVA.enunciados);
-											}
-											break;
-					case "ventaProyecto":
-											if(conIVA){
-												VentaProyecto ventaProyecto = new VentaProyecto(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												ventaProyecto.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(ventaProyecto.enunciados);
-											}else{
-												VentaProyectoSinIVA ventaProyectoSinIVA = new VentaProyectoSinIVA(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												ventaProyectoSinIVA.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(ventaProyectoSinIVA.enunciados);
-											}
-											break;
-					case "sueldosEmpleados":
-											if(conRetenciones){
-												SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												sueldoEmpleado.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(sueldoEmpleado.enunciados);
-											}else{
-												SueldosEmpleadosSinRetenciones sueldoEmpleadoSinRetenciones = new SueldosEmpleadosSinRetenciones(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												sueldoEmpleadoSinRetenciones.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(sueldoEmpleadoSinRetenciones.enunciados);
-											}
-											break;
-					case "sueldoIngeniero": SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-											sueldoIngeniero.generar(asientos.get(i).fecha, asientos.get(i).inputs);					
-											todosEnunciados.add(sueldoIngeniero.enunciados);
-											break;
-					case "intereses": 
-										if(conRetenciones){
-											Interes intereses = new Interes(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-											intereses.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-											todosEnunciados.add(intereses.enunciados);
-										}else{
-											InteresSinRetenciones interesesSinRetenciones = new InteresSinRetenciones(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-											interesesSinRetenciones.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-											todosEnunciados.add(interesesSinRetenciones.enunciados);
-										}
-										break;
-					case "nuevosSocios": 	NuevoSocio nuevoSocio = new NuevoSocio(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-											nuevoSocio.generar(asientos.get(i).fecha, asientos.get(i).inputs);						
-											todosEnunciados.add(nuevoSocio.enunciados);
-											break;
-					case "inventario": 	Inventario inventario = new Inventario (asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-										inventario.generar(asientos.get(i).fecha, asientos.get(i).inputs);					
-										todosEnunciados.add(inventario.enunciados);
-										break;
-					case "dividendos": if(asientos.get(i).fecha.get(Calendar.YEAR) != primerAno){
-											if(conRetenciones){
-												dividendos = new Dividendos (asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												dividendos.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(dividendos.enunciados);
-											}else{
-												dividendosSinRetenciones = new DividendosSinRetenciones (asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-												dividendosSinRetenciones.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-												todosEnunciados.add(dividendosSinRetenciones.enunciados);
-											}
-										}				
-				}
-				
-				//NO_DIVIDENDOS:
-				if(dividendos == null && dividendosSinRetenciones==null){
-					NoDividendos noDividendos = new NoDividendos (Calendar.getInstance(), null, false);
-					noDividendos.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-				}
-				
-				//Si no es el primer año
-				if(asientos.get(i).fecha.get(Calendar.YEAR) != primerAno){
-				
-					//PAGO DEUDAS HACIENDA
-					if(conIVA && conRetenciones){
-						PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-						deudasHacienda.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-						todosEnunciados.add(deudasHacienda.enunciados);
-					}if(conIVA==false && conRetenciones){
-						PagoDeudasHaciendaSinIVA deudasHaciendaSinIVA = new PagoDeudasHaciendaSinIVA(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-						deudasHaciendaSinIVA.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-						todosEnunciados.add(deudasHaciendaSinIVA.enunciados);
-					}if(conIVA && conRetenciones==false){
-						PagoDeudasHaciendaSinRetenciones deudasHaciendaSinRetenciones = new PagoDeudasHaciendaSinRetenciones(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-						deudasHaciendaSinRetenciones.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-						todosEnunciados.add(deudasHaciendaSinRetenciones.enunciados);
-					}
-					 
-					//PAGO DEUDAS SEGURIDAD SOCIAL
-					if(conRetenciones){
-						PagoDeudasSS deudasSS = new PagoDeudasSS(asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-						deudasSS.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-						todosEnunciados.add(deudasSS.enunciados); 
-					}
-					
-				}
-			
-				//EN TODOS LOS AÑOS SE EJECUTAN
-				//IVA
-				if (conIVA){
-					IVA iva = new IVA (asientos.get(i).fecha, asientos.get(i).inputs, asientos.get(i).enunciadoCuentas);
-					iva.generar(asientos.get(i).fecha, asientos.get(i).inputs);
-					todosEnunciados.add(iva.enunciados);
-				}
-				
-				//CUENTA DE PERDIDAS Y GANANCIAS
-				CuentaResultados cuentaResultados = new CuentaResultados (asientos.get(i).fecha.get(Calendar.YEAR), impuestoSociedad);
-				cuentaResultados.imprimeCuentaResultados();
-				
-				//TESORERIA
-				Tesoreria tesoreria = new Tesoreria (asientos.get(i).fecha.get(Calendar.YEAR));
-				tesoreria.imprimeTesoreria();
-				
-				//BALANCE
-				Balance balance = new Balance(asientos.get(i).fecha.get(Calendar.YEAR));
-				balance.imprimeBalance();
-			}
-		}
-	}
-	
-	public static int getPrimerAno(ArrayList<Asiento> asientos){
-		int primerAno = 2999;
-		for(int i=0; i<asientos.size(); i++){
-			if (asientos.get(i).fecha.get(Calendar.YEAR) < primerAno){
-				primerAno = asientos.get(i).fecha.get(Calendar.YEAR);
-			}
-		}
-		return primerAno;	
-	}
-	
-	
-	public static int getUltimoAno(ArrayList<Asiento> asientos){
-		int ultimoAno = 0;
-		for(int i=0; i<asientos.size(); i++){
-			if (asientos.get(i).fecha.get(Calendar.YEAR) > ultimoAno){
-				ultimoAno = asientos.get(i).fecha.get(Calendar.YEAR);
-			}
-		}
-		return ultimoAno;	
 	}
 	
 	

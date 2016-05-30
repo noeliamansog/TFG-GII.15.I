@@ -1,18 +1,15 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class CompraMaterialAmortizable extends Asiento{
 	
 	public CompraMaterialAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre="compraMaterialAmortizable";
-	}
-	public void generar(Calendar f, double[] inputs){
 		String compra = null;
 		
 		int com = (int)inputs[0];

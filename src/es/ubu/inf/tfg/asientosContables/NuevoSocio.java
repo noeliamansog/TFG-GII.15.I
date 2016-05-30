@@ -1,19 +1,16 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class NuevoSocio extends Asiento {
 
 	public NuevoSocio(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "nuevosSocios";
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+
 		double valorNominal = dameCuenta(100).getSaldo(fecha)/inputs[1];
 		
 		if (inputs[0]<valorNominal){

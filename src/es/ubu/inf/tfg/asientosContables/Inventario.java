@@ -1,17 +1,14 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.*;
+import es.ubu.inf.tfg.doc.*;
 
 public class Inventario extends Asiento {
 	
 	public Inventario(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "inventario";
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+
 		String enunciado1 = " Se hace inventario de mercaderías. Se estima un valor de coste "
 				+ "de "+inputs[0]+ "€. \n";
 		if (enunciadoCuentas){
@@ -29,6 +26,5 @@ public class Inventario extends Asiento {
 		}else{
 			dameCuenta(610).añadirHaber(new Anotacion(fecha, "Variación mercaderias", inputs[0]-saldoMercaderias, damePrioridad(610)));
 		}
-		
 	}
 }

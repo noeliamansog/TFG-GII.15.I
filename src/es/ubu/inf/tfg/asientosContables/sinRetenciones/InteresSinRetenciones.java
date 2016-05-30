@@ -1,18 +1,16 @@
 package es.ubu.inf.tfg.asientosContables.sinRetenciones;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class InteresSinRetenciones extends Asiento{
 
 	public InteresSinRetenciones(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
-		inputs=i;	
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+		inputs=i;
+
 		String enunciado1 = " La empresa obtiene un ingreso de " +inputs[0]+ "€ por intereses devengados en la cuenta corriente "
 				+ "durante este año. \n";
 		if (enunciadoCuentas){
@@ -23,6 +21,6 @@ public class InteresSinRetenciones extends Asiento{
 
 		dameCuenta(572).añadirDebe(new Anotacion(fecha, "Intereses devengados", inputs[0], damePrioridad(572)));
 		dameCuenta(769).añadirHaber(new Anotacion(fecha, "Otros ingresos financieros", inputs[0], damePrioridad(769)));
-	
+		
 	}
 }

@@ -1,17 +1,14 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.*;
+import es.ubu.inf.tfg.doc.*;
 
 public class Dividendos extends Asiento {
 	
 	public Dividendos(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "dividendos";
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+
 		String enunciado1 = " Se decide repartir dividendos por valor del " +inputs[0]+ "% del resultado del "
 				+ "ejercicio anterior (sobre los cuales se practica una retención del " +inputs[1]+ "%). El resto se lleva a Reserva Legal.\n";
 		if (enunciadoCuentas){
@@ -30,6 +27,6 @@ public class Dividendos extends Asiento {
 		dameCuenta(112).añadirHaber(new Anotacion(fecha, "Beneficios retenidos del año: "+fechaAñoAnterior.get(Calendar.YEAR), ((100-inputs[0])*resultado)/100, damePrioridad(112)));
 		dameCuenta(4751).añadirHaber(new Anotacion(fecha, "Retenciones practicadas por reparto de dividendos", ((inputs[0]/100)*resultado)*inputs[1]/100, damePrioridad(4751)));	
 		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Reparto dividendos", ((inputs[0]/100)*resultado)*(100-inputs[1])/100, damePrioridad(572)));
-	
+		
 	}
 }

@@ -1,16 +1,14 @@
 package es.ubu.inf.tfg.asientosContables.sinRetenciones;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.*;
+import es.ubu.inf.tfg.doc.*;
 
 public class DividendosSinRetenciones extends Asiento {
 	
 	public DividendosSinRetenciones(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
-		inputs=i;	
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+		inputs=i;
+
 		String enunciado1 = " Se decide repartir dividendos por valor del " +inputs[0]+ "% del resultado del "
 				+ "ejercicio anterior \n";
 		if (enunciadoCuentas){
@@ -28,5 +26,6 @@ public class DividendosSinRetenciones extends Asiento {
 		
 		dameCuenta(112).añadirHaber(new Anotacion(fecha, "Beneficios retenidos del año: "+fechaAñoAnterior.get(Calendar.YEAR), ((100-inputs[0])*resultado)/100, damePrioridad(112)));
 		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Reparto dividendos", (inputs[0]/100)*resultado, damePrioridad(572)));
+		
 	}
 }

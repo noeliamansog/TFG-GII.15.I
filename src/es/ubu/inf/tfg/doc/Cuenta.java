@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.otrasCosas;
+package es.ubu.inf.tfg.doc;
 
 import java.util.ArrayList;
 import java.util.Calendar;

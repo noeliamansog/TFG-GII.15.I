@@ -1,20 +1,17 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class CompraIntangibleNoAmortizable extends Asiento {
 
 	public CompraIntangibleNoAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "compraIntangibleNoAmortizable";
-	}
-	
-	public void generar(Calendar f, double[] inputs){
 		
+	
 		String enunciado1 = " La empresa compra a una Administración Pública el derecho de explotación de un terreno "
 		+ "por valor de " + inputs[0] + "€. Se paga al contado. \n";
 		if (enunciadoCuentas){

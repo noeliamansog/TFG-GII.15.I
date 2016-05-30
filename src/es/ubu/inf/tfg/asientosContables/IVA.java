@@ -2,19 +2,15 @@ package es.ubu.inf.tfg.asientosContables;
 
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class IVA extends Asiento{
 
 	public IVA(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha = f;
 		inputs = i;
-		nombre = "IVA";
-	}
-	
-	public void generar(Calendar f, double[] inputs){
 		double saldoIVARepercutido;
 		double saldoIVASoportado;
 		
@@ -41,7 +37,6 @@ public class IVA extends Asiento{
 		}else{
 			dameCuenta(4700).añadirDebe(new Anotacion(fechaFinAno, "H.P. deudor por IVA ", saldoIVASoportado-saldoIVARepercutido, damePrioridad(4700)));	
 		}
-		
 	}
 
 }

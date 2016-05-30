@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.otrasCosas;
+package es.ubu.inf.tfg.doc;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,7 +10,6 @@ public class Asiento {
 	public boolean enunciadoCuentas;
 	public Calendar fecha;
 	public double[] inputs;
-	public String nombre;
 	protected static HashMap<Integer, Cuenta> cuentas = new HashMap<Integer, Cuenta>();
 	protected static HashMap<Integer, Cuenta> todasCuentas = new HashMap<Integer, Cuenta>();
 	

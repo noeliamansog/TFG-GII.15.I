@@ -1,19 +1,16 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class VentaMercaderias extends Asiento {
 
 	public VentaMercaderias(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "ventaMercaderias";
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+		
 		String enunciado1 = " La empresa efectúa una venta de mercaderías por importe de " +inputs[0]+ "€ más un " +inputs[1]+ "% de IVA. " 
 				 + "Se acuerda que el cliente pague en " +(int)inputs[2]+ " días. El cliente paga al contado. \n";
 		if (enunciadoCuentas){
@@ -40,7 +37,5 @@ public class VentaMercaderias extends Asiento {
 
 		dameCuenta(572).añadirDebe(new Anotacion(fechaDeudas, "Clientes por venta de mercaderias", inputs[0], damePrioridad(572)));
 		dameCuenta(430).añadirHaber(new Anotacion(fechaDeudas, "Venta de mercaderias", inputs[0], damePrioridad(430)));
-	
-		
 	}
 }

@@ -1,19 +1,16 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class CompraSoftwareAmortizable extends Asiento{
 	
 	public CompraSoftwareAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "compraSW";		
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+				
 		String enunciado1 = " La empresa compra una aplicación informática por valor de " +inputs[0]+ "€. "
 				 + "El importe de la compra se abonará a los " +(int)inputs[1]+ " días. El software se amortiza linealmente "
 				 + "en " +(int)inputs[2]+ " años.\n";
@@ -60,6 +57,6 @@ public class CompraSoftwareAmortizable extends Asiento{
 			dameCuenta(680).añadirDebe(new Anotacion(fechaAmortizacion, "Amortización Software", (inputs[0]/inputs[2]), damePrioridad(680)));
 			dameCuenta(280).añadirHaber(new Anotacion(fechaAmortizacion, "Amortización acumulada Software", (inputs[0]/inputs[2]), damePrioridad(280)));
 
-		}
+		}		
 	}
 }

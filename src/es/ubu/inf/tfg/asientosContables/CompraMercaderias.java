@@ -1,19 +1,16 @@
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
-import es.ubu.inf.tfg.otrasCosas.Anotacion;
-import es.ubu.inf.tfg.otrasCosas.Asiento;
-import es.ubu.inf.tfg.otrasCosas.Enunciado;
+import es.ubu.inf.tfg.doc.Anotacion;
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Enunciado;
 
 public class CompraMercaderias extends Asiento{
 
 	public CompraMercaderias(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
-		nombre = "compraMercaderias";
-	}
-	
-	public void generar(Calendar f, double[] inputs){
+		
 		String enunciado1= " La empresa compra mercaderías por un importe de " +inputs[0]+ "€ más "
 				 + "un " +inputs[1]+ "% de IVA. Se acuerda que el pago se realice en " +(int)inputs[2]+ " días. Se paga al contado. \n";
 		if (enunciadoCuentas){

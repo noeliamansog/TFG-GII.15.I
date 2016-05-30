@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.otrasCosas;
+package es.ubu.inf.tfg.tablasResultados;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -15,6 +15,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import es.ubu.inf.tfg.doc.Asiento;
+import es.ubu.inf.tfg.doc.Cuenta;
 
 public class Balance extends Asiento{
 	private int ano;
