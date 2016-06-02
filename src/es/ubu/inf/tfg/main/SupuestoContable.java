@@ -108,7 +108,7 @@ public class SupuestoContable {
 		Calendar fechaCompraSW = Calendar.getInstance();
 		fechaCompraSW.add(Calendar.DAY_OF_YEAR, +5);
 		double [] inputsSoftwareAmortizable = {3000, 60, 3};
-		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fechaCompraSW, inputsSoftwareAmortizable, enunciadoCuentas);
+		CompraSWAmortizable softwareAmortizable = new CompraSWAmortizable(fechaCompraSW, inputsSoftwareAmortizable, enunciadoCuentas);
 		todosEnunciados.add(softwareAmortizable.enunciados);
 		todasFechas.add(fechaCompraSW);
 		
@@ -116,7 +116,7 @@ public class SupuestoContable {
 		Calendar fechaCompraPI = Calendar.getInstance();
 		fechaCompraPI.add(Calendar.DAY_OF_YEAR, +6);
 		double [] inputsPropiedadIndustrialAmortizable = {1500, 90, 3};
-		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fechaCompraPI, inputsPropiedadIndustrialAmortizable, enunciadoCuentas);
+		CompraPIAmortizable propiedadIndustrialAmortizable = new CompraPIAmortizable(fechaCompraPI, inputsPropiedadIndustrialAmortizable, enunciadoCuentas);
 		todosEnunciados.add(propiedadIndustrialAmortizable.enunciados);
 		todasFechas.add(fechaCompraPI);
 		
