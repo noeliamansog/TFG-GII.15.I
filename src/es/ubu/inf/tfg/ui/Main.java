@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -30,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -85,9 +87,9 @@ public class Main {
 	public JButton botonVentana;
 	
 	public JFrame frmSupuesto;
-	public JPanel controlPanel;
+	public JPanel controlPanelIzq;
 	public JPanel panelBox;
-	public JButton añadirButton;
+	public JButton añadirButtonMas;
 	public JComboBox<String> añadirBox;
 	public JPanel contenedorPanel;
 	public Component añadirDerechoStrut;
@@ -100,12 +102,25 @@ public class Main {
 	public JMenuItem menuWeb;
 
 	public JFileChooser fileChooser;
-	public JScrollPane contenedorScroll;
+	public JScrollPane contenedorScroll1;
 	public JPanel panelAsientos;
 	public AportacionPanel panelAportacion = null;
 	
+	private JPanel controlPanelDrch;
+	public static JTextPane panelEnunciado;
+	public static String textoEnunciado = "";
+	private JPanel panelBotonGenerar;
+	private JButton añadirButtonGenerar;
+	public Component añadirDerechoStrut2;
+	public Component añadirIzquierdoStrut2;
+	public JScrollPane contenedorScroll2;
 	
-	public boolean scrollContenedor = true;
+	public static String direccionRuta = "";
+
+
+	private boolean scrollContenedor = true;
+//	private boolean scrollVistaPrevia = true;
+	
 	
 	public List<AsientoPanel<?>> panelesAsiento = new ArrayList<>();
 
@@ -134,8 +149,8 @@ public class Main {
 		
 		initVentana();
 		
-		this.fileChooser = new JFileChooser();
-		this.fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		//this.fileChooser = new JFileChooser();
+		//this.fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	}
 
 	/**
@@ -144,7 +159,8 @@ public class Main {
 	public void initialize() {
 		initPanel();
 		initMenuBar();
-		initControlPanel();
+		initPanelIzq();
+		initPanelDrch();
 
 	}
 
@@ -248,22 +264,22 @@ public class Main {
 		this.menuArchivo.add(this.menuNuevo);
 	}
 
-	public void initControlPanel() { 
-		//Panel ¿?
-		this.controlPanel = new JPanel();
-		this.controlPanel.setBorder(null);
-		this.frmSupuesto.getContentPane().add(this.controlPanel, BorderLayout.WEST);
-		this.controlPanel.setLayout(new BorderLayout(0, 0));
+	public void initPanelIzq() { 
+		//Panel control izquierda
+		this.controlPanelIzq = new JPanel();
+		this.controlPanelIzq.setBorder(null);
+		this.frmSupuesto.getContentPane().add(this.controlPanelIzq, BorderLayout.WEST);
+		this.controlPanelIzq.setLayout(new BorderLayout(0, 0));
 
-		this.contenedorScroll = new JScrollPane();
-		this.contenedorScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		this.controlPanel.add(this.contenedorScroll, BorderLayout.CENTER);
+		this.contenedorScroll1 = new JScrollPane();
+		this.contenedorScroll1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		this.controlPanelIzq.add(this.contenedorScroll1, BorderLayout.CENTER);
 
 		//Panel de la izquierda para los asientos
 		this.panelAsientos = new JPanel();
 		this.panelAsientos.setBorder(null);
-		this.contenedorScroll.add(this.panelAsientos);
-		this.contenedorScroll.setViewportView(this.panelAsientos);
+		this.contenedorScroll1.add(this.panelAsientos);
+		this.contenedorScroll1.setViewportView(this.panelAsientos);
 
 		//Panel de la izquierda
 		this.contenedorPanel = new JPanel();
@@ -273,14 +289,14 @@ public class Main {
 		
 		//Panel para el despliegue
 		this.panelBox = new JPanel();
-		this.controlPanel.add(this.panelBox, BorderLayout.SOUTH);
+		this.controlPanelIzq.add(this.panelBox, BorderLayout.SOUTH);
 
-		this.añadirButton = new JButton("+");
-		this.añadirButton.addActionListener(new AddButtonActionListener());
+		this.añadirButtonMas = new JButton("+");
+		this.añadirButtonMas.addActionListener(new AddButtonActionListener());
 
 		this.añadirIzquierdoStrut = Box.createHorizontalStrut(110);
 		this.panelBox.add(this.añadirIzquierdoStrut);
-		this.panelBox.add(this.añadirButton);
+		this.panelBox.add(this.añadirButtonMas);
 
 		this.añadirBox = new JComboBox<>();
 		this.añadirBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Aportación inicial", "Préstamo", 
@@ -293,18 +309,63 @@ public class Main {
 
 		this.añadirDerechoStrut = Box.createHorizontalStrut(110);
 		this.panelBox.add(this.añadirDerechoStrut);	
-		
 	}
+	
+	private void initPanelDrch() {
+		//Panel control derecha
+		this.controlPanelDrch = new JPanel();
+		this.controlPanelDrch.setBorder(null);
+		this.frmSupuesto.getContentPane().add(this.controlPanelDrch,BorderLayout.CENTER);
+		this.controlPanelDrch.setLayout(new BorderLayout(0, 0));
+		
+		this.contenedorScroll2 = new JScrollPane();
+		this.contenedorScroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		this.controlPanelDrch.add(this.contenedorScroll2, BorderLayout.CENTER);
+		
+		//Panel derecha texto
+		panelEnunciado = new JTextPane();
+		panelEnunciado.setBorder(null);
+		panelEnunciado.setEditable(false);
+		
+		panelEnunciado.setMargin(new Insets (5,5,5,5));
+	
+		panelEnunciado.setContentType("text/html");
+		textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciados de los asientos contable<br><br></b></p>";
+		panelEnunciado.setText(textoEnunciado);
+		
+		this.contenedorScroll2.add(panelEnunciado);
+		this.contenedorScroll2.setViewportView(panelEnunciado);
+		
+		
+		//Panel para botón generar
+		this.panelBotonGenerar = new JPanel();
+		this.controlPanelDrch.add(this.panelBotonGenerar, BorderLayout.SOUTH);
+
+		this.añadirButtonGenerar = new JButton("Generar solución");
+		this.panelBotonGenerar.add(this.añadirButtonGenerar);
+		this.añadirButtonGenerar.addActionListener(new BotonGenerarSolucionActionListener());
+
+		/*
+		contenedorScroll.getVerticalScrollBar().addAdjustmentListener(
+				new ScrollbarContenedorListener());
+		vistaPreviaScroll.getVerticalScrollBar().addAdjustmentListener(
+				new ScrollbarVistaPreviaListener()); */
+	}
+
 	
 	public void añadeAsiento(String asiento){
 		switch (asiento){
 			
-			case "AportaciónInicial": 	panelAportacion = new AportacionPanel(this, contenedorPanel, 1);
-										scrollContenedor = false;
-										contenedorPanel.add(panelAportacion);
-										panelesAsiento.add(panelAportacion);
-										contenedorPanel.revalidate();
-										break;
+			case "AportaciónInicial":
+							if (panelAportacion==null){panelAportacion = new AportacionPanel(this, contenedorPanel, 1);
+									scrollContenedor = false;
+									contenedorPanel.add(panelAportacion);
+									panelesAsiento.add(panelAportacion);
+									contenedorPanel.revalidate();
+							}else{
+								JOptionPane.showMessageDialog(null, "Solo puede haber una aportación inicial en el ejercicio");
+							}
+							break;
 			case "Prestamo":  	PrestamoPanel panelPrestamo = new PrestamoPanel(this, contenedorPanel, 1);
 								scrollContenedor = false;
 								contenedorPanel.add(panelPrestamo);
@@ -459,8 +520,8 @@ public class Main {
 							}
 							break;
 		}
-
 	}
+
 /*
 	void eliminaMarca() {
 		for (AsientoPanel<?> panel : this.panelesAsiento)
@@ -621,4 +682,40 @@ public class Main {
 					JOptionPane.PLAIN_MESSAGE);
 		}
 	}
+	
+	public class BotonGenerarSolucionActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			//frmSupuesto.dispose();
+			//initVentanaFinal();
+			javax.swing.JFileChooser jF1= new javax.swing.JFileChooser(); 
+			try{ 
+				if(jF1.showSaveDialog(null)==JFileChooser.APPROVE_OPTION){ 
+					direccionRuta = jF1.getSelectedFile().getAbsolutePath(); 
+				} 
+			}catch (Exception ex){ 
+				ex.printStackTrace(); 
+			} 
+			JOptionPane.showMessageDialog(null, "La solución se ha generado con exito");
+			System.exit(0);
+		}
+	}
+	
+		
+	
+	/*
+	private class ScrollbarContenedorListener implements AdjustmentListener {
+		public void adjustmentValueChanged(AdjustmentEvent e) {
+			if (!scrollContenedor)
+				e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+			scrollContenedor = true;
+		}
+	}
+
+	private class ScrollbarVistaPreviaListener implements AdjustmentListener {
+		public void adjustmentValueChanged(AdjustmentEvent e) {
+			if (!scrollVistaPrevia)
+				e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+			scrollVistaPrevia = true;
+		}
+	} */
 }

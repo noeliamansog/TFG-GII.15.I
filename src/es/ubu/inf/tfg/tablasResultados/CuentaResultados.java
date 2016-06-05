@@ -138,7 +138,7 @@ public class CuentaResultados extends Asiento{
 		Document documento = new Document();
 		
 		try{			
-            PdfWriter.getInstance(documento, new FileOutputStream("/Users/noelia/Desktop/CuentaResultados"+ano+".pdf"));
+            PdfWriter.getInstance(documento, new FileOutputStream("n"+ano+".pdf"));
             
             documento.open();
             documento.addTitle("Cuenta de Resultados"); 

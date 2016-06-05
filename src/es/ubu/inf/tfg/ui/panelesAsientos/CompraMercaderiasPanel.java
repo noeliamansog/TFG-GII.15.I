@@ -150,7 +150,7 @@ public class CompraMercaderiasPanel extends AsientoPanel<CompraMercaderias> {
 			if(ok){
 				double [] inputsCompraMercaderias = {importeCompra, porcentajeIVA, numeroDias};
 				compraMercaderias = new CompraMercaderias(fecha, inputsCompraMercaderias, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(compraMercaderias.enunciados);
 				mostrarVista();
 			}
 		}

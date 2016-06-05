@@ -443,6 +443,7 @@ public class SupuestoContable {
 			
 			int anoTemp1=anoInicio;
 			int anoTemp2=anoInicio;
+			//int anoTemp2=0;
 			Calendar fechaCierre = Calendar.getInstance();
 			 
 			for(int i=0; i<todosEnunciadosOrdenados.size(); i++){

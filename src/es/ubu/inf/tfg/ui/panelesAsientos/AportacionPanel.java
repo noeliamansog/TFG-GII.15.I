@@ -33,6 +33,7 @@ public class AportacionPanel extends AsientoPanel<AportacionInicial> {
 	public static AportacionInicial aportacionInicial;
 	
 	
+	
 	public AportacionPanel(Main main, JPanel contenedor, int numero) {
 
 		this.main = main;
@@ -135,11 +136,10 @@ public class AportacionPanel extends AsientoPanel<AportacionInicial> {
 				aportacionInicial = new AportacionInicial(fecha, inputsAportacion, Main.enunciadoConCuentas);
 				Main.aportacionEjecutada = true;
 				Main.fechaAportacion = fecha;
+				añadeEnunciado(aportacionInicial.enunciados);
 				mostrarVista();
-			}
-				
+			}		
 		}
 	}
-	
 }
 
