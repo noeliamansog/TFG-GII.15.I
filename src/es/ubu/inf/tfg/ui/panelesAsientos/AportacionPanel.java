@@ -10,21 +10,18 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.AportacionInicial;
+import es.ubu.inf.tfg.main.Main;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
 
 
 public class AportacionPanel extends AsientoPanel<AportacionInicial> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
-	private static final long serialVersionUID = -1805230103073818602L;
-
+	private static final long serialVersionUID = -4728031249878756673L;
 	private JButton borrarButton;
 	private JButton mostrarButton;
 	private JDateChooser calendario;
@@ -34,11 +31,8 @@ public class AportacionPanel extends AsientoPanel<AportacionInicial> {
 	
 	
 	
-	public AportacionPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
+	public AportacionPanel(){
+		this.nombre = "AportaciónInicial";
 
 		inicializaPanel("Aportación inicial");	
 		
@@ -137,9 +131,13 @@ public class AportacionPanel extends AsientoPanel<AportacionInicial> {
 				Main.aportacionEjecutada = true;
 				Main.fechaAportacion = fecha;
 				añadeEnunciado(aportacionInicial.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}		
 		}
 	}
+	
 }
 

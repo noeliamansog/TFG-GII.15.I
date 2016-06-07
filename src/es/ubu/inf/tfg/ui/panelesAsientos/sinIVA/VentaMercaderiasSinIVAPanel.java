@@ -11,18 +11,16 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinIVA.VentaMercaderiasSinIVA;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class VentaMercaderiasSinIVAPanel extends AsientoPanel<VentaMercaderiasSinIVA> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -33,12 +31,9 @@ public class VentaMercaderiasSinIVAPanel extends AsientoPanel<VentaMercaderiasSi
 	public static VentaMercaderiasSinIVA ventaMercaderiasSinIVA;
 	
 	
-	public VentaMercaderiasSinIVAPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public VentaMercaderiasSinIVAPanel(){
+		this.nombre = "VentaMercaderiasSinIVA";
+		
 		inicializaPanel("Venta mercaderias");	
 		
 		// Botón -
@@ -68,7 +63,7 @@ public class VentaMercaderiasSinIVAPanel extends AsientoPanel<VentaMercaderiasSi
 		this.importe = new JTextField(6);
 		mainPanel.add(this.importe);
 		
-		mainPanel.add(new JLabel("€. Se acuerda que el cliente pague en ."));
+		mainPanel.add(new JLabel("€. Se acuerda que el cliente pague en"));
 		
 		this.dias = new JTextField(2);
 		mainPanel.add(this.dias);
@@ -128,7 +123,10 @@ public class VentaMercaderiasSinIVAPanel extends AsientoPanel<VentaMercaderiasSi
 			if(ok){
 				double [] inputsVentaMercaderiasSinIVA = {importeVenta, numeroDias};
 				ventaMercaderiasSinIVA = new VentaMercaderiasSinIVA(fecha, inputsVentaMercaderiasSinIVA, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(ventaMercaderiasSinIVA.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

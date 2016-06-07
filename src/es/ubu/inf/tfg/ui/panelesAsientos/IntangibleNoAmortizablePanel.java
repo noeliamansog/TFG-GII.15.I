@@ -10,19 +10,17 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraIntangibleNoAmortizable;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class IntangibleNoAmortizablePanel extends AsientoPanel<CompraIntangibleNoAmortizable> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -32,12 +30,9 @@ public class IntangibleNoAmortizablePanel extends AsientoPanel<CompraIntangibleN
 	public static CompraIntangibleNoAmortizable intangibleNoAmortizable;
 	
 	
-	public IntangibleNoAmortizablePanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public IntangibleNoAmortizablePanel(){
+		this.nombre = "CompraIntangibleNoAmortizable";
+		
 		inicializaPanel("Compra intangible no amortizable");
 		
 		// Botón -
@@ -104,7 +99,10 @@ public class IntangibleNoAmortizablePanel extends AsientoPanel<CompraIntangibleN
 			if(ok){
 				double [] inputsIntangibleNoAmortizable = {valorCompra};
 				intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fecha, inputsIntangibleNoAmortizable, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(intangibleNoAmortizable.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

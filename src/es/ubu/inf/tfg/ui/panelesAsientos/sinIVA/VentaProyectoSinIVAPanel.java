@@ -10,14 +10,13 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinIVA.VentaProyectoSinIVA;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class VentaProyectoSinIVAPanel extends AsientoPanel<VentaProyectoSinIVA> {
 
@@ -32,12 +31,9 @@ public class VentaProyectoSinIVAPanel extends AsientoPanel<VentaProyectoSinIVA> 
 	public static VentaProyectoSinIVA ventaProyectoSinIVA;
 	
 	
-	public VentaProyectoSinIVAPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public VentaProyectoSinIVAPanel(){
+		this.nombre = "VentaProyectoSinIVA";
+		
 		inicializaPanel("Venta proyecto");	
 		
 		// Botón -
@@ -127,7 +123,10 @@ public class VentaProyectoSinIVAPanel extends AsientoPanel<VentaProyectoSinIVA> 
 			if(ok){
 				double [] inputsVentaProyectoSinIVA = {importeVenta, numeroDias};
 				ventaProyectoSinIVA = new VentaProyectoSinIVA(fecha, inputsVentaProyectoSinIVA, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(ventaProyectoSinIVA.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

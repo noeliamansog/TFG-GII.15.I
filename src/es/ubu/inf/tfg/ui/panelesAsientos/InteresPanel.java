@@ -10,18 +10,16 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.Interes;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class InteresPanel extends AsientoPanel<Interes> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 	
 	private JButton borrarButton;
@@ -32,12 +30,9 @@ public class InteresPanel extends AsientoPanel<Interes> {
 	public static Interes intereses;
 	
 	
-	public InteresPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public InteresPanel(){
+		this.nombre = "Interes";
+		
 		inicializaPanel("Intereses");	
 		
 		// Botón -
@@ -128,7 +123,10 @@ public class InteresPanel extends AsientoPanel<Interes> {
 			if(ok){
 				double [] inputsIntereses = {ingresoIntereses, porcentajeCobrado};
 				intereses = new Interes(fecha, inputsIntereses, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(intereses.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

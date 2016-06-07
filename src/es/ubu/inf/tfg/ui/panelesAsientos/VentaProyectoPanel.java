@@ -10,35 +10,29 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.VentaProyecto;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class VentaProyectoPanel extends AsientoPanel<VentaProyecto> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JTextField importe;
-	private JTextField iva;
 	private JTextField dias;
 	public static VentaProyecto ventaProyecto;
 	
 	
-	public VentaProyectoPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public VentaProyectoPanel(){
+		this.nombre = "VentaProyecto";
+		
 		inicializaPanel("Venta proyecto");	
 		
 		// Botón -
@@ -68,12 +62,7 @@ public class VentaProyectoPanel extends AsientoPanel<VentaProyecto> {
 		this.importe = new JTextField(6);
 		mainPanel.add(this.importe);
 		
-		mainPanel.add(new JLabel("€ más un"));
-		
-		this.iva = new JTextField(2);
-		mainPanel.add(this.iva);
-		
-		mainPanel.add(new JLabel ("% de IVA. Se acuerda que el cliente"));
+		mainPanel.add(new JLabel("€ más un "+Main.IVA+"% de IVA. Se acuerda que el cliente"));
 		mainPanel.add(new JLabel ("pague en"));
 		
 		this.dias = new JTextField(2);
@@ -87,7 +76,6 @@ public class VentaProyectoPanel extends AsientoPanel<VentaProyecto> {
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double importeVenta = 0;
-			double porcentajeIVA = 0;
 			double numeroDias = 0;
 			boolean ok = true;
 			
@@ -115,24 +103,6 @@ public class VentaProyectoPanel extends AsientoPanel<VentaProyecto> {
 				}
 			}
 			
-			//Porcenjate IVA
-			String i = iva.getText();
-			if("".equals(i)){
-				JOptionPane.showMessageDialog(null, "Introduce el % del IVA correctamente");
-				ok = false;
-			}else{
-				try{
-					porcentajeIVA = Double.parseDouble(i);	
-					if(porcentajeIVA<0 || porcentajeIVA>100){
-						JOptionPane.showMessageDialog(null, "El % del IVA debe estar entre 0 y 100");
-						ok=false;
-					}
-				}catch (Exception e){
-					JOptionPane.showMessageDialog(null, "Introduce el % del IVA correctamente");
-					ok = false;
-				}
-			}
-			
 			//Numero de días
 			String d = dias.getText();
 			if("".equals(d)){
@@ -149,9 +119,12 @@ public class VentaProyectoPanel extends AsientoPanel<VentaProyecto> {
 		
 				
 			if(ok){
-				double [] inputsVentaProyecto = {importeVenta, porcentajeIVA, numeroDias};
+				double [] inputsVentaProyecto = {importeVenta, numeroDias};
 				ventaProyecto = new VentaProyecto(fecha, inputsVentaProyecto, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(ventaProyecto.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

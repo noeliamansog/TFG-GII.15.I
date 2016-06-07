@@ -10,32 +10,27 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.DividendosSinRetenciones;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class DividendosSinRetPanel extends AsientoPanel<DividendosSinRetenciones> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JTextField valor;
-	public static DividendosSinRetenciones dividendosSinReteneciones;
+	public static DividendosSinRetenciones dividendosSinRetenciones;
 	
-	public DividendosSinRetPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public DividendosSinRetPanel(){
+		this.nombre = "DividendosSinRetenciones";
+		
 		inicializaPanel("Dividendos");
 		
 		// Botón -
@@ -110,8 +105,12 @@ public class DividendosSinRetPanel extends AsientoPanel<DividendosSinRetenciones
 				
 			if(ok){
 				double [] inputsDividendosSinR = {porcentajeValorDividendos};
-				dividendosSinReteneciones = new DividendosSinRetenciones (fecha, inputsDividendosSinR, Main.enunciadoConCuentas);
-				
+				dividendosSinRetenciones = new DividendosSinRetenciones (fecha, inputsDividendosSinR, Main.enunciadoConCuentas);
+				añadeEnunciado(dividendosSinRetenciones.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
+				anoDividendo.add(fecha.get(Calendar.YEAR));
 				mostrarVista();
 			}
 		}

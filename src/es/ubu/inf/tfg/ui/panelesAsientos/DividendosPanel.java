@@ -10,19 +10,17 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.Dividendos;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class DividendosPanel extends AsientoPanel<Dividendos> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -32,12 +30,9 @@ public class DividendosPanel extends AsientoPanel<Dividendos> {
 	private JTextField retencion;
 	public static Dividendos dividendos;
 	
-	public DividendosPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public DividendosPanel(){
+		this.nombre ="Dividendos";
+		
 		inicializaPanel("Dividendos");	
 		
 		// Botón -
@@ -137,7 +132,11 @@ public class DividendosPanel extends AsientoPanel<Dividendos> {
 			if(ok){
 				double [] inputsDividendos = {porcentajeValorDividendos, porcentajeRetencion};
 				dividendos = new Dividendos (fecha, inputsDividendos, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(dividendos.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
+				anoDividendo.add(fecha.get(Calendar.YEAR));
 				mostrarVista();
 			}
 		}

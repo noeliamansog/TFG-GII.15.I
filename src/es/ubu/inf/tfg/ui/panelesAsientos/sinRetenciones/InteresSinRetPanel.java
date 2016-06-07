@@ -10,18 +10,16 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.InteresSinRetenciones;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class InteresSinRetPanel extends AsientoPanel<InteresSinRetenciones> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -31,12 +29,9 @@ public class InteresSinRetPanel extends AsientoPanel<InteresSinRetenciones> {
 	public static InteresSinRetenciones interesesSinRetenciones;
 	
 	
-	public InteresSinRetPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public InteresSinRetPanel(){
+		this.nombre = "InteresesSinRetenciones";
+		
 		inicializaPanel("Intereses");
 		
 		// Botón -
@@ -103,7 +98,10 @@ public class InteresSinRetPanel extends AsientoPanel<InteresSinRetenciones> {
 			if(ok){
 				double [] inputsInteresesSinR = {ingresoIntereses};
 				interesesSinRetenciones = new InteresSinRetenciones(fecha, inputsInteresesSinR, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(interesesSinRetenciones.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

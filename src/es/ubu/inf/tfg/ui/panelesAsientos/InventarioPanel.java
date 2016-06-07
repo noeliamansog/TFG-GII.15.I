@@ -10,19 +10,17 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.Inventario;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class InventarioPanel extends AsientoPanel<Inventario> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -31,12 +29,9 @@ public class InventarioPanel extends AsientoPanel<Inventario> {
 	private JTextField valor;
 	public static Inventario inventario;
 	
-	public InventarioPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public InventarioPanel(){
+		this.nombre = "Inventario";
+		
 		inicializaPanel("Inventario");	
 		
 		// Botón -
@@ -103,7 +98,10 @@ public class InventarioPanel extends AsientoPanel<Inventario> {
 			if(ok){
 				double [] inputsInventario = {valorMercaderias};
 				inventario = new Inventario (fecha, inputsInventario, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(inventario.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

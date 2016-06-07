@@ -11,19 +11,17 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraSWAmortizable;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class CompraSWPanel extends AsientoPanel<CompraSWAmortizable> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -35,12 +33,9 @@ public class CompraSWPanel extends AsientoPanel<CompraSWAmortizable> {
 	public static CompraSWAmortizable softwareAmortizable;
 	
 	
-	public CompraSWPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public CompraSWPanel(){
+		this.nombre = "CompraSWAmortizable";
+		
 		inicializaPanel("Compra software amortizable");	
 		
 		// Botón -
@@ -147,7 +142,10 @@ public class CompraSWPanel extends AsientoPanel<CompraSWAmortizable> {
 			if(ok){
 				double [] inputsSoftwareAmortizable = {valorCompra, numeroDias, numeroAnos};
 				softwareAmortizable = new CompraSWAmortizable(fecha, inputsSoftwareAmortizable, Main.enunciadoConCuentas);
-					
+				añadeEnunciado(softwareAmortizable.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

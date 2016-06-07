@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,37 +14,33 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraMaterialAmortizable;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class MaterialAmortizablePanel extends AsientoPanel<CompraMaterialAmortizable> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JComboBox<String> desplegable;
+	private double compra = 0;
 	private JTextField importe;
 	private JTextField dias;
 	private JTextField anos;
 	public static CompraMaterialAmortizable materialAmortizable;
 	
 	
-	public MaterialAmortizablePanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public MaterialAmortizablePanel(){
+		this.nombre = "CompraMaterialAmortizable";
+		
 		inicializaPanel("Compra material amortizable");
 		
 		// Botón -
@@ -73,6 +71,7 @@ public class MaterialAmortizablePanel extends AsientoPanel<CompraMaterialAmortiz
 		this.desplegable.setModel(new DefaultComboBoxModel<String>(new String[] {"maquinaria", "mobiliario de oficina",
 				"equipos para procesos de información", "un elemento de transporte" }));
 		mainPanel.add(this.desplegable);
+		this.desplegable.addItemListener(new DesplegablesItemListener()); 
 		
 		
 		mainPanel.add(new JLabel ("por valor de")); 
@@ -95,11 +94,28 @@ public class MaterialAmortizablePanel extends AsientoPanel<CompraMaterialAmortiz
 		mainPanel.add(new JLabel ("años."));
 			
 	}
+	
+	private class DesplegablesItemListener implements ItemListener{
+		public void itemStateChanged(ItemEvent event) {
+			//Compra
+			if (event.getSource() == desplegable){
+				if (desplegable.getSelectedItem().equals("maquinaria")) {
+					compra=0;
+				}if (desplegable.getSelectedItem().equals("mobiliario de oficina")){
+					compra=1;
+				}if (desplegable.getSelectedItem().equals("equipos para procesos de información")){
+					compra=2;
+				}if (desplegable.getSelectedItem().equals("un elemento de transporte")){
+					compra=3;
+				}	
+			}
+		}
+	}
+	
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
-			double compra = 0;
 			double importeCompra = 0;
 			double numeroDias = 0;
 			double numeroAnos = 0;
@@ -113,19 +129,6 @@ public class MaterialAmortizablePanel extends AsientoPanel<CompraMaterialAmortiz
 			}
 			if (ok){
 				fecha.setTime(f);
-			}
-			
-			//Compra
-			if (event.getSource() == desplegable){
-				if (desplegable.getSelectedItem().equals("maquinaria")) {
-					compra=0;
-				}if (desplegable.getSelectedItem().equals("mobiliario de oficina")){
-					compra=1;
-				}if (desplegable.getSelectedItem().equals("equipos para procesos de información")){
-					compra=2;
-				}if (desplegable.getSelectedItem().equals("un elemento de transporte")){
-					compra=3;
-				}	
 			}
 			
 			//Importe de la compra
@@ -172,7 +175,10 @@ public class MaterialAmortizablePanel extends AsientoPanel<CompraMaterialAmortiz
 			if(ok){
 				double [] inputsMaterialAmortizable = {compra, importeCompra, numeroDias, numeroAnos};
 				materialAmortizable = new CompraMaterialAmortizable(fecha, inputsMaterialAmortizable, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(materialAmortizable.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

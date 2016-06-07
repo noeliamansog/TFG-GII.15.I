@@ -10,18 +10,16 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.NuevoSocio;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class NuevoSocioPanel extends AsientoPanel<NuevoSocio> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -31,12 +29,9 @@ public class NuevoSocioPanel extends AsientoPanel<NuevoSocio> {
 	public static NuevoSocio nuevoSocio;
 	
 	
-	public NuevoSocioPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public NuevoSocioPanel(){
+		this.nombre = "NuevoSocio";
+		
 		inicializaPanel("Nuevo socio");	
 		
 		// Botón -
@@ -110,7 +105,10 @@ public class NuevoSocioPanel extends AsientoPanel<NuevoSocio> {
 				double numAcciones = Main.numeroSocios;
 				double [] inputsNuevoSocio = {aportacion, numAcciones};
 				nuevoSocio = new NuevoSocio(fecha, inputsNuevoSocio, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(nuevoSocio.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

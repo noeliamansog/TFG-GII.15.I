@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,20 +14,18 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.Prestamo;
+import es.ubu.inf.tfg.main.Main;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
 
 
 
 public class PrestamoPanel extends AsientoPanel<Prestamo> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	
@@ -35,17 +35,16 @@ public class PrestamoPanel extends AsientoPanel<Prestamo> {
 	private JTextField importe;
 	private JComboBox<String> desplegable1;
 	private JComboBox<String> desplegable2;
+	private double tipoPrestamo = 0;
+	private double mensualAnual = 0;
 	private JTextField anos;
 	private JTextField interes;
 	public static Prestamo prestamo;
 	
 	
-	public PrestamoPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public PrestamoPanel(){
+		this.nombre ="Prestamo";
+		
 		inicializaPanel("Préstamo");
 
 		// Botón -
@@ -80,11 +79,13 @@ public class PrestamoPanel extends AsientoPanel<Prestamo> {
 		this.desplegable1 = new JComboBox<>();
 		this.desplegable1.setModel(new DefaultComboBoxModel<String>(new String[] {"amortización", "pago"}));
 		mainPanel.add(this.desplegable1);
+		this.desplegable1.addItemListener(new DesplegablesItemListener()); 
 		
         
 		this.desplegable2 = new JComboBox<>();
 		this.desplegable2.setModel(new DefaultComboBoxModel<String>(new String[] {"mensual", "anual"}));
 		mainPanel.add(this.desplegable2);
+		this.desplegable2.addItemListener(new DesplegablesItemListener()); 
 		
 
 		mainPanel.add(new JLabel("constantes, en"));
@@ -103,13 +104,32 @@ public class PrestamoPanel extends AsientoPanel<Prestamo> {
 		mainPanel.add(new JLabel("préstamo."));
 	}
 	
+	private class DesplegablesItemListener implements ItemListener{
+		public void itemStateChanged(ItemEvent e) {
+			//Tipo de prestamo
+			if (e.getSource() == desplegable1){
+				if (desplegable1.getSelectedItem().equals("amortización")) {
+					tipoPrestamo = 0;
+				}if(desplegable1.getSelectedItem().equals("pago")){
+					tipoPrestamo = 1;
+				}
+			}
+			//Mensual o anual
+			if (e.getSource() == desplegable2){
+				if (desplegable2.getSelectedItem().equals("mensual")) {
+					mensualAnual = 0;
+				}if(desplegable2.getSelectedItem().equals("anual")){
+					mensualAnual = 1;
+				}
+			}
+		}
+	}
+	
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double importePrestamo = 0;
-			double tipoPrestamo = 0;
-			double mensualAnual = 0;
 			double numeroAnos = 0;
 			double interesFijo = 0;
 			boolean ok = true;
@@ -136,24 +156,6 @@ public class PrestamoPanel extends AsientoPanel<Prestamo> {
 					JOptionPane.showMessageDialog(null, "Introduce el importe del préstamo correctamente");
 					ok = false;
 				}
-			}
-			
-			//Tipo de prestamo (amortización o pago)
-			if (event.getSource() == desplegable1){
-				if (desplegable1.getSelectedItem().equals("amortización")) {
-					tipoPrestamo=0;
-				}if (desplegable1.getSelectedItem().equals("pago")){
-					tipoPrestamo=1;
-				}	
-			}
-			
-			//Mensual o anual
-			if (event.getSource() == desplegable2){
-				if (desplegable2.getSelectedItem().equals("mensual")) {
-					mensualAnual=0;
-				}if (desplegable2.getSelectedItem().equals("anual")){
-					mensualAnual=1;
-				}	
 			}
 			
 			//Numero de años
@@ -191,11 +193,13 @@ public class PrestamoPanel extends AsientoPanel<Prestamo> {
 			if(ok){
 				double [] inputsPrestamo = {importePrestamo, tipoPrestamo, mensualAnual, numeroAnos, interesFijo};
 				prestamo = new Prestamo(fecha, inputsPrestamo, Main.enunciadoConCuentas);
-			
+				añadeEnunciado(prestamo.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 			
 		}
 	}
-		
 }

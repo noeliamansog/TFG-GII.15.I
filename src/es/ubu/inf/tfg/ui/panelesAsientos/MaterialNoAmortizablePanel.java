@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,37 +14,33 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraMaterialNoAmortizable;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class MaterialNoAmortizablePanel extends AsientoPanel<CompraMaterialNoAmortizable> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JComboBox<String> desplegable;
+	private double compra = 0;
 	private JTextField importe;
 	private JTextField abono;
 	private JTextField meses;
 	public static CompraMaterialNoAmortizable materialNoAmortizable;
 	
 	
-	public MaterialNoAmortizablePanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public MaterialNoAmortizablePanel(){
+		this.nombre = "CompraMaterialNoAmortizable";
+		
 		inicializaPanel("Compra material no amortizable");
 		
 		// Botón -
@@ -71,6 +69,7 @@ public class MaterialNoAmortizablePanel extends AsientoPanel<CompraMaterialNoAmo
 		this.desplegable = new JComboBox<>();
 		this.desplegable.setModel(new DefaultComboBoxModel<String>(new String[] {"un solar", "un local donde instalar la oficina"}));
 		mainPanel.add(this.desplegable);
+		this.desplegable.addItemListener(new DesplegablesItemListener()); 
 		
 		mainPanel.add(new JLabel ("por importe de")); 
 		
@@ -93,11 +92,23 @@ public class MaterialNoAmortizablePanel extends AsientoPanel<CompraMaterialNoAmo
 
 	}
 	
+	private class DesplegablesItemListener implements ItemListener{
+		public void itemStateChanged(ItemEvent event) {
+			//Compra
+			if (event.getSource() == desplegable){
+				if (desplegable.getSelectedItem().equals("un solar")) {
+					compra=0;
+				}if (desplegable.getSelectedItem().equals("un local donde instalar la oficina")){
+					compra=1;
+				}	
+			}
+		}
+	}
+	
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
-			double compra = 0;
 			double importeCompra = 0;
 			double importeAbonado = 0;
 			double numeroMeses = 0;
@@ -111,15 +122,6 @@ public class MaterialNoAmortizablePanel extends AsientoPanel<CompraMaterialNoAmo
 			}
 			if (ok){
 				fecha.setTime(f);
-			}
-			
-			//Compra
-			if (event.getSource() == desplegable){
-				if (desplegable.getSelectedItem().equals("amortización")) {
-					compra=0;
-				}if (desplegable.getSelectedItem().equals("pago")){
-					compra=1;
-				}	
 			}
 			
 			//Importe de la compra
@@ -162,11 +164,18 @@ public class MaterialNoAmortizablePanel extends AsientoPanel<CompraMaterialNoAmo
 					ok = false;
 				}
 			}
+			if(importeAbonado>importeCompra){
+				JOptionPane.showMessageDialog(null, "El importe abonado no puede ser mayor al importe de la compra");
+				ok=false;
+			}
 				
 			if(ok){
 				double [] inputsMaterialNoAmortizable = {compra, importeCompra, importeAbonado, numeroMeses};
 				materialNoAmortizable = new CompraMaterialNoAmortizable(fecha, inputsMaterialNoAmortizable, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(materialNoAmortizable.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

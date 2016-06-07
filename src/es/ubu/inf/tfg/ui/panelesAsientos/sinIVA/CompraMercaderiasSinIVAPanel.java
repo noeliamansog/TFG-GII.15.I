@@ -10,19 +10,17 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinIVA.CompraMercaderiasSinIVA;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class CompraMercaderiasSinIVAPanel extends AsientoPanel<CompraMercaderiasSinIVA> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -33,12 +31,9 @@ public class CompraMercaderiasSinIVAPanel extends AsientoPanel<CompraMercaderias
 	public static CompraMercaderiasSinIVA compraMercaderiasSinIVA;
 	
 	
-	public CompraMercaderiasSinIVAPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public CompraMercaderiasSinIVAPanel(){
+		this.nombre ="CompraMercaderiasSinIVA";
+		
 		inicializaPanel("Compra mercaderias");	
 		
 		// Botón -
@@ -127,7 +122,10 @@ public class CompraMercaderiasSinIVAPanel extends AsientoPanel<CompraMercaderias
 			if(ok){
 				double [] inputsCompraMercaderiasSinIVA = {importeCompra, numeroDias};
 				compraMercaderiasSinIVA = new CompraMercaderiasSinIVA(fecha, inputsCompraMercaderiasSinIVA, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(compraMercaderiasSinIVA.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

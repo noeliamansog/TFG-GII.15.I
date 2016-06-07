@@ -10,19 +10,17 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraPIAmortizable;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class CompraPIPanel extends AsientoPanel<CompraPIAmortizable> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -34,12 +32,9 @@ public class CompraPIPanel extends AsientoPanel<CompraPIAmortizable> {
 	public static CompraPIAmortizable propiedadIndustrialAmortizable;
 	
 	
-	public CompraPIPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public CompraPIPanel(){
+		this.nombre = "CompraPIAmortizable";
+		
 		inicializaPanel("Compra propiedad industrial amortizable");	
 		
 		// Botón -
@@ -145,7 +140,10 @@ public class CompraPIPanel extends AsientoPanel<CompraPIAmortizable> {
 			if(ok){
 				double [] inputsPropiedadIndustrialAmortizable = {importeCompra, numeroDias, numeroAnos};
 				propiedadIndustrialAmortizable = new CompraPIAmortizable(fecha, inputsPropiedadIndustrialAmortizable, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(propiedadIndustrialAmortizable.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

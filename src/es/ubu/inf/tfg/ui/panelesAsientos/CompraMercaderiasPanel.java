@@ -10,36 +10,30 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraMercaderias;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class CompraMercaderiasPanel extends AsientoPanel<CompraMercaderias> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JTextField importe;
-	private JTextField iva;
 	private JTextField dias;
 	public static CompraMercaderias compraMercaderias;
 	
 	
-	public CompraMercaderiasPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public CompraMercaderiasPanel(){
+		this.nombre = "CompraMercaderias";
+		
 		inicializaPanel("Compra mercaderias");	
 		
 		// Botón -
@@ -68,12 +62,7 @@ public class CompraMercaderiasPanel extends AsientoPanel<CompraMercaderias> {
 		this.importe = new JTextField(6);
 		mainPanel.add(this.importe);
 		
-		mainPanel.add(new JLabel("€ mas un"));
-		
-		this.iva = new JTextField(2);
-		mainPanel.add(this.iva);
-		
-		mainPanel.add(new JLabel("% de IVA. Se acuerda que el pago se realice en"));
+		mainPanel.add(new JLabel("€ mas un "+Main.IVA+"% de IVA. Se acuerda que el pago se realice en"));
 		
 		this.dias = new JTextField(2);
 		mainPanel.add(this.dias);
@@ -86,7 +75,6 @@ public class CompraMercaderiasPanel extends AsientoPanel<CompraMercaderias> {
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double importeCompra = 0;
-			double porcentajeIVA = 0;
 			double numeroDias = 0;
 			boolean ok = true;
 			
@@ -114,24 +102,6 @@ public class CompraMercaderiasPanel extends AsientoPanel<CompraMercaderias> {
 				}
 			}
 			
-			//Porcenjate IVA
-			String i = iva.getText();
-			if("".equals(i)){
-				JOptionPane.showMessageDialog(null, "Introduce el % del IVA correctamente");
-				ok = false;
-			}else{
-				try{
-					porcentajeIVA = Double.parseDouble(i);
-					if(porcentajeIVA<0 || porcentajeIVA>100){
-						JOptionPane.showMessageDialog(null, "El % del IVA debe estar entre 0 y 100");
-						ok=false;
-					}
-				}catch (Exception e){
-					JOptionPane.showMessageDialog(null, "Introduce el % del IVA correctamente");
-					ok = false;
-				}
-			}
-			
 			//Numero de días
 			String d = dias.getText();
 			if("".equals(d)){
@@ -148,9 +118,12 @@ public class CompraMercaderiasPanel extends AsientoPanel<CompraMercaderias> {
 		
 				
 			if(ok){
-				double [] inputsCompraMercaderias = {importeCompra, porcentajeIVA, numeroDias};
+				double [] inputsCompraMercaderias = {importeCompra, numeroDias};
 				compraMercaderias = new CompraMercaderias(fecha, inputsCompraMercaderias, Main.enunciadoConCuentas);
 				añadeEnunciado(compraMercaderias.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

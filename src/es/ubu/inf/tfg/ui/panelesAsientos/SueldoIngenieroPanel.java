@@ -11,18 +11,16 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.SueldoIngeniero;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 public class SueldoIngenieroPanel extends AsientoPanel<SueldoIngeniero> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -33,12 +31,9 @@ public class SueldoIngenieroPanel extends AsientoPanel<SueldoIngeniero> {
 	public static SueldoIngeniero sueldoIngeniero;
 	
 	
-	public SueldoIngenieroPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public SueldoIngenieroPanel(){
+		this.nombre ="SueldoIngeniero";
+		
 		inicializaPanel("Sueldo ingeniero informático");	
 		
 		// Botón -
@@ -134,7 +129,10 @@ public class SueldoIngenieroPanel extends AsientoPanel<SueldoIngeniero> {
 			if(ok){
 				double [] inputsSueldoIngeniero = {sueldoIng, porcentajeTiempo};
 				sueldoIngeniero = new SueldoIngeniero(fecha, inputsSueldoIngeniero, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(sueldoIngeniero.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}

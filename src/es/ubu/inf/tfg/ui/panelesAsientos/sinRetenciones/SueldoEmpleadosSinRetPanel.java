@@ -10,19 +10,17 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.SueldosEmpleadosSinRetenciones;
 import es.ubu.inf.tfg.ui.AsientoPanel;
-import es.ubu.inf.tfg.ui.Main;
+import es.ubu.inf.tfg.main.Main;
 
 
 public class SueldoEmpleadosSinRetPanel extends AsientoPanel<SueldosEmpleadosSinRetenciones> {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -32,12 +30,9 @@ public class SueldoEmpleadosSinRetPanel extends AsientoPanel<SueldosEmpleadosSin
 	private JTextField cotizacion;
 	public static SueldosEmpleadosSinRetenciones sueldoEmpleadoSinRetenciones;
 	
-	public SueldoEmpleadosSinRetPanel(Main main, JPanel contenedor, int numero) {
-
-		this.main = main;
-		this.contenedorPanel = contenedor;
-		this.numero = numero;
-
+	public SueldoEmpleadosSinRetPanel(){
+		this.nombre = "SueldoYSalarioSinRetenciones";
+		
 		inicializaPanel("Sueldos y salarios");
 		
 		// Botón -
@@ -127,7 +122,10 @@ public class SueldoEmpleadosSinRetPanel extends AsientoPanel<SueldosEmpleadosSin
 			if(ok){
 				double [] inputsSueldoEmpleadoSinR = {Main.numeroSocios, sueldoEmpleados, cotizacionSS};
 				sueldoEmpleadoSinRetenciones = new SueldosEmpleadosSinRetenciones(fecha, inputsSueldoEmpleadoSinR, Main.enunciadoConCuentas);
-				
+				añadeEnunciado(sueldoEmpleadoSinRetenciones.enunciados);
+				Main.ejecucionAlgunAsiento = true;
+				borrarButton.setEnabled(false);
+				mostrarButton.setEnabled(false);
 				mostrarVista();
 			}
 		}
