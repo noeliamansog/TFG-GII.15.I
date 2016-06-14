@@ -18,7 +18,7 @@ import es.ubu.inf.tfg.asientosContables.VentaProyecto;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-public class VentaProyectoPanel extends AsientoPanel<VentaProyecto> {
+public class VentaProyectoPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 
@@ -68,7 +68,7 @@ public class VentaProyectoPanel extends AsientoPanel<VentaProyecto> {
 		this.dias = new JTextField(2);
 		mainPanel.add(this.dias);
 		
-		mainPanel.add(new JLabel ("días. El cliente paga al contado."));
+		mainPanel.add(new JLabel ("días."));
 	}
 	
 	private class BotonMostrarActionListener implements ActionListener {

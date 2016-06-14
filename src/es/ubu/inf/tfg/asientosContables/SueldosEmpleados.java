@@ -31,6 +31,5 @@ public class SueldosEmpleados extends Asiento {
 		dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", ((inputs[4]/100)*(inputs[0]*inputs[1])), damePrioridad(476)));
 		dameCuenta(4751).añadirHaber(new Anotacion(fecha, "H.P acreedor por retenciones practicadas", ((inputs[3]/100)*((inputs[0]*inputs[1]))), damePrioridad(4751)));
 
-	
 	}
 }

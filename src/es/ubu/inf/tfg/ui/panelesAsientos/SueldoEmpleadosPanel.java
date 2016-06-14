@@ -18,7 +18,7 @@ import es.ubu.inf.tfg.asientosContables.SueldosEmpleados;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-public class SueldoEmpleadosPanel extends AsientoPanel<SueldosEmpleados> {
+public class SueldoEmpleadosPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 
@@ -60,8 +60,8 @@ public class SueldoEmpleadosPanel extends AsientoPanel<SueldosEmpleados> {
 		this.sueldo = new JTextField(6);
 		mainPanel.add(this.sueldo);
 		
-		mainPanel.add(new JLabel("€ de sueldo bruto al año. Por cada uno de sus empleados "));
-		mainPanel.add(new JLabel("la empresa cotiza"));
+		mainPanel.add(new JLabel("€ de sueldo bruto al año. Por cada uno de sus empleados la"));
+		mainPanel.add(new JLabel("empresa cotiza"));
 		
 		this.cotizacion = new JTextField(6);
 		mainPanel.add(this.cotizacion);

@@ -23,5 +23,4 @@ public class CompraIntangibleNoAmortizable extends Asiento {
 		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Concesiones administrativas", inputs[0], damePrioridad(572)));
 		
 	}
-
 }

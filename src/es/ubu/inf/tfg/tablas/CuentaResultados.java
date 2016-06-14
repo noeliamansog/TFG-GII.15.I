@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.tablas;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,8 +25,6 @@ import es.ubu.inf.tfg.main.Main;
 
 public class CuentaResultados extends Asiento{
 	private int ano;
-	private Calendar fechaDesde;
-	private Calendar fechaHasta;
 	
 	static ArrayList<Anotacion> gastos;
 	static ArrayList<Anotacion> ingresos;
@@ -34,19 +33,17 @@ public class CuentaResultados extends Asiento{
 
 	static double valorGastos;
 	static double valorIngresos;
+	public static double excedenteActividad;
 	static double valorGastosFinancieros;
 	static double valorIngresosFinancieros;
 	static double excedente;
 	static double impuestos;
-	static double resultadoTotal;
+	public static double resultadoTotal;
+	public static double ingresosF;
 	
 	
 	public CuentaResultados(int ano){
 		this.ano=ano;
-		fechaDesde =  Calendar.getInstance();
-		fechaDesde.set(ano,0,1);
-		fechaHasta =  Calendar.getInstance();
-		fechaHasta.set(ano,11,31);
 		
 		gastos = new ArrayList<Anotacion>();
 		ingresos = new ArrayList<Anotacion>();
@@ -57,9 +54,11 @@ public class CuentaResultados extends Asiento{
 		valorIngresos=0;
 		valorGastosFinancieros = 0;
 		valorIngresosFinancieros = 0;
+		excedenteActividad = 0;
 		excedente=0;
 		impuestos=0;
 		resultadoTotal=0;
+		ingresosF=0;
 		
 		
 		Iterator<Integer> it = cuentas.keySet().iterator();
@@ -68,10 +67,10 @@ public class CuentaResultados extends Asiento{
 		  Cuenta cuenta = cuentas.get(key);
   
 		  if(cuenta.prioridad==0){
-			  //Gastos
-			  if (!(cuenta.debe.isEmpty())){
+			 //GASTOS
+			 if (tieneCuentasDebe(cuenta, ano)){
 				  for(int i=0; i<cuenta.debe.size(); i++){
-					  if (cuenta.debe.get(i).fecha.before(fechaHasta) && cuenta.debe.get(i).fecha.after(fechaDesde)){
+					  if (cuenta.debe.get(i).fecha.get(Calendar.YEAR)==ano){
 						  if (cuenta.codigo==769 || cuenta.codigo==662){
 							  gastosFinancieros.add(cuenta.debe.get(i));
 							  valorGastosFinancieros += cuenta.debe.get(i).cantidad;
@@ -83,26 +82,31 @@ public class CuentaResultados extends Asiento{
 						  dameCuenta(cuenta.codigo).añadirHaber(cuenta.debe.get(i));
 					  }
 				  }
-			  }else{
-				  //Ingresos
-				  if (!(cuenta.haber.isEmpty())){
-					  for(int i=0; i<cuenta.haber.size(); i++){
-						  if (cuenta.haber.get(i).fecha.before(fechaHasta) && cuenta.haber.get(i).fecha.after(fechaDesde)){
-							  if (cuenta.codigo==769 || cuenta.codigo==662){
-								  ingresosFinancieros.add(cuenta.haber.get(i));
-								  valorIngresosFinancieros += cuenta.haber.get(i).cantidad;
-							  }else{
-								  ingresos.add(cuenta.haber.get(i));
-								  valorIngresos += cuenta.haber.get(i).cantidad;
-							  }			  
-							  //Cierro la cuenta
-							  dameCuenta(cuenta.codigo).añadirDebe(cuenta.haber.get(i));
-						  }
+				 
+			 }
+			 //INGRESOS
+			 else{
+				 for(int i=0; i<cuenta.haber.size(); i++){
+					  if (cuenta.haber.get(i).fecha.get(Calendar.YEAR)==ano){
+						  if (cuenta.codigo==769 || cuenta.codigo==662){
+							  ingresosFinancieros.add(cuenta.haber.get(i));
+							  valorIngresosFinancieros += cuenta.haber.get(i).cantidad;
+							  if(cuenta.codigo==769){
+								  ingresosF += cuenta.haber.get(i).cantidad;
+							  }
+						  }else{
+							  ingresos.add(cuenta.haber.get(i));
+							  valorIngresos += cuenta.haber.get(i).cantidad;
+						  }			  
+						  //Cierro la cuenta
+						  dameCuenta(cuenta.codigo).añadirDebe(cuenta.haber.get(i));
 					  }
 				  }
 			 }
 		  }
 		}
+		Calendar fech = Calendar.getInstance();
+		fech.set(ano,11,31);
 		
 		//Calculo expediente y los impuestos
 		excedente = (valorIngresos - valorGastos)+(valorIngresosFinancieros-valorGastosFinancieros);
@@ -111,24 +115,33 @@ public class CuentaResultados extends Asiento{
 	    }
 	       	
 	    if (impuestos > 0){
-	       	dameCuenta(630).añadirDebe(new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(630)));       	
-	       	dameCuenta(630).añadirHaber(new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(630)));
-	       	dameCuenta(4752).añadirHaber(new Anotacion(fechaHasta, "Impuestos", impuestos, damePrioridad(4752)));
+	       	dameCuenta(630).añadirDebe(new Anotacion(fech, "Impuestos", impuestos, damePrioridad(630)));       	
+	       	dameCuenta(630).añadirHaber(new Anotacion(fech, "Impuestos", impuestos, damePrioridad(630)));
+	       	dameCuenta(4752).añadirHaber(new Anotacion(fech, "Impuestos", impuestos, damePrioridad(4752)));
 	   }
 	    
 	    resultadoTotal = excedente-impuestos;
-	    dameCuenta(129).añadirHaber(new Anotacion (fechaDesde, "Resultado ejercicio", resultadoTotal, damePrioridad(129)));
 	    
-		//Cierro las cuentas
-		if(resultadoTotal>=0){
-			dameCuenta(129).añadirDebe(new Anotacion(fechaHasta, "Fin de año "+fechaHasta.get(Calendar.YEAR) , resultadoTotal, damePrioridad(129)));
-			dameCuenta(12).añadirHaber(new Anotacion(fechaHasta,"Fin de año "+fechaHasta.get(Calendar.YEAR), resultadoTotal, damePrioridad(12)));
-		}else{
-			dameCuenta(129).añadirHaber(new Anotacion(fechaHasta, "Fin de año "+fechaHasta.get(Calendar.YEAR), -resultadoTotal, damePrioridad(129)));
-			dameCuenta(12).añadirDebe(new Anotacion(fechaHasta,"Fin de año "+fechaHasta.get(Calendar.YEAR), -resultadoTotal, damePrioridad(12)));	
-		}
-	
+	    dameCuenta(129).añadirHaber(new Anotacion (fech, "Resultado ejercicio", resultadoTotal, damePrioridad(129)));
+	    dameCuenta(129).añadirDebe(new Anotacion (fech, "Resultado ejercicio", resultadoTotal, damePrioridad(129)));
+	    dameCuenta(12).añadirHaber(new Anotacion (fech, "Resultado ejercicio", resultadoTotal, damePrioridad(129)));
 	}
+	
+	
+	public boolean tieneCuentasDebe(Cuenta cuenta, int anno){
+		boolean tieneCuentas=false;	
+
+		if (!(cuenta.debe.isEmpty())){
+		  for(int i=0; i<cuenta.debe.size(); i++){
+			  if (cuenta.debe.get(i).fecha.get(Calendar.YEAR)==anno){
+				  tieneCuentas=true;
+			  }
+		  }
+		}
+		
+		return tieneCuentas;
+	}
+	
 	
 	public void imprimeCuentaResultados(){
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");	
@@ -138,9 +151,13 @@ public class CuentaResultados extends Asiento{
 		
 		Document documento = new Document();
 		
-		try{			
-            PdfWriter.getInstance(documento, new FileOutputStream(Main.direccionRuta+"/CuentaResultados"+ano+".pdf"));
-            
+		try{	
+			File directorio = new File(Main.direccionRuta+"/"+ano);
+			if(!directorio.exists()){
+				directorio.mkdir();
+			}	
+			PdfWriter.getInstance(documento, new FileOutputStream(directorio+"/CuentaResultados"+ano+".pdf"));
+			
             documento.open();
             documento.addTitle("Cuenta de Resultados"); 
             documento.addAuthor("Noelia Manso García"); 
@@ -195,11 +212,12 @@ public class CuentaResultados extends Asiento{
             } 
             
             //TOTAL INGRESOS Y GASTOS DE LA ACTIVIDAD
+            excedenteActividad = valorIngresos - valorGastos;
             PdfPCell resulActividad = new PdfPCell (new Paragraph("EXCEDENTE DE LA ACTIVIDAD:", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
             resulActividad.setColspan(2);
             resulActividad.setPadding (10.0f);
             resulActividad.setBackgroundColor(BaseColor.PINK);
-           	PdfPCell excedenteAct = new PdfPCell (new Paragraph(Math.round(valorIngresos - valorGastos)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
+           	PdfPCell excedenteAct = new PdfPCell (new Paragraph(Math.round(excedenteActividad)*100/100+"€", FontFactory.getFont("arial",10,Font.BOLD, BaseColor.BLACK)));
            	excedenteAct.setColspan(2);
            	excedenteAct.setPadding (10.0f);
            	excedenteAct.setBackgroundColor(BaseColor.PINK);

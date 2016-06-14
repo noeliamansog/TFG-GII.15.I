@@ -24,7 +24,7 @@ import es.ubu.inf.tfg.ui.AsientoPanel;
 
 
 
-public class PrestamoPanel extends AsientoPanel<Prestamo> {
+public class PrestamoPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 
@@ -99,9 +99,8 @@ public class PrestamoPanel extends AsientoPanel<Prestamo> {
 		mainPanel.add(interes);
 		
 		
-		mainPanel.add(new JLabel("% nominal."));
-		mainPanel.add(new JLabel("El primer pago se realizará al cabo de un mes o año desde la concesión del"));
-		mainPanel.add(new JLabel("préstamo."));
+		mainPanel.add(new JLabel("% nominal. El primer pago se realizará al cabo de un mes o año desde"));
+		mainPanel.add(new JLabel("la concesión del préstamo."));
 	}
 	
 	private class DesplegablesItemListener implements ItemListener{

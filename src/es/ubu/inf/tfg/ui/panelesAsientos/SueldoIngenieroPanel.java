@@ -19,7 +19,7 @@ import es.ubu.inf.tfg.asientosContables.SueldoIngeniero;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-public class SueldoIngenieroPanel extends AsientoPanel<SueldoIngeniero> {
+public class SueldoIngenieroPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 

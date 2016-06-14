@@ -1,5 +1,4 @@
 package es.ubu.inf.tfg.asientosContables;
-
 import java.util.Calendar;
 
 import es.ubu.inf.tfg.doc.Anotacion;
@@ -38,5 +37,4 @@ public class IVA extends Asiento{
 			dameCuenta(4700).añadirDebe(new Anotacion(fechaFinAno, "H.P. deudor por IVA ", saldoIVASoportado-saldoIVARepercutido, damePrioridad(4700)));	
 		}
 	}
-
 }

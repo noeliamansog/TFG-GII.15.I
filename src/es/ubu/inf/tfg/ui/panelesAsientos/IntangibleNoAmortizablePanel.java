@@ -19,7 +19,7 @@ import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
 
-public class IntangibleNoAmortizablePanel extends AsientoPanel<CompraIntangibleNoAmortizable> {
+public class IntangibleNoAmortizablePanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 
@@ -62,8 +62,8 @@ public class IntangibleNoAmortizablePanel extends AsientoPanel<CompraIntangibleN
 		this.valor = new JTextField(6);
 		mainPanel.add(this.valor);
 		
-		mainPanel.add(new JLabel("€. "));
-		mainPanel.add(new JLabel("Se paga al contado."));
+		mainPanel.add(new JLabel("€. Se "));
+		mainPanel.add(new JLabel("paga al contado."));
 	}
 	
 	private class BotonMostrarActionListener implements ActionListener {

@@ -18,7 +18,7 @@ import es.ubu.inf.tfg.asientosContables.NuevoSocio;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-public class NuevoSocioPanel extends AsientoPanel<NuevoSocio> {
+public class NuevoSocioPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 

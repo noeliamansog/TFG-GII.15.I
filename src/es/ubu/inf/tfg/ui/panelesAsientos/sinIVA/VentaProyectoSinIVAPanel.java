@@ -18,7 +18,7 @@ import es.ubu.inf.tfg.asientosContables.sinIVA.VentaProyectoSinIVA;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-public class VentaProyectoSinIVAPanel extends AsientoPanel<VentaProyectoSinIVA> {
+public class VentaProyectoSinIVAPanel extends AsientoPanel {
 
 	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -68,8 +68,7 @@ public class VentaProyectoSinIVAPanel extends AsientoPanel<VentaProyectoSinIVA> 
 		this.dias = new JTextField(2);
 		mainPanel.add(this.dias);
 		
-		mainPanel.add(new JLabel ("días. El"));
-		mainPanel.add(new JLabel ("cliente paga al contado."));
+		mainPanel.add(new JLabel ("días."));
 	}
 	
 	private class BotonMostrarActionListener implements ActionListener {

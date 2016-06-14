@@ -18,14 +18,14 @@ public class DividendosSinRetenciones extends Asiento {
 		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		double resultado = dameCuenta(12).getSaldo(fecha);
-		dameCuenta(12).añadirDebe(new Anotacion(fecha, "Reparto de dividendos",resultado, damePrioridad(12)));
+		double saldo12 = dameCuenta(12).getSaldo(fecha);
+		dameCuenta(12).añadirDebe(new Anotacion(fecha, "Reparto de dividendos",saldo12, damePrioridad(12)));
 		
 		Calendar fechaAñoAnterior = (Calendar)fecha.clone();
 		fechaAñoAnterior.add(Calendar.YEAR, -1);
 		
-		dameCuenta(112).añadirHaber(new Anotacion(fecha, "Beneficios retenidos del año: "+fechaAñoAnterior.get(Calendar.YEAR), ((100-inputs[0])*resultado)/100, damePrioridad(112)));
-		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Reparto dividendos", (inputs[0]/100)*resultado, damePrioridad(572)));
+		dameCuenta(112).añadirHaber(new Anotacion(fecha, "Beneficios retenidos del año: "+fechaAñoAnterior.get(Calendar.YEAR), ((100-inputs[0])*saldo12)/100, damePrioridad(112)));
+		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Reparto dividendos", (inputs[0]/100)*saldo12, damePrioridad(572)));
 		
 	}
 }

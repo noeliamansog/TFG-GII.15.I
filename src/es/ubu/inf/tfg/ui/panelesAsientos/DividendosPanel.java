@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,12 +15,12 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
-import es.ubu.inf.tfg.asientosContables.Dividendos;
+import es.ubu.inf.tfg.doc.Enunciado;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
 
-public class DividendosPanel extends AsientoPanel<Dividendos> {
+public class DividendosPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 
@@ -28,7 +29,7 @@ public class DividendosPanel extends AsientoPanel<Dividendos> {
 	private JDateChooser calendario;
 	private JTextField valor;
 	private JTextField retencion;
-	public static Dividendos dividendos;
+	private ArrayList<Enunciado> enunciado = new ArrayList<Enunciado>();
 	
 	public DividendosPanel(){
 		this.nombre ="Dividendos";
@@ -61,9 +62,9 @@ public class DividendosPanel extends AsientoPanel<Dividendos> {
 		this.valor = new JTextField(2);
 		mainPanel.add(this.valor);
 		
-		mainPanel.add(new JLabel("% del"));
-		mainPanel.add(new JLabel("resultado del ejercicio anterior (sobre los cuales se practica una retención del"));
-		
+		mainPanel.add(new JLabel("%"));
+		mainPanel.add(new JLabel("del resultado del ejercicio anterior (sobre los cuales se practica una retención"));
+		mainPanel.add(new JLabel("del"));
 		this.retencion = new JTextField(2);
 		mainPanel.add(this.retencion);
 		
@@ -90,6 +91,12 @@ public class DividendosPanel extends AsientoPanel<Dividendos> {
 				if(fecha.get(Calendar.YEAR) == Main.anoInicial){
 					JOptionPane.showMessageDialog(null, "Los dividendos solo se pueden hacer a partir del segundo año: "+(Main.anoInicial+1));
 					ok=false;
+				}
+				for(int i=0; i<anoDividendo.size(); i++){
+					if(fecha.get(Calendar.YEAR) == anoDividendo.get(i)){
+						JOptionPane.showMessageDialog(null, "Solo se puede generar un asiento dividendo por año");
+						ok=false;
+					}
 				}
 			}
 			
@@ -131,8 +138,19 @@ public class DividendosPanel extends AsientoPanel<Dividendos> {
 				
 			if(ok){
 				double [] inputsDividendos = {porcentajeValorDividendos, porcentajeRetencion};
-				dividendos = new Dividendos (fecha, inputsDividendos, Main.enunciadoConCuentas);
-				añadeEnunciado(dividendos.enunciados);
+				
+				//Introduzco sólo el enunciado en el panel de la interfaz
+				String enunciado1 = " Se decide repartir dividendos por valor del " +inputsDividendos[0]+ "% del resultado del "
+						+ "ejercicio anterior (sobre los cuales se practica una retención del " +inputsDividendos[1]+ "%). El resto se lleva a Reserva Legal.\n";
+				if (Main.enunciadoConCuentas){
+					enunciado1 = enunciado1 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 129. Resultados del ejercicio;"
+											+ "112. Reserva legal; 4751. H.P acreedor por retenciones practicadas; 12. Resultados pendientes de aplicación.\n";
+				}
+				enunciado.add(new Enunciado(fecha, enunciado1));
+				añadeEnunciado(enunciado);
+				
+				Main.datosDividendos.put(fecha, inputsDividendos);
+				
 				Main.ejecucionAlgunAsiento = true;
 				borrarButton.setEnabled(false);
 				mostrarButton.setEnabled(false);

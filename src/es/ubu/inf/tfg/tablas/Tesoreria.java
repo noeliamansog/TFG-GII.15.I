@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.tablas;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,8 +24,6 @@ import es.ubu.inf.tfg.main.Main;
 
 public class Tesoreria extends Asiento{
 	private int ano;
-	private Calendar fechaDesde;
-	private Calendar fechaHasta;
 	
 	static ArrayList<Anotacion> cobros;
 	static ArrayList<Anotacion> pagos;
@@ -37,28 +36,25 @@ public class Tesoreria extends Asiento{
 	
 	public Tesoreria(int ano){
 		this.ano=ano;
-		fechaDesde =  Calendar.getInstance();
-		fechaDesde.set(ano,0,1);
-		fechaHasta =  Calendar.getInstance();
-		fechaHasta.set(ano,11,31);
-		
+
 		cobros = new ArrayList<Anotacion>();
 		pagos = new ArrayList<Anotacion>();
 		
 		valorCobros=0;
 		valorPagos=0;
 		
-		//Saldo de la cuenta de tesoreria del año anterior
-		Calendar fechaAñoAnterior = (Calendar) fechaHasta.clone();
-		fechaAñoAnterior.add(Calendar.YEAR, -1);
+		Calendar fechaAñoAnterior = Calendar.getInstance();
+		fechaAñoAnterior.set(ano-1, 11, 31);
 		saldoInicial = dameCuenta(572).getSaldo(fechaAñoAnterior);
-
+		valorCobros=saldoInicial;
+		
 		Cuenta cuenta = dameCuenta(572);
 		  
 		//Cobros
 		if (!(cuenta.debe.isEmpty())){
 			for(int i=0; i<cuenta.debe.size(); i++){
-				if (cuenta.debe.get(i).fecha.before(fechaHasta) && cuenta.debe.get(i).fecha.after(fechaDesde)){
+				if (cuenta.debe.get(i).fecha.get(Calendar.YEAR)==ano){
+				//if (cuenta.debe.get(i).fecha.before(fechaHasta) && cuenta.debe.get(i).fecha.after(fechaDesde)){
 					cobros.add(cuenta.debe.get(i));
 					valorCobros += cuenta.debe.get(i).cantidad;
 				}
@@ -67,7 +63,8 @@ public class Tesoreria extends Asiento{
 		//Pagos
 		if (!(cuenta.haber.isEmpty())){
 			for(int i=0; i<cuenta.haber.size(); i++){
-				if (cuenta.haber.get(i).fecha.before(fechaHasta) && cuenta.haber.get(i).fecha.after(fechaDesde)){
+				if (cuenta.haber.get(i).fecha.get(Calendar.YEAR)==ano){
+				//if (cuenta.haber.get(i).fecha.before(fechaHasta) && cuenta.haber.get(i).fecha.after(fechaDesde)){
 					pagos.add(cuenta.haber.get(i));
 					valorPagos += cuenta.haber.get(i).cantidad;
 				}
@@ -84,9 +81,13 @@ public class Tesoreria extends Asiento{
 	
 		Document documento = new Document();
 		
-		try{			
-            PdfWriter.getInstance(documento, new FileOutputStream(Main.direccionRuta+"/Tesorería"+ano+".pdf"));
-            
+		try{		
+			File directorio = new File(Main.direccionRuta+"/"+ano);
+			if(!directorio.exists()){
+				directorio.mkdir();
+			}	
+			PdfWriter.getInstance(documento, new FileOutputStream(directorio+"/Tesorería"+ano+".pdf"));
+			 
             documento.open();
             documento.addTitle("Tesorería"); 
             documento.addAuthor("Noelia Manso García"); 
@@ -111,7 +112,10 @@ public class Tesoreria extends Asiento{
             celdaCobros.setBackgroundColor(BaseColor.GRAY);
             tablaCobros.addCell(celdaCobros);
             
-            tablaCobros.addCell(formateador.format(fechaDesde.getTime()));
+            Calendar fech = Calendar.getInstance();
+            fech.set(ano, 0, 1);
+            //tablaCobros.addCell(formateador.format(fechaDesde.getTime()));
+            tablaCobros.addCell(formateador.format(fech.getTime()));
             tablaCobros.addCell("Saldo inicial");
             tablaCobros.addCell(Math.round(saldoInicial)*100/100+"€");
             for(int i=0; i<cobros.size(); i++){

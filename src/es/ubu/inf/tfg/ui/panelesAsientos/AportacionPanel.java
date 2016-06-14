@@ -19,7 +19,7 @@ import es.ubu.inf.tfg.main.Main;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 
 
-public class AportacionPanel extends AsientoPanel<AportacionInicial> {
+public class AportacionPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -4728031249878756673L;
 	private JButton borrarButton;
@@ -65,11 +65,11 @@ public class AportacionPanel extends AsientoPanel<AportacionInicial> {
 		
 		mainPanel.add(new JLabel ("aportación inicial en efectivo a favor de la empresa por importe de"));
 		
-		this.importe = new JTextField(6);
+		this.importe = new JTextField(5);
 		mainPanel.add(this.importe);
 
-		mainPanel.add(new JLabel("€. Cada socio tiene una acción. La empresa ingresa el dinero"));
-		mainPanel.add(new JLabel("recibido en su cuenta corriente."));
+		mainPanel.add(new JLabel("€. Cada socio tiene una acción. La empresa ingresa el dinero recibido en"));
+		mainPanel.add(new JLabel("su cuenta corriente."));
 		
 	}
 
@@ -118,6 +118,7 @@ public class AportacionPanel extends AsientoPanel<AportacionInicial> {
 			}else{
 				try{	
 					aportacion = Double.parseDouble(ap);
+					Main.valorNominal = aportacion;
 				}catch (Exception e){
 					JOptionPane.showMessageDialog(null, "Introduce la aportación inicial correctamente");
 					ok = false;

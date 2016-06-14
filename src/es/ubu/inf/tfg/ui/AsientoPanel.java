@@ -25,8 +25,7 @@ import javax.swing.border.TitledBorder;
 import es.ubu.inf.tfg.doc.Enunciado;
 import es.ubu.inf.tfg.main.Main;
 
-
-public class AsientoPanel<Asiento> extends JPanel {
+public class AsientoPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -42,8 +41,6 @@ public class AsientoPanel<Asiento> extends JPanel {
 	protected JSlider estadosSlider;
 	protected JLabel estadosEstadoLabel;
 	protected JLabel simbolosEstadoLabel;
-
-
 	
 	public static ArrayList<ArrayList<Enunciado>> listaEnunciados = new ArrayList<ArrayList<Enunciado>>();
 	public static ArrayList<Enunciado> listaEnunciadosOrdenados = new ArrayList<Enunciado>();
@@ -72,7 +69,7 @@ public class AsientoPanel<Asiento> extends JPanel {
 		this.mainPanel.setBorder(this.noSeleccionado);
 		this.mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		Dimension dim = new Dimension(525,200) ;
+		Dimension dim = new Dimension(510,200) ;
 		this.mainPanel.setPreferredSize(dim);
 		
 		add(this.mainPanel);
@@ -157,10 +154,7 @@ public class AsientoPanel<Asiento> extends JPanel {
 				 + "que se cumple la ecuación que las liga. <br>"
 				 + "  c) Calcular y comentar el Fondo de Maniobra al final de cada año.<br>"
 				 + "  d) Analizar la liquidez de la empresa mediante ratios para cada uno de los años.<br>"
-				 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.<br>"
-				 + "  f) Indique cuál es el valor nominal, el valor contable y el valor de emisión de la nueva "
-				 + "acción emitida el "+formateador.format(fechaCierre.getTime())+"."
-				 + "¿Cuál sería el valor de mercado de las acciones? <br>";
+				 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.<br>";
 		
 		Main.panelEnunciado.setText(Main.textoEnunciado);
 		Main.textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciados de los asientos contable<br><br></b></p>";	

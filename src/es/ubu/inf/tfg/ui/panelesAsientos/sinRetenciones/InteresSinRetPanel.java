@@ -18,7 +18,7 @@ import es.ubu.inf.tfg.asientosContables.sinRetenciones.InteresSinRetenciones;
 import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-public class InteresSinRetPanel extends AsientoPanel<InteresSinRetenciones> {
+public class InteresSinRetPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 

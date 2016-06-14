@@ -23,7 +23,7 @@ import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
 
-public class MaterialNoAmortizablePanel extends AsientoPanel<CompraMaterialNoAmortizable> {
+public class MaterialNoAmortizablePanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 
@@ -76,14 +76,14 @@ public class MaterialNoAmortizablePanel extends AsientoPanel<CompraMaterialNoAmo
 		this.importe = new JTextField(6);
 		mainPanel.add(this.importe);
 		
-		mainPanel.add(new JLabel("€. Este activo"));
-		mainPanel.add(new JLabel("no es amortizable. Se abonan"));
+		mainPanel.add(new JLabel("€. Este"));
+		mainPanel.add(new JLabel("activo no es amortizable. Se abonan"));
 		
 		this.abono = new JTextField(6);
 		mainPanel.add(this.abono);
 		
-		mainPanel.add(new JLabel("€ mediante transferencia. Se acuerda"));
-		mainPanel.add(new JLabel("que la deuda se pagará en"));
+		mainPanel.add(new JLabel("€ mediante transferencia."));
+		mainPanel.add(new JLabel("Se acuerda que la deuda se pagará en"));
         		
 		this.meses = new JTextField(2);
 		mainPanel.add(this.meses);

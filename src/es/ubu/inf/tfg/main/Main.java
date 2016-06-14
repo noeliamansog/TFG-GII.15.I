@@ -16,7 +16,9 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -39,9 +41,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
@@ -51,8 +50,10 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import es.ubu.inf.tfg.asientosContables.*;
 import es.ubu.inf.tfg.asientosContables.sinIVA.PagoDeudasHaciendaSinIVA;
+import es.ubu.inf.tfg.asientosContables.sinRetenciones.DividendosSinRetenciones;
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.PagoDeudasHaciendaSinRetenciones;
 import es.ubu.inf.tfg.doc.*;
+import es.ubu.inf.tfg.otrosCalculos.Calculos;
 import es.ubu.inf.tfg.tablas.Balance;
 import es.ubu.inf.tfg.tablas.CuentaResultados;
 import es.ubu.inf.tfg.tablas.Tesoreria;
@@ -81,18 +82,6 @@ import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.InteresSinRetPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.SueldoEmpleadosSinRetPanel;
 
 public class Main {
-	/*public static double impuestoSociedades = 30;
-	public static double IVA = 10;
-	public static double numeroSocios = 2;
-	public static double numAcciones = numEmpleados;
-	public static boolean enunciadoConCuentas = true;
-	public static boolean conIVA = true;
-	public static boolean conRetenciones = true;
-	public static String direccionRuta = "/Users/noelia/Desktop";
-	public static int anoInicio = 2016;
-	public static int anoFin = anoInicio;*/
-	
-	private static final Logger log = LoggerFactory.getLogger(Main.class);
 	
 	public static double IVA;
 	public static double impuestoSociedades;
@@ -100,6 +89,7 @@ public class Main {
 	public static int anoFinal = anoInicial;
 	public static int anoLimite;
 	public static double numeroSocios;
+	public static double numeroAcciones;
 	
 	public static boolean conIVA = true;
 	public static boolean conRetenciones = true;
@@ -162,397 +152,46 @@ public class Main {
 	public static boolean aportacionEjecutada = false;
 	public static Calendar fechaAportacion;
 	public static boolean ejecucionAlgunAsiento = false;
+
+	public List<AsientoPanel> panelesAsiento = new ArrayList<>();
 	
-	public List<AsientoPanel<?>> panelesAsiento = new ArrayList<>();
+	public static double valorNominal;
+	public static double valorContable;
+	
+	public static double activoAnoAnterior = 0;
+	public static double pnAnoAnterior = 0;
+	
+	public static double resultadoAnoAnterior = 0;
+	
+	public static HashMap<Calendar, double []> datosDividendos = new HashMap<Calendar, double []>();
+	public static HashMap<Calendar, double []> datosDividendosSinRet = new HashMap<Calendar, double []>();
+	
 	
 	public static void main(String args[]) {
-		/*
-		ArrayList<ArrayList<Enunciado>> todosEnunciados = new ArrayList<ArrayList<Enunciado>>();	
-		ArrayList<Calendar> todasFechas = new ArrayList<Calendar>();
-		
-		Dividendos dividendos = null;
-		Dividendos dividendos2 = null;
-		// ... para todos los años... 
-		DividendosSinRetenciones dividendosSinReteneciones = null;
-		DividendosSinRetenciones dividendosSinReteneciones2 = null;
-
-		
-
-		//////////////////////////
-		////	 1º AÑO 	/////	
-		////////////////////////
-		
-		//APORTACIÓN INICIAL
-		Calendar fechaAportacion = Calendar.getInstance();
-		double [] inputsAportacion = {numeroSocios, 50000};
-		AportacionInicial aportacion = new AportacionInicial(fechaAportacion, inputsAportacion, enunciadoConCuentas);
-		todosEnunciados.add(aportacion.enunciados);
-		todasFechas.add(fechaAportacion);
-		
-		//PRESTAMO		
-		Calendar fechaPrestamo = Calendar.getInstance();
-		fechaPrestamo.add(Calendar.DAY_OF_YEAR, +1);
-		double [] inputsPrestamo = {60000, 0, 1, 10, 5};
-		Prestamo prestamo = new Prestamo(fechaPrestamo, inputsPrestamo, enunciadoConCuentas);
-		todosEnunciados.add(prestamo.enunciados);
-		todasFechas.add(fechaPrestamo);
-	
-		//COMPRA_MATERIAL_NO_AMORTIZABLE
-		Calendar fechaCompraMatNoAmort = Calendar.getInstance();
-		fechaCompraMatNoAmort.add(Calendar.DAY_OF_YEAR, +2);
-		double [] inputsMaterialNoAmortizable = {0, 120000, 60000, 2};
-		CompraMaterialNoAmortizable materialNoAmortizable = new CompraMaterialNoAmortizable(fechaCompraMatNoAmort, inputsMaterialNoAmortizable, enunciadoConCuentas);
-		todosEnunciados.add(materialNoAmortizable.enunciados);
-		todasFechas.add(fechaCompraMatNoAmort);
-		
-		//COMPRA_MATERIAL_AMORTIZABLE
-		Calendar fechaCompraMatAmort = Calendar.getInstance();
-		fechaCompraMatAmort.add(Calendar.DAY_OF_YEAR, +3);
-		double [] inputsMaterialAmortizable = {1, 8000, 30, 4};
-		CompraMaterialAmortizable materialAmortizable = new CompraMaterialAmortizable(fechaCompraMatAmort, inputsMaterialAmortizable, enunciadoConCuentas);
-		todosEnunciados.add(materialAmortizable.enunciados);
-		todasFechas.add(fechaCompraMatAmort);
-		
-		//COMPRA_INTANGIBLE_NO_AMORTIZABLE
-		Calendar fechaCompraInNoAmort = Calendar.getInstance();
-		fechaCompraInNoAmort.add(Calendar.DAY_OF_YEAR, +4);
-		double [] inputsIntangibleNoAmortizable = {1000};
-		CompraIntangibleNoAmortizable intangibleNoAmortizable = new CompraIntangibleNoAmortizable(fechaCompraInNoAmort, inputsIntangibleNoAmortizable, enunciadoConCuentas);
-		todosEnunciados.add(intangibleNoAmortizable.enunciados);
-		todasFechas.add(fechaCompraInNoAmort);
-		
-		//COMPRA_SOFTWARE_AMORTIZABLE
-		Calendar fechaCompraSW = Calendar.getInstance();
-		fechaCompraSW.add(Calendar.DAY_OF_YEAR, +5);
-		double [] inputsSoftwareAmortizable = {3000, 60, 3};
-		CompraSoftwareAmortizable softwareAmortizable = new CompraSoftwareAmortizable(fechaCompraSW, inputsSoftwareAmortizable, enunciadoConCuentas);
-		todosEnunciados.add(softwareAmortizable.enunciados);
-		todasFechas.add(fechaCompraSW);
-		
-		//COMPRA_PROPIEDAD_INDUSTRIAL_AMORTIZABLE
-		Calendar fechaCompraPI = Calendar.getInstance();
-		fechaCompraPI.add(Calendar.DAY_OF_YEAR, +6);
-		double [] inputsPropiedadIndustrialAmortizable = {1500, 90, 3};
-		CompraPropiedadIndustrialaAmortizable propiedadIndustrialAmortizable = new CompraPropiedadIndustrialaAmortizable(fechaCompraPI, inputsPropiedadIndustrialAmortizable, enunciadoConCuentas);
-		todosEnunciados.add(propiedadIndustrialAmortizable.enunciados);
-		todasFechas.add(fechaCompraPI);
-		
-		//COMPRA_MERCADERIAS
-		Calendar fechaCompraMercaderias = Calendar.getInstance();
-		fechaCompraMercaderias.add(Calendar.DAY_OF_YEAR, +7);
-		if(conIVA){
-			//Con IVA
-			double [] inputsCompraMercaderias = {20000, IVA, 60};
-			CompraMercaderias compraMercaderias = new CompraMercaderias(fechaCompraMercaderias, inputsCompraMercaderias, enunciadoConCuentas);
-			todosEnunciados.add(compraMercaderias.enunciados);
-			todasFechas.add(fechaCompraMercaderias);
-		}else{
-			//Sin IVA
-			double [] inputsCompraMercaderiasSinIVA = {20000, 60};
-			CompraMercaderiasSinIVA compraMercaderiasSinIVA = new CompraMercaderiasSinIVA(fechaCompraMercaderias, inputsCompraMercaderiasSinIVA, enunciadoConCuentas);
-			todosEnunciados.add(compraMercaderiasSinIVA.enunciados);
-			todasFechas.add(fechaCompraMercaderias);
-		}	
-		
-		//VENTA_MERCADERIAS
-		Calendar fechaVentaMercaderias = Calendar.getInstance();
-		fechaVentaMercaderias.add(Calendar.DAY_OF_YEAR, +8);
-		if(conIVA){
-			//Con IVA
-			double [] inputsVentaMercaderias = {30000, IVA, 30};
-			VentaMercaderias ventaMercaderias = new VentaMercaderias(fechaVentaMercaderias, inputsVentaMercaderias, enunciadoConCuentas);
-			todosEnunciados.add(ventaMercaderias.enunciados);
-			todasFechas.add(fechaVentaMercaderias);
-		}else{
-			//Sin IVA
-			double [] inputsVentaMercaderiasSinIVA = {30000, 30};
-			VentaMercaderiasSinIVA ventaMercaderiasSinIVA = new VentaMercaderiasSinIVA(fechaVentaMercaderias, inputsVentaMercaderiasSinIVA, enunciadoConCuentas);
-			todosEnunciados.add(ventaMercaderiasSinIVA.enunciados);
-			todasFechas.add(fechaVentaMercaderias);
-		}
-		
-		//VENTA_PROYECTO
-		Calendar fechaVentaProy = Calendar.getInstance();
-		fechaVentaProy.add(Calendar.DAY_OF_YEAR, +9);
-		if(conIVA){
-			//Con IVA
-			double [] inputsVentaProyecto = {200000, IVA, 30};
-			VentaProyecto ventaProyecto = new VentaProyecto(fechaVentaProy, inputsVentaProyecto, enunciadoConCuentas);
-			todosEnunciados.add(ventaProyecto.enunciados);
-			todasFechas.add(fechaVentaProy);
-		}else{
-			//Sin IVA	
-			double [] inputsVentaProyectoSinIVA = {200000, 30};
-			VentaProyectoSinIVA ventaProyectoSinIVA = new VentaProyectoSinIVA(fechaVentaProy, inputsVentaProyectoSinIVA, enunciadoConCuentas);
-			todosEnunciados.add(ventaProyectoSinIVA.enunciados);
-			todasFechas.add(fechaVentaProy);
-		}	
-		
-		//SUELDOS_EMPLEADOS
-		Calendar fechaSueldoEmp = Calendar.getInstance();
-		fechaSueldoEmp.add(Calendar.DAY_OF_YEAR, +10);
-		if(conRetenciones){
-			double [] inputsSueldoEmpleado = {numeroSocios, 10000, 3350, 10, 5};
-			SueldosEmpleados sueldoEmpleado = new SueldosEmpleados(fechaSueldoEmp, inputsSueldoEmpleado, enunciadoConCuentas);
-			todosEnunciados.add(sueldoEmpleado.enunciados);
-			todasFechas.add(fechaSueldoEmp);
-		}else{
-			double [] inputsSueldoEmpleadoSinR = {numeroSocios, 10000, 3350};
-			SueldosEmpleadosSinRetenciones sueldoEmpleadoSinRetenciones = new SueldosEmpleadosSinRetenciones(fechaSueldoEmp, inputsSueldoEmpleadoSinR, enunciadoConCuentas);
-			todosEnunciados.add(sueldoEmpleadoSinRetenciones.enunciados);
-			todasFechas.add(fechaSueldoEmp);
-		}
-		
-		//SUELDO_INGENIERO
-		Calendar fechaSueldoIng = Calendar.getInstance();
-		fechaSueldoIng.add(Calendar.DAY_OF_YEAR, +11);
-		double [] inputsSueldoIngeniero = {30000, 30};
-		SueldoIngeniero sueldoIngeniero = new SueldoIngeniero(fechaSueldoIng, inputsSueldoIngeniero, enunciadoConCuentas);
-		todosEnunciados.add(sueldoIngeniero.enunciados);
-		todasFechas.add(fechaSueldoIng);
-		
-		//INTERESES
-		Calendar fechaIntereses = Calendar.getInstance();
-		fechaIntereses.add(Calendar.DAY_OF_YEAR, +12);
-		if(conRetenciones){
-			double [] inputsIntereses = {300, 80};
-			Interes intereses = new Interes(fechaIntereses, inputsIntereses, enunciadoConCuentas);
-			todosEnunciados.add(intereses.enunciados);
-			todasFechas.add(fechaIntereses);
-		}else{
-			double [] inputsInteresesSinR = {300};
-			InteresSinRetenciones interesesSinRetenciones = new InteresSinRetenciones(fechaIntereses, inputsInteresesSinR, enunciadoConCuentas);
-			todosEnunciados.add(interesesSinRetenciones.enunciados);
-			todasFechas.add(fechaIntereses);
-		}
-		
-		//NUEVOS_SOCIOS
-		Calendar fechaNuevosSoc = Calendar.getInstance();
-		fechaNuevosSoc.add(Calendar.DAY_OF_YEAR, +13);
-		double [] inputsNuevoSocio = {60000, numeroSocios};
-		NuevoSocio nuevoSocio = new NuevoSocio(fechaNuevosSoc, inputsNuevoSocio, enunciadoConCuentas);
-		todosEnunciados.add(nuevoSocio.enunciados);
-		todasFechas.add(fechaNuevosSoc);
-		
-		//INVENTARIO
-		Calendar fechaInventario = Calendar.getInstance();
-		fechaInventario.set(anoInicial,11,31);
-		double [] inputsInventario = {2000};
-		Inventario inventario = new Inventario (fechaInventario, inputsInventario, enunciadoConCuentas);
-		todosEnunciados.add(inventario.enunciados);
-		todasFechas.add(fechaInventario);
-			
-		//IVA
-		if (conIVA){
-			Calendar fechaIVA = Calendar.getInstance();
-			fechaIVA.set(2016,11,31);
-			IVA iva = new IVA (fechaIVA, null, enunciadoConCuentas);
-			todosEnunciados.add(iva.enunciados);
-			todasFechas.add(fechaIVA);
-		}
-		
-		//CUENTA DE PERDIDAS Y GANANCIAS
-		CuentaResultados cuentaResultados = new CuentaResultados (2016);
-		cuentaResultados.imprimeCuentaResultados();
-		
-		//TESORERIA
-		Tesoreria tesoreria = new Tesoreria (2016);
-		tesoreria.imprimeTesoreria();
-		
-		//BALANCE
-		Balance balance = new Balance(2016);
-		balance.imprimeBalance();
-		
-		
-		
-		//////////////////////////
-		////	 2º AÑO 	/////	
-		////////////////////////	
-		
-		//PAGO DEUDAS HACIENDA
-		Calendar fechaDeudasHP = Calendar.getInstance();
-		fechaDeudasHP.add(Calendar.YEAR, +1);
-		if(conIVA && conRetenciones){
-			PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fechaDeudasHP, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasHacienda.enunciados);
-			todasFechas.add(fechaDeudasHP);
-		}if(conIVA==false && conRetenciones){
-			PagoDeudasHaciendaSinIVA deudasHaciendaSinIVA = new PagoDeudasHaciendaSinIVA(fechaDeudasHP, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasHaciendaSinIVA.enunciados);
-			todasFechas.add(fechaDeudasHP);	
-		}if(conIVA && conRetenciones==false){
-			PagoDeudasHaciendaSinRetenciones deudasHaciendaSinRetenciones = new PagoDeudasHaciendaSinRetenciones(fechaDeudasHP, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasHaciendaSinRetenciones.enunciados);
-			todasFechas.add(fechaDeudasHP);	
-		}
-		 
-		//PAGO DEUDAS SEGURIDAD SOCIAL
-		if(conRetenciones){
-			Calendar fechaDeudasSS = Calendar.getInstance();
-			fechaDeudasSS.add(Calendar.YEAR, +1);
-			PagoDeudasSS deudasSS = new PagoDeudasSS(fechaDeudasSS, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasSS.enunciados); 
-			todasFechas.add(fechaDeudasSS);
-		}
-		
-		//DIVIDENDOS
-		Calendar fechaDividendos = Calendar.getInstance();
-		fechaDividendos.add(Calendar.YEAR, +1);
-		if(conRetenciones){
-			double [] inputsDividendos = {50, 20};
-			dividendos = new Dividendos (fechaDividendos, inputsDividendos, enunciadoConCuentas);
-			todosEnunciados.add(dividendos.enunciados);
-			todasFechas.add(fechaDividendos);
-		}else{
-			double [] inputsDividendosSinR = {50};
-			dividendosSinReteneciones = new DividendosSinRetenciones (fechaDividendos, inputsDividendosSinR, enunciadoConCuentas);
-			todosEnunciados.add(dividendosSinReteneciones.enunciados);
-			todasFechas.add(fechaDividendos);
-		}
-		
-		//NO_DIVIDENDOS
-		if(dividendos == null && dividendosSinReteneciones==null){
-			new NoDividendos (Calendar.getInstance(), null, false);
-		}
-		
-		//IVA
-		if (conIVA){
-			Calendar fechaIVA2 = Calendar.getInstance();
-			fechaIVA2.set(2017,11,31);
-			IVA iva2 = new IVA (fechaIVA2, null, enunciadoConCuentas);
-			todosEnunciados.add(iva2.enunciados);
-			todasFechas.add(fechaIVA2);
-		}
-		
-		//CUENTA DE PERDIDAS Y GANANCIAS
-		CuentaResultados cuentaResultados2 = new CuentaResultados (2017);
-		cuentaResultados2.imprimeCuentaResultados();
-		
-		//TESORERIA
-		Tesoreria tesoreria2 = new Tesoreria (2017);
-		tesoreria2.imprimeTesoreria();
-		
-		//BALANCE
-		Balance balance2 = new Balance(2017);
-		balance2.imprimeBalance();
-			
-		//////////////////////////
-		////	 3º AÑO 	/////	
-		////////////////////////	
-		
-		//PAGO DEUDAS HACIENDA
-		Calendar fechaDeudasHP2 = Calendar.getInstance();
-		fechaDeudasHP2.add(Calendar.YEAR, +2);
-		if(conIVA && conRetenciones){
-			PagoDeudasHacienda deudasHacienda2 = new PagoDeudasHacienda(fechaDeudasHP2, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasHacienda2.enunciados);
-			todasFechas.add(fechaDeudasHP2);
-		}if(conIVA==false && conRetenciones){
-			PagoDeudasHaciendaSinIVA deudasHaciendaSinIVA2 = new PagoDeudasHaciendaSinIVA(fechaDeudasHP2, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasHaciendaSinIVA2.enunciados);
-			todasFechas.add(fechaDeudasHP2);	
-		}if(conIVA && conRetenciones==false){
-			PagoDeudasHaciendaSinRetenciones deudasHaciendaSinRetenciones2 = new PagoDeudasHaciendaSinRetenciones(fechaDeudasHP2, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasHaciendaSinRetenciones2.enunciados);
-			todasFechas.add(fechaDeudasHP2);	
-		}
-		 
-		//PAGO DEUDAS SEGURIDAD SOCIAL
-		if(conRetenciones){
-			Calendar fechaDeudasSS2 = Calendar.getInstance();
-			fechaDeudasSS2.add(Calendar.YEAR, +2);
-			PagoDeudasSS deudasSS2 = new PagoDeudasSS(fechaDeudasSS2, null, enunciadoConCuentas);
-			todosEnunciados.add(deudasSS2.enunciados); 
-			todasFechas.add(fechaDeudasSS2);
-		}
-		
-		//DIVIDENDOS
-		Calendar fechaDividendos2 = Calendar.getInstance();
-		fechaDividendos2.add(Calendar.YEAR, +2);
-		if(conRetenciones){
-			double [] inputsDividendos2 = {50, 20};
-			dividendos2 = new Dividendos (fechaDividendos2, inputsDividendos2, enunciadoConCuentas);
-			todosEnunciados.add(dividendos2.enunciados);
-			todasFechas.add(fechaDividendos2);
-		}else{
-			double [] inputsDividendosSinR2 = {50};
-			dividendosSinReteneciones2 = new DividendosSinRetenciones (fechaDividendos2, inputsDividendosSinR2, enunciadoConCuentas);
-			todosEnunciados.add(dividendosSinReteneciones2.enunciados);
-			todasFechas.add(fechaDividendos2);
-		}
-		
-		//NO_DIVIDENDOS
-		if(dividendos2 == null && dividendosSinReteneciones2==null){
-			new NoDividendos (Calendar.getInstance(), null, false);
-		}
-		
-		//IVA
-		if (conIVA){
-			Calendar fechaIVA3 = Calendar.getInstance();
-			fechaIVA3.set(2018,11,31);
-			IVA iva2 = new IVA (fechaIVA3, null, enunciadoConCuentas);
-			todosEnunciados.add(iva2.enunciados);
-			todasFechas.add(fechaIVA3);
-		}
-		
-		//CUENTA DE PERDIDAS Y GANANCIAS
-		CuentaResultados cuentaResultados3 = new CuentaResultados (2018);
-		cuentaResultados3.imprimeCuentaResultados();
-		
-		//TESORERIA
-		Tesoreria tesoreria3 = new Tesoreria (2018);
-		tesoreria3.imprimeTesoreria();
-		
-		//BALANCE
-		Balance balance3 = new Balance(2018);
-		balance3.imprimeBalance();
-		
-		
-			
-		//ENUNCIADO
-		imprimeEnunciados(todosEnunciados);
-		
-		*/
-		log.info("Aplicación iniciada");
-
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					new Main();
-				} catch (Exception e) {
-					log.error("Error al iniciar la aplicación", e);
-				}
+				} catch (Exception e) {}
 			}
 		});
 	}
 	
 	public Main() {
 		try {
-			UIManager.setLookAndFeel(UIManager
-					.getCrossPlatformLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			log.error("Error estableciendo el look and feel", e);
 		}
 		
 		initVentanaInicial();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	public void initialize() {
-		initPanel();
-		initMenuBar();
-		initPanelIzq();
-		initPanelDrch();
 	}
 
 	public void initVentanaInicial(){
 		this.ventanaInicial = new JFrame();   
         
         this.ventanaInicial.setTitle("Configuaración antes de empezar");
-        this.ventanaInicial.setSize(400, 430);
+        this.ventanaInicial.setSize(440, 470);
         this.ventanaInicial.setLocationRelativeTo(null);
         ventanaInicial.setLayout(null); 
     
@@ -592,12 +231,11 @@ public class Main {
 		this.desplegable2.setModel(new DefaultComboBoxModel<String>(new String[] {"Si", "No"}));
 		this.desplegable2.setBounds(135, 120, 50, 30);
         this.ventanaInicial.add(this.desplegable2);
-        this.desplegable2.addItemListener(new DesplegableItemListener()); 
-        
+        this.desplegable2.addItemListener(new DesplegableItemListener());     
         
         //Enunciado con cuentas
         this.enunciadoCuentasText = new JLabel();
-        this.enunciadoCuentasText.setText("<html>¿Deseas que en el enunciado del supuesto aparezcan las cuentas del PGC?</html>");
+        this.enunciadoCuentasText.setText("<html>¿Deseas que en el enunciado del supuesto aparezcan las <br> cuentas del PGC?</html>");
         this.enunciadoCuentasText.setBounds(10, 160, 380, 50);
         this.ventanaInicial.add(this.enunciadoCuentasText);
         
@@ -615,8 +253,7 @@ public class Main {
         
         this.cuadroIntroduceImpuestoSoc = new JTextField(4);
         this.cuadroIntroduceImpuestoSoc.setBounds(275, 265, 30, 20);
-        this.ventanaInicial.add(this.cuadroIntroduceImpuestoSoc);
-        
+        this.ventanaInicial.add(this.cuadroIntroduceImpuestoSoc); 
         
         //Año inicio
         this.enunciadoCuentasText = new JLabel();
@@ -635,6 +272,7 @@ public class Main {
         this.ventanaInicial.add(this.botonVentanaInicial);
         this.botonVentanaInicial.addActionListener (new BotonAceptarActionListener()); 
         
+        this.ventanaInicial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.ventanaInicial.setVisible(true);		
 	}
 	
@@ -722,8 +360,7 @@ public class Main {
 		this.controlPanelDrch.setBorder(null);
 		this.frmSupuesto.getContentPane().add(this.controlPanelDrch,BorderLayout.CENTER);
 		this.controlPanelDrch.setLayout(new BorderLayout(0, 0));
-		
-		
+			
 		this.contenedorScroll2 = new JScrollPane();
 		this.contenedorScroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.controlPanelDrch.add(this.contenedorScroll2, BorderLayout.CENTER);
@@ -737,12 +374,12 @@ public class Main {
 		panelEnunciado.setMargin(new Insets (5,5,5,5));
 	
 		panelEnunciado.setContentType("text/html");
-		textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciado supuesto contable<br><br></b></p>";
+		textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciado "
+				+ "supuesto contable<br><br></b></p>";
 		panelEnunciado.setText(textoEnunciado);
 		
 		this.contenedorScroll2.add(panelEnunciado);
 		this.contenedorScroll2.setViewportView(panelEnunciado);
-		
 		
 		//Panel para botón generar
 		this.panelBotonGenerar = new JPanel();
@@ -754,27 +391,26 @@ public class Main {
 
 	}
 	
-	private void initVentanaFinal() {
-		
+	private void initVentanaFinal() {	
 		this.ventanaFinal = new JFrame();   
         
         this.ventanaFinal.setTitle("Configuaración de la generación de tablas");
-        this.ventanaFinal.setSize(450, 250);
+        this.ventanaFinal.setSize(470, 280);
         this.ventanaFinal.setLocationRelativeTo(null);
         ventanaFinal.setLayout(null); 
     
         this.textoVentanaFinal = new JLabel();
         if(anoInicial == anoFinal){
         	this.textoVentanaFinal.setText("<html><b>Se generará en el año "+anoInicial+" las tablas correspondientes "
-        			+ "al Balance, Cuenta de perdidas y ganancias y Tesorería de este año.</b></html>");
-        	this.textoVentanaFinal.setBounds(10, 5, 430, 100);
+        			+ "al Balance,<br> Cuenta de perdidas y ganancias y Tesorería de este año.</b></html>");
+        	this.textoVentanaFinal.setBounds(10, 0, 430, 100);
             this.ventanaFinal.add(this.textoVentanaFinal);
         	
         }else{
-        	this.textoVentanaFinal.setText("<html><b>Se generará, por cada año (desde "+anoInicial+" hasta "+ anoFinal +")"
-        			+ " las tablas correspondientes al Balance, Cuenta de perdidas y ganancias y Tesorería. <br> "
-        			+ "¿Desea modificar el año limite para la generación de estas tablas?</b></html>");
-        	this.textoVentanaFinal.setBounds(10, 5, 430, 100);
+        	this.textoVentanaFinal.setText("<html><b>Se generará, por cada año (desde "+anoInicial+" hasta "+ anoFinal +" incluidos)"
+        			+ " las<br> tablas correspondientes al Balance, Cuenta de perdidas y ganancias<br> y Tesorería. <br> "
+        			+ "¿Desea modificar hasta que año generar estas tablas?</b></html>");
+        	this.textoVentanaFinal.setBounds(10, 0, 430, 100);
             this.ventanaFinal.add(this.textoVentanaFinal);
         
             this.desplegableCambioAnoLimite = new JComboBox<>();
@@ -784,19 +420,18 @@ public class Main {
             this.desplegableCambioAnoLimite.addItemListener(new DesplegableItemListener()); 
         
             this.introduceAnoLimite = new JLabel();
-        	this.introduceAnoLimite.setText("Introduce hasta que año desea generen las tablas: ");
+        	this.introduceAnoLimite.setText("Introduce el año de limite deseado: ");
         	this.introduceAnoLimite.setBounds(20, 120, 400, 50);
         	this.ventanaFinal.add(this.introduceAnoLimite);
         	this.introduceAnoLimite.setVisible(false);
 	
         	this.cuadroIntroduceAnoLimite = new JTextField(4);
-        	this.cuadroIntroduceAnoLimite.setBounds(20, 160, 40, 25);
+        	this.cuadroIntroduceAnoLimite.setBounds(250, 130, 40, 25);
         	this.ventanaFinal.add(this.cuadroIntroduceAnoLimite);
         	this.cuadroIntroduceAnoLimite.setVisible(false);
         	
         	comprobarDesplegable = true;
         }
-       
         
         //Boton aceptar
         this.botonVentanaFinal = new JButton();
@@ -805,8 +440,8 @@ public class Main {
         this.ventanaFinal.add(this.botonVentanaFinal);
         this.botonVentanaFinal.addActionListener (new BotonAceptarActionListener()); 
         
-        this.ventanaFinal.setVisible(true);		
-		
+        this.ventanaFinal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.ventanaFinal.setVisible(true);			
 	}
 
 	
@@ -963,13 +598,11 @@ public class Main {
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getSource() == desplegable1){
 				if (desplegable1.getSelectedItem().equals("Si")) {
-					log.info("Configurando asiento contable con IVA");
 					conIVA=true;
 					introduceIva.setVisible(true);
 					cuadroIntroduceIva.setVisible(true);
 					comprobarIVA=true;	
 				}if (desplegable1.getSelectedItem().equals("No")){
-					log.info("Configurando asiento contable sin IVA");
 					conIVA=false;
 					introduceIva.setVisible(false);
 					cuadroIntroduceIva.setVisible(false);
@@ -978,31 +611,25 @@ public class Main {
 			}
 			if (e.getSource() == desplegable2){
 				if (desplegable2.getSelectedItem().equals("Si")) {
-					log.info("Configurando asiento contable con Retenciones");
 					conRetenciones=true;
 				}if (desplegable2.getSelectedItem().equals("No")){
-					log.info("Configurando asiento contable sin Retenciones");
 					conRetenciones=false;
 				}	
 			}
 			if (e.getSource() == desplegable3){
 				if (desplegable3.getSelectedItem().equals("Si")) {
-					log.info("Configurando enunciado del supuesto contable con cuentas del PGC");
 					enunciadoConCuentas=true;
 				}if (desplegable3.getSelectedItem().equals("No")){
-						log.info("Configurando enunciado del supuesto contable sin cuentas del PGC");
 						enunciadoConCuentas=false;
 				}	
 			}
 			if(comprobarDesplegable){
 				if(e.getSource() == desplegableCambioAnoLimite){
 					if (desplegableCambioAnoLimite.getSelectedItem().equals("No")) {
-						log.info("Configurando año limite para la generación de las tablas");
 						introduceAnoLimite.setVisible(false);
 						cuadroIntroduceAnoLimite.setVisible(false);
 						comprobarAnoFinal=false;
 					}if (desplegableCambioAnoLimite.getSelectedItem().equals("Si")){
-						log.info("Configurando año limite para la generación de las tablas");
 						introduceAnoLimite.setVisible(true);
 						cuadroIntroduceAnoLimite.setVisible(true);
 						comprobarAnoFinal=true;
@@ -1070,10 +697,14 @@ public class Main {
 					}
 				}	
 				if(ok){
-					initialize();
+					initPanel();
+					initMenuBar();
+					initPanelIzq();
+					initPanelDrch();
 					ventanaInicial.dispose();
 				}
 			}
+			
 			//BOTÓN ACEPTAR VENTANA FINAL
 			if (event.getSource()==botonVentanaFinal){
 				if(comprobarAnoFinal){
@@ -1106,86 +737,67 @@ public class Main {
 							frmSupuesto.dispose();
 							System.exit(0);
 						}else{
-							frmSupuesto.setVisible(true);;
+							frmSupuesto.setVisible(true);
+							comprobarAnoFinal = false;
 						}
 						
 					}catch (Exception ex){ 
 						JOptionPane.showMessageDialog(null, "Ha ocurrido un error al generar el supuesto contable");
 						ex.printStackTrace(); 
-					}
-					
-					
+					}		
 				}
-				
 			}
-	
 		}
 	}
 	
 	public class AddButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			if (añadirBox.getSelectedItem().equals("Aportación inicial")) {
-				log.info("Añadiendo asiento aportación inicial");
 				añadeAsiento("AportaciónInicial");
 			} 			
 			if (añadirBox.getSelectedItem().equals("Préstamo")) {
-				log.info("Añadiendo asiento préstamo");
 				añadeAsiento("Prestamo");
 			}
 			if (añadirBox.getSelectedItem().equals("Compra material no amortizable")) {
-				log.info("Añadiendo asiento compra material no amortizable");
 				añadeAsiento("CompraMaterialNoAmortizable");
 			}
 			if (añadirBox.getSelectedItem().equals("Compra material amortizable")) {
-				log.info("Añadiendo asiento compra material amortizable");
 				añadeAsiento("CompraMaterialAmortizable");
 			}
 			if (añadirBox.getSelectedItem().equals("Compra intangible no amortizable")) {
-				log.info("Añadiendo asiento compra intangible no amortizable");
 				añadeAsiento("CompraIntangibleNoAmortizable");
 			}
 			if (añadirBox.getSelectedItem().equals("Compra software amortizable")) {
-				log.info("Añadiendo asiento compra software amortizable");
 				añadeAsiento("CompraSWAmortizable");
 			}
 			if (añadirBox.getSelectedItem().equals("Compra propiedad industrial amortizable")) {
-				log.info("Añadiendo asiento compra propiedad industrial amortizable");
 				añadeAsiento("CompraPIAmortizable");
 			}
 			if (añadirBox.getSelectedItem().equals("Compra mercaderias")) {
-				log.info("Añadiendo asiento compra mercaderias");
 				añadeAsiento("CompraMercaderias");
 			}
 			if (añadirBox.getSelectedItem().equals("Venta mercaderías")) {
-				log.info("Añadiendo asiento venta mercaderías");
 				añadeAsiento("VentaMercaderias");
 			}
 			if (añadirBox.getSelectedItem().equals("Venta proyecto")) {
-				log.info("Añadiendo asiento venta proyecto");
 				añadeAsiento("VentaProyecto");
 			}
 			if (añadirBox.getSelectedItem().equals("Sueldos y salarios")) {
-				log.info("Añadiendo asiento sueldo empleado");
 				añadeAsiento("SueldosYSalarios");
 			}
 			if (añadirBox.getSelectedItem().equals("Sueldo ingeniero")) {
-				log.info("Añadiendo asiento sueldo ingeniero");
 				añadeAsiento("SueldoIgeniero");
 			}
 			if (añadirBox.getSelectedItem().equals("Intereses")) {
-				log.info("Añadiendo asiento intereses");
 				añadeAsiento("Interes");
 			}
 			if (añadirBox.getSelectedItem().equals("Nuevo socio")) {
-				log.info("Añadiendo asiento nuevos socios");
 				añadeAsiento("NuevoSocio");
 			}
 			if (añadirBox.getSelectedItem().equals("Inventario")) {
-				log.info("Añadiendo asiento inventario");
 				añadeAsiento("Inventario");
 			}
 			if (añadirBox.getSelectedItem().equals("Dividendos")) {
-				log.info("Añadiendo asiento dividendos");
 				añadeAsiento("Dividendos");
 			}
 		}
@@ -1193,35 +805,38 @@ public class Main {
 	
 	private class MenuNuevoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			log.info("Generando un documento nuevo.");
 			contenedorPanel.removeAll();
 			panelesAsiento.clear();
 			contenedorPanel.revalidate();
 			
 			textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciados de los asientos contable<br><br></b></p>";
 			panelEnunciado.setText(textoEnunciado);
-			Main.aportacionEjecutada = false;
-			Main.panelAportacion = null;
 			AsientoPanel.listaEnunciados =  new ArrayList<ArrayList<Enunciado>>();
+			
 			ejecucionAlgunAsiento = false;
+			Main.aportacionEjecutada = false;
+			Main.panelAportacion = null;	
+			
+			Main.anoFinal = Main.anoInicial;
+			Main.anoLimite = 0;
+			AsientoPanel.anoFin=0;
+			
+			comprobarDesplegable = false;
 		}
 	}
 
 	private class MenuWebActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			log.info("Mostrando página web.");
 			try {
 				Desktop.getDesktop().browse(
 						new URI("http://robertoia.github.com/PLQuiz"));
 			} catch (IOException | URISyntaxException e) {
-				log.error("Error abriendo página web de la aplicación", e);
 			}
 		}
 	}
 
 	private class MenuAcercaDeActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			log.info("Mostrando acerca de.");
 			JOptionPane.showMessageDialog(frmSupuesto, "Supuesto contable\n"
 					+ "TFG del Grado en Ingeniería Informática\n"
 					+ "Escuela Politécnica Superior, Universidad de Burgos\n"
@@ -1245,15 +860,12 @@ public class Main {
 	
 	public void generarSupuestoContable(){
 		int anoFin = 0;
-		boolean hayDividendo = false;
-		boolean entra1 = true;
-		boolean entra2 = true;
-		boolean entra3 = true;
-		boolean entra4 = true;
-		boolean entra5 = true;
+		//boolean hayDividendo = false;
+
 		CuentaResultados cuentaResultados;
 		Tesoreria tesoreria;
 		Balance balance;
+		Calculos calculos;
 		
 		if(anoLimite==0){
 			//Calculo el ultimo año
@@ -1265,82 +877,97 @@ public class Main {
 		}else{
 			anoFin=anoLimite;
 		}
-		System.out.println("Año inicio: "+anoInicial);
-		System.out.println("Año fin: "+anoFin);
-		System.out.println("Año limite: "+anoLimite);
+
+		activoAnoAnterior = 0;
+		pnAnoAnterior = 0;
+		numeroAcciones = numeroSocios;
 		for(int anoActual=anoInicial; anoActual<=anoFin; anoActual++){
-			entra1= true;
-			entra2=true;
-			entra3=true;
-			entra4=true;
-			entra5=true;
-			for(int i=0; i<AsientoPanel.listaEnunciadosOrdenados.size(); i++){
-				//TODOS LOS AÑOS MENOS EL PRIMERO
-				if (anoActual!=anoInicial){
+			//TODOS LOS AÑOS MENOS EL PRIMERO
+			if (anoActual!=anoInicial){
 					
-					//Pago deudas hacienda
-					Calendar fechaDeudasHP = Calendar.getInstance();
-					fechaDeudasHP.set(anoActual,0,1);
-					if(conIVA && conRetenciones && entra1==true){
-						PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fechaDeudasHP, null, enunciadoConCuentas);
-						AsientoPanel.añadeEnunciado(deudasHacienda.enunciados);
-						entra1=false;
-					}if(conIVA==false && conRetenciones && entra2==true){
-						PagoDeudasHaciendaSinIVA deudasHaciendaSinIVA = new PagoDeudasHaciendaSinIVA(fechaDeudasHP, null, enunciadoConCuentas);
-						AsientoPanel.añadeEnunciado(deudasHaciendaSinIVA.enunciados);
-						entra2=false;
-					}if(conIVA && conRetenciones==false && entra3==true){
-						PagoDeudasHaciendaSinRetenciones deudasHaciendaSinRetenciones = new PagoDeudasHaciendaSinRetenciones(fechaDeudasHP, null, enunciadoConCuentas);
-						AsientoPanel.añadeEnunciado(deudasHaciendaSinRetenciones.enunciados);
-						entra3=false;
-					}
+				//Pago deudas hacienda
+				Calendar fechaDeudasHP = Calendar.getInstance();
+				fechaDeudasHP.set(anoActual,0,1);
+				if(conIVA && conRetenciones){
+					PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fechaDeudasHP, null, enunciadoConCuentas);
+					AsientoPanel.añadeEnunciado(deudasHacienda.enunciados);
+				}if(conIVA==false && conRetenciones){
+					PagoDeudasHaciendaSinIVA deudasHaciendaSinIVA = new PagoDeudasHaciendaSinIVA(fechaDeudasHP, null, enunciadoConCuentas);
+					AsientoPanel.añadeEnunciado(deudasHaciendaSinIVA.enunciados);
+				}if(conIVA && conRetenciones==false ){
+					PagoDeudasHaciendaSinRetenciones deudasHaciendaSinRetenciones = new PagoDeudasHaciendaSinRetenciones(fechaDeudasHP, null, enunciadoConCuentas);
+					AsientoPanel.añadeEnunciado(deudasHaciendaSinRetenciones.enunciados);
+				}
 					 
-					//Pago deudas segurada social
-					if(conRetenciones && entra4==true){
-						Calendar fechaDeudasSS = Calendar.getInstance();
-						fechaDeudasSS.set(anoActual,0,1);
-						PagoDeudasSS deudasSS = new PagoDeudasSS(fechaDeudasSS, null, enunciadoConCuentas);
-						AsientoPanel.añadeEnunciado(deudasSS.enunciados);
-						entra4=false;
-					}
-					//Si no existe dividendos
-					for(int j=0; j<AsientoPanel.anoDividendo.size(); j++){
-						if(AsientoPanel.anoDividendo.get(j) == anoActual){
-							hayDividendo=true;
+				//Pago deudas segurada social
+				if(conRetenciones){
+					Calendar fechaDeudasSS = Calendar.getInstance();
+					fechaDeudasSS.set(anoActual,0,1);
+					PagoDeudasSS deudasSS = new PagoDeudasSS(fechaDeudasSS, null, enunciadoConCuentas);
+					AsientoPanel.añadeEnunciado(deudasSS.enunciados);
+				}
+
+				//Dividendos
+				if(AsientoPanel.anoDividendo.contains(anoActual)){
+					if(conRetenciones){
+						for (Map.Entry<Calendar, double []> entry : datosDividendos.entrySet()) {
+							Calendar fechaDividendos = entry.getKey();
+							double[] inputsDividendos = entry.getValue();
+							if(fechaDividendos.get(Calendar.YEAR)==anoActual){
+								Dividendos dividendos = new Dividendos(fechaDividendos, inputsDividendos, enunciadoConCuentas);
+								AsientoPanel.añadeEnunciado(dividendos.enunciados);
+							}
+
+						}
+					}else{
+						for (Map.Entry<Calendar, double []> entry : datosDividendosSinRet.entrySet()) {
+							Calendar fechaDividendosSinRet = entry.getKey();
+							double[] inputsDividendosSinRet = entry.getValue();
+							if(fechaDividendosSinRet.get(Calendar.YEAR)==anoActual){
+								DividendosSinRetenciones dividendosSinR = new DividendosSinRetenciones(fechaDividendosSinRet, inputsDividendosSinRet, enunciadoConCuentas);
+								AsientoPanel.añadeEnunciado(dividendosSinR.enunciados);
+							}
+
 						}
 					}
-					if(hayDividendo==false){
-						Calendar fechaNoDividendos = Calendar.getInstance();
-						fechaNoDividendos.set(anoActual,0,1);
-						//NoDividendos noDividendos2 = new NoDividendos (fechaNoDividendos, null, false);
-						new NoDividendos (fechaNoDividendos, null, false);
-					}else{
-						hayDividendo=false;
-					}
-				
+				}else{
+					Calendar fechaNoDividendos = Calendar.getInstance();
+					fechaNoDividendos.set(anoActual,0,1);
+					new NoDividendos (fechaNoDividendos, null, enunciadoConCuentas);
 				}
 				
-				//SIEMPRE
-				//Iva
-				if (conIVA && entra5==true){
-					Calendar fechaIVA = Calendar.getInstance();
-					fechaIVA.set(anoActual,11,31);
-					IVA iva = new IVA (fechaIVA, null, enunciadoConCuentas);
-					AsientoPanel.añadeEnunciado(iva.enunciados);
-					entra5=false;
-				}
-				//Cuenta perdidas y ganancias
-				cuentaResultados = new CuentaResultados (anoActual);
-				cuentaResultados.imprimeCuentaResultados();
-				
-				//Tesorería
-				tesoreria = new Tesoreria (anoActual);
-				tesoreria.imprimeTesoreria();
-				
-				//Balance
-				balance = new Balance(anoActual);
-				balance.imprimeBalance();
 			}
+				
+			//SIEMPRE
+			//Iva
+			if (conIVA){
+				Calendar fechaIVA = Calendar.getInstance();
+				fechaIVA.set(anoActual,11,31);
+				IVA iva = new IVA (fechaIVA, null, enunciadoConCuentas);
+				AsientoPanel.añadeEnunciado(iva.enunciados);
+			}
+			//Cuenta perdidas y ganancias
+			cuentaResultados = new CuentaResultados (anoActual);
+			cuentaResultados.imprimeCuentaResultados();
+			
+			//Tesorería
+			tesoreria = new Tesoreria (anoActual);
+			tesoreria.imprimeTesoreria();
+				
+			//Balance
+			balance = new Balance(anoActual);
+			balance.imprimeBalance();
+				
+			//En este caso el número de acciones=numero de socios;
+			valorContable = balance.getPN()/numeroAcciones;
+				
+			//Calculos
+			calculos = new Calculos(anoActual);
+			calculos.imprimeCalculos();
+				
+			activoAnoAnterior = balance.getActivo();
+			pnAnoAnterior = balance.getPN();	
+			
 		}
 		
 		//IMPRIME ENUNCIADO
@@ -1414,10 +1041,7 @@ public class Main {
 					 + "que se cumple la ecuación que las liga. \n"
 					 + "  c) Calcular y comentar el Fondo de Maniobra al final de cada año.\n"
 					 + "  d) Analizar la liquidez de la empresa mediante ratios para cada uno de los años.\n"
-					 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.\n"
-					 + "  f) Indique cuál es el valor nominal, el valor contable y el valor de emisión de la nueva "
-					 + "acción emitida el " +formateador.format(fechaCierre.getTime())
-					 + ". ¿Cuál sería el valor de mercado de las acciones? \n");
+					 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.\n");
 			documento.add(parrafo);
 			
 			documento.close();
@@ -1428,99 +1052,4 @@ public class Main {
 		
 		}
 	}
-	
-	/*
-	public static void imprimeEnunciados (ArrayList<ArrayList<Enunciado>>listaEnunciados){
-		ArrayList<Enunciado> listaEnunciadosOrdenados = new ArrayList<Enunciado>();
-		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-		Calendar fech;
-		String enun;
-		
-		//Ordenamos cada enunciado de cada asiento por fecha
-		for(int i=0; i<listaEnunciados.size(); i++){
-			for(int j=0; j<listaEnunciados.get(i).size(); j++){
-				listaEnunciadosOrdenados.add(listaEnunciados.get(i).get(j));	
-				if(listaEnunciados.get(i).get(j).fecha.get(Calendar.YEAR)>anoFin){
-					anoFin = listaEnunciados.get(i).get(j).fecha.get(Calendar.YEAR);
-				}
-			}
-		}
-		Collections.sort(listaEnunciadosOrdenados);
-		
-		Document documento = new Document();
-		
-		try{	
-			PdfWriter.getInstance(documento, new FileOutputStream(direccionRuta+"/Enunciado.pdf"));
-			
-			documento.open();
-			
-			Paragraph par = new Paragraph("ENUNCIADO SUPUESTO CONTABLE:  \n \n", FontFactory.getFont("arial", 16, Font.BOLD, BaseColor.BLACK)); 
-			documento.add(par);
-			
-
-			Calendar fechaCierre = Calendar.getInstance();
-			for(int anoActual=anoInicial; anoActual<=anoFin; anoActual++){
-				//Inicio año
-				documento.add(new Paragraph("Se tiene la siguiente información vinculada con la empresa correspondiente al año "+anoActual+":\n\n", FontFactory.getFont("arial", 12, Font.BOLDITALIC, BaseColor.BLACK)));
-				
-				//Imprime asientos
-				for(int i=0; i<listaEnunciadosOrdenados.size(); i++){
-					if(listaEnunciadosOrdenados.get(i).fecha.get(Calendar.YEAR)==anoActual){
-						fech= listaEnunciadosOrdenados.get(i).getFecha();
-						enun = listaEnunciadosOrdenados.get(i).getEnunciado();
-						documento.add(new Paragraph(formateador.format(fech.getTime())+ " " + enun));
-						documento.add(new Paragraph("\n"));	
-					}
-				}
-				
-				//Cierre
-				fechaCierre.set(anoActual,11,31);
-				if(enunciadoCuentas){
-					if(conRetenciones){
-						documento.add(new Paragraph(formateador.format(fechaCierre.getTime())+" La empresa cierra el ejercicio y deja a deber a Hacienda el impuesto de sociedades ("+impuestoSociedades+"% del beneficio).\nCUENTAS PGC: 129. Resultados del ejercicio; 12. Resultados pendientes de aplicación.\n\n"));
-					}else{
-						documento.add(new Paragraph(formateador.format(fechaCierre.getTime())+" La empresa cierra el ejercicio.\nCUENTAS PGC: 129. Resultados del ejercicio; 12. Resultados pendientes de aplicación.\n\n"));
-					}
-				}else{
-					if(conRetenciones){
-						documento.add(new Paragraph(formateador.format(fechaCierre.getTime())+" La empresa cierra el ejercicio y deja a deber a Hacienda el impuesto de sociedades ("+impuestoSociedades+"% del beneficio).\n\n"));
-					}else{
-						documento.add(new Paragraph(formateador.format(fechaCierre.getTime())+" La empresa cierra el ejercicio.\n\n"));
-					}
-				}
-			}
-					
-			
-			//Imprime enunciado
-			Paragraph parrafo = new Paragraph("\n\nSe pide: \n"
-					 + "  a) Indique claramente cómo afectaría a cada una de las cuentas contables cada una de las "
-					 + "transacciones económicas de la empresa, elaborando al mismo tiempo el balance de situación, "
-					 + "la cuenta de pérdidas y ganancias y el estado de flujos de tesorería de cada año. ");
-			if(conRetenciones && conIVA){
-				parrafo.add("El impuesto de sociedades es el " +impuestoSociedades+ "% del beneficio y el IVA es " +IVA+ "%.");
-			}if(conRetenciones==false && conIVA){
-				parrafo.add("El IVA es " +IVA+ "%.\n");	 
-			}
-			if(conRetenciones && conIVA==false){
-				parrafo.add("El impuesto de sociedades es el " +impuestoSociedades+ "% del beneficio.");				 
-			}
- 			parrafo.add("\n  b) Calcular la rentabilidad económica y la rentabilidad financiera de cada año y comprobar "
-					 + "que se cumple la ecuación que las liga. \n"
-					 + "  c) Calcular y comentar el Fondo de Maniobra al final de cada año.\n"
-					 + "  d) Analizar la liquidez de la empresa mediante ratios para cada uno de los años.\n"
-					 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.\n"
-					 + "  f) Indique cuál es el valor nominal, el valor contable y el valor de emisión de la nueva "
-					 + "acción emitida el " +formateador.format(fechaCierre.getTime())
-					 + ". ¿Cuál sería el valor de mercado de las acciones? \n");
-			documento.add(parrafo);
-			
-			documento.close();
-			
-		}catch(Exception e){
-            System.err.println("Ocurrio un error al crear el archivo");
-            System.exit(-1);
-		
-		}
-	}*/
-
 }

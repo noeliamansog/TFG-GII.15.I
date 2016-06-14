@@ -19,7 +19,7 @@ import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
 
-public class InventarioPanel extends AsientoPanel<Inventario> {
+public class InventarioPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
 
@@ -55,8 +55,8 @@ public class InventarioPanel extends AsientoPanel<Inventario> {
 		
 
 		//Texto
-		mainPanel.add(new JLabel(" Se hace inventario de mercaderías. Se estima un valor"));
-		mainPanel.add(new JLabel("de coste de"));
+		mainPanel.add(new JLabel(" Se hace inventario de mercaderías. Se estima un"));
+		mainPanel.add(new JLabel("valor de coste de"));
 		
 		this.valor = new JTextField(6);
 		mainPanel.add(this.valor);
