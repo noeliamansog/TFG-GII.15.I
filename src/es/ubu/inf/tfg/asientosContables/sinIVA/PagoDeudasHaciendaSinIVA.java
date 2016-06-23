@@ -3,11 +3,22 @@ import java.util.Calendar;
 
 import es.ubu.inf.tfg.doc.*;
 
+/** 
+ * Clase PagoDeudasHaciendaSinIVA que implementa el asiento contable de pago de las deudas a hacienda sin IVA.
+ * 
+ * @author Noelia Manso García
+ */
 public class PagoDeudasHaciendaSinIVA extends Asiento {
 	
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar el pago de las duedas de hacienda sin IVA.
+	 * @param f fecha en la que se realiza el pago.
+	 * @param i en este caso, la lista de parametros que el usuario introduce es null.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public PagoDeudasHaciendaSinIVA(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
-		inputs=i;
 
 		String enunciado1 = " Se saldan todas las deudas con Hacienda.\n";
 		if (enunciadoCuentas){

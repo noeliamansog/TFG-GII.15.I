@@ -19,11 +19,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.Prestamo;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
-import es.ubu.inf.tfg.ui.AsientoPanel;
 
-
-
+/**
+ * Clase PrestamoPanel que implementa lo que debe aparecer en el panel para el asiento Prestamo.
+ * 
+ * @author Noelia Manso García
+ */
 public class PrestamoPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -35,13 +38,19 @@ public class PrestamoPanel extends AsientoPanel {
 	private JTextField importe;
 	private JComboBox<String> desplegable1;
 	private JComboBox<String> desplegable2;
-	private double tipoPrestamo = 0;
-	private double mensualAnual = 0;
 	private JTextField anos;
 	private JTextField interes;
+	private double tipoPrestamo = 0;
+	private double mensualAnual = 0;
+	/**
+	 * Asiento contable Prestamo
+	 */
 	public static Prestamo prestamo;
 	
-	
+	/**
+	 * Constructor de la clase PrestamoPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento Prestamo.
+	 */
 	public PrestamoPanel(){
 		this.nombre ="Prestamo";
 		
@@ -103,6 +112,11 @@ public class PrestamoPanel extends AsientoPanel {
 		mainPanel.add(new JLabel("la concesión del préstamo."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los desplegables de la interfaz.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class DesplegablesItemListener implements ItemListener{
 		public void itemStateChanged(ItemEvent e) {
 			//Tipo de prestamo
@@ -124,6 +138,11 @@ public class PrestamoPanel extends AsientoPanel {
 		}
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

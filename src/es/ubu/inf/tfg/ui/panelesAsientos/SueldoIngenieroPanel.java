@@ -1,6 +1,5 @@
 package es.ubu.inf.tfg.ui.panelesAsientos;
 
-
 import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -16,9 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.SueldoIngeniero;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
+/**
+ * Clase SueldoIngenieroPanel que implementa lo que debe aparecer en el panel para el asiento SueldoIngeniero.
+ * 
+ * @author Noelia Manso García
+ */
 public class SueldoIngenieroPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -28,9 +32,15 @@ public class SueldoIngenieroPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField sueldo;
 	private JTextField tiempo;
+	/**
+	 * Supuesto contable SueldoIngeniero.
+	 */
 	public static SueldoIngeniero sueldoIngeniero;
 	
-	
+	/**
+	 * Constructor de la clase SueldoIngenieroPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento SueldoIngeniero.
+	 */
 	public SueldoIngenieroPanel(){
 		this.nombre ="SueldoIngeniero";
 		
@@ -75,8 +85,12 @@ public class SueldoIngenieroPanel extends AsientoPanel {
 
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double sueldoIng = 0;

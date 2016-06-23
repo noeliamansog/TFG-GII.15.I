@@ -15,10 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraMercaderias;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-
+/**
+ * Clase CompraMercaderiasPanel que implementa lo que debe aparecer en el panel para el asiento CompraMercaderias.
+ * 
+ * @author Noelia Manso García
+ */
 public class CompraMercaderiasPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -28,9 +32,15 @@ public class CompraMercaderiasPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField importe;
 	private JTextField dias;
+	/**
+	 * Asiento contable CompraMercaderias.
+	 */
 	public static CompraMercaderias compraMercaderias;
 	
-	
+	/**
+	 * Constructor de la clase CompraMercaderiasPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento CompraMercaderias.
+	 */
 	public CompraMercaderiasPanel(){
 		this.nombre = "CompraMercaderias";
 		
@@ -70,6 +80,11 @@ public class CompraMercaderiasPanel extends AsientoPanel {
 		mainPanel.add(new JLabel ("días."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

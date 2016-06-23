@@ -5,8 +5,20 @@ import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 
+/** 
+ * Clase Prestamo que implementa el asiento contable de un préstamo.
+ *
+ * @author Noelia Manso García
+ */
 public class Prestamo extends Asiento {
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar un prestamo.
+	 * @param f fecha en la que se realiza el prestamo.
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public Prestamo(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

@@ -15,10 +15,15 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinIVA.CompraMercaderiasSinIVA;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-
+/**
+ * Clase CompraMercaderiasSinIVAPanel que implementa lo que debe aparecer en el panel para el asiento 
+ * CompraMercaderiasSinIVAP.
+ * 
+ * @author Noelia Manso García
+ */
 public class CompraMercaderiasSinIVAPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -28,9 +33,15 @@ public class CompraMercaderiasSinIVAPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField importe;
 	private JTextField dias;
+	/**
+	 * Supuesto contable CompraMercaderiasSinIVA.
+	 */
 	public static CompraMercaderiasSinIVA compraMercaderiasSinIVA;
 	
-	
+	/**
+	 * Constructor de la clase CompraMercaderiasSinIVAPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento CompraMercaderiasSinIVA.
+	 */
 	public CompraMercaderiasSinIVAPanel(){
 		this.nombre ="CompraMercaderiasSinIVA";
 		
@@ -70,8 +81,12 @@ public class CompraMercaderiasSinIVAPanel extends AsientoPanel {
 		mainPanel.add(new JLabel ("días."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double importeCompra = 0;

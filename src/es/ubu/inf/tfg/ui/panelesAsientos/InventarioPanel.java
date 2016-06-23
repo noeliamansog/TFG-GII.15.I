@@ -15,10 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.Inventario;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-
+/**
+ * Clase InventarioPanel que implementa lo que debe aparecer en el panel para el asiento Inventario.
+ * 
+ * @author Noelia Manso García
+ */
 public class InventarioPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -27,8 +31,15 @@ public class InventarioPanel extends AsientoPanel {
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JTextField valor;
+	/**
+	 * Supuesto contable Inventario.
+	 */
 	public static Inventario inventario;
 	
+	/**
+	 * Constructor de la clase InventarioPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento Inventario.
+	 */
 	public InventarioPanel(){
 		this.nombre = "Inventario";
 		
@@ -64,6 +75,11 @@ public class InventarioPanel extends AsientoPanel {
 		mainPanel.add(new JLabel("€."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

@@ -6,8 +6,20 @@ import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 import es.ubu.inf.tfg.main.Main;
 
+/** 
+ * Clase VentaMercaderias que implementa el asiento contable de una venta de mercaderías.
+ *
+ * @author Noelia Manso García
+ */
 public class VentaMercaderias extends Asiento {
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar una venta de mercaderías.
+	 * @param f fecha en la que se realiza la venta.
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public VentaMercaderias(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

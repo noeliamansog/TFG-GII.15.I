@@ -53,24 +53,23 @@ import es.ubu.inf.tfg.asientosContables.sinIVA.PagoDeudasHaciendaSinIVA;
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.DividendosSinRetenciones;
 import es.ubu.inf.tfg.asientosContables.sinRetenciones.PagoDeudasHaciendaSinRetenciones;
 import es.ubu.inf.tfg.doc.*;
-import es.ubu.inf.tfg.otrosCalculos.Calculos;
-import es.ubu.inf.tfg.tablas.Balance;
-import es.ubu.inf.tfg.tablas.CuentaResultados;
-import es.ubu.inf.tfg.tablas.Tesoreria;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.solucion.Balance;
+import es.ubu.inf.tfg.solucion.Calculos;
+import es.ubu.inf.tfg.solucion.CuentaResultados;
+import es.ubu.inf.tfg.solucion.Tesoreria;
 import es.ubu.inf.tfg.ui.panelesAsientos.AportacionPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.CompraMercaderiasPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.CompraPIPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.CompraSWPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.DividendosPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.IntangibleNoAmortizablePanel;
+import es.ubu.inf.tfg.ui.panelesAsientos.CompraIntangibleNoAmortizablePanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.InteresPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.InventarioPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.MaterialAmortizablePanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.MaterialNoAmortizablePanel;
+import es.ubu.inf.tfg.ui.panelesAsientos.CompraMaterialAmortizablePanel;
+import es.ubu.inf.tfg.ui.panelesAsientos.CompraMaterialNoAmortizablePanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.NuevoSocioPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.PrestamoPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.SueldoEmpleadosPanel;
+import es.ubu.inf.tfg.ui.panelesAsientos.SueldosEmpleadosPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.SueldoIngenieroPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.VentaMercaderiasPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.VentaProyectoPanel;
@@ -78,26 +77,119 @@ import es.ubu.inf.tfg.ui.panelesAsientos.sinIVA.CompraMercaderiasSinIVAPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.sinIVA.VentaMercaderiasSinIVAPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.sinIVA.VentaProyectoSinIVAPanel;
 import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.DividendosSinRetPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.InteresSinRetPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.SueldoEmpleadosSinRetPanel;
+import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.InteresesSinRetPanel;
+import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.SueldosEmpleadosSinRetPanel;
 
+/**
+ * Clase Main, clase principal desde donde se ejecuta la aplicación.
+ * 
+ * @author Noelia Manso García
+ */
 public class Main {
 	
+	/**
+	 * % del IVA.
+	 */
 	public static double IVA;
+	/**
+	 * % del impuesto de sociedades.
+	 */
 	public static double impuestoSociedades;
+	/**
+	 * Año inical del supuesto contable.
+	 */
 	public static int anoInicial;
+	/**
+	 * Último año que afecta al supuesto contable.
+	 */
 	public static int anoFinal = anoInicial;
+	/**
+	 * Año limite. Hasta que año desea el usuario generar la solución del supuesto contable.
+	 */
 	public static int anoLimite;
+	/**
+	 * Número de socios en el supuesto contable.
+	 */
 	public static double numeroSocios;
+	/**
+	 * Número de acciones en el supuesto contable.
+	 */
 	public static double numeroAcciones;
 	
+	
+	/**
+	 * Booleano que indica si el usuario desea el supuesto contable con o sin IVA.
+	 */
 	public static boolean conIVA = true;
+	/**
+	 * Booleano que indica si el usuario desea el supuesto contable con o sin retenciones.
+	 */
 	public static boolean conRetenciones = true;
+	/**
+	 * Booleano que indica si el usuario desea que en el enunciado del supuesto contable 
+	 * aparezca los nombres de las cuentas PGC usadas en cada asiento contable.
+	 */
 	public static boolean enunciadoConCuentas = true;
 	
+	/**
+	 * Dirección donde guardar en enunciado y la solución del supuesto contable.
+	 */
 	public static String direccionRuta = "";
 	
-	public JFrame frmSupuesto;
+	
+	/**
+	 * Panel del asiento contable de aportación inicial.
+	 */
+	public static AportacionPanel panelAportacion = null;
+	/**
+	 * Booleano que indica si el asiento contable de aportación inicial se ha ejecutado.
+	 */
+	public static boolean aportacionEjecutada = false;
+	/**
+	 * Fecha en la que se ejecuta el asiento contable de aportación inicial.
+	 */
+	public static Calendar fechaAportacion;
+	/**
+	 * Booleano que indica si se ha ejecutado algún asiento contable.
+	 */
+	public static boolean ejecucionAlgunAsiento = false;
+
+	
+	/**
+	 * Lista de los paneles de los asientos contables.
+	 */
+	public List<AsientoPanel> panelesAsiento = new ArrayList<>();
+	
+	/**
+	 * Valor nominal de las acciones del supuesto contable.
+	 */
+	public static double valorNominal;
+	/**
+	 * Valor contable de las acciones del supuesto contable.
+	 */
+	public static double valorContable;
+	
+	/**
+	 * Valor del activo del balance del año anterior.
+	 */
+	public static double activoAnoAnterior = 0;
+	/**
+	 * Valor del patrimonio neto del balance del año anterior.
+	 */
+	public static double pnAnoAnterior = 0;
+	
+
+	/**
+	 * Datos que se generan al ejecutar el asiento contable dividendos.
+	 */
+	public static HashMap<Calendar, double []> datosDividendos = new HashMap<Calendar, double []>();
+	/**
+	 * Datos que se generan al ejecutar el asiento contable dividendosSinRetenciones.
+	 */
+	public static HashMap<Calendar, double []> datosDividendosSinRet = new HashMap<Calendar, double []>();
+	
+	//INTERFAZ
+	public JFrame ventanaPrincipal;
 	
 	public JFrame ventanaInicial;
 	public JLabel textoVentanaInicial;
@@ -147,24 +239,7 @@ public class Main {
 	public JButton botonVentanaFinal;
 	public boolean comprobarDesplegable = false;
 	public boolean comprobarAnoFinal = false;
-	
-	public static AportacionPanel panelAportacion = null;
-	public static boolean aportacionEjecutada = false;
-	public static Calendar fechaAportacion;
-	public static boolean ejecucionAlgunAsiento = false;
 
-	public List<AsientoPanel> panelesAsiento = new ArrayList<>();
-	
-	public static double valorNominal;
-	public static double valorContable;
-	
-	public static double activoAnoAnterior = 0;
-	public static double pnAnoAnterior = 0;
-	
-	public static double resultadoAnoAnterior = 0;
-	
-	public static HashMap<Calendar, double []> datosDividendos = new HashMap<Calendar, double []>();
-	public static HashMap<Calendar, double []> datosDividendosSinRet = new HashMap<Calendar, double []>();
 	
 	
 	public static void main(String args[]) {
@@ -177,6 +252,9 @@ public class Main {
 		});
 	}
 	
+	/**
+	 * Constructor de la clase Main en el que se comienza la ejecución del programa.
+	 */
 	public Main() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -187,6 +265,9 @@ public class Main {
 		initVentanaInicial();
 	}
 
+	/**
+	 * Función que crea la ventana inicial de la interfaz de la aplicación.
+	 */
 	public void initVentanaInicial(){
 		this.ventanaInicial = new JFrame();   
         
@@ -276,17 +357,23 @@ public class Main {
         this.ventanaInicial.setVisible(true);		
 	}
 	
-	public void initPanel(){
-		this.frmSupuesto = new JFrame();
-		this.frmSupuesto.setTitle("Supuesto contable");
-		this.frmSupuesto.setBounds(100, 100, 1150, 900);
-		this.frmSupuesto.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmSupuesto.setVisible(true);
+	/**
+	 * Función que crea la ventana principal de la interfaz de la aplicación.
+	 */
+	public void initVentanaPrincipal(){
+		this.ventanaPrincipal= new JFrame();
+		this.ventanaPrincipal.setTitle("Supuesto contable");
+		this.ventanaPrincipal.setBounds(100, 100, 1150, 900);
+		this.ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ventanaPrincipal.setVisible(true);
 	}
 		
+	/**
+	 * Función que crea la barra de herramientas en la ventana principal de la interfaz.
+	 */
 	public void initMenuBar() {
 		this.menuBar = new JMenuBar();
-		this.frmSupuesto.getContentPane().add(this.menuBar, BorderLayout.NORTH);
+		this.ventanaPrincipal.getContentPane().add(this.menuBar, BorderLayout.NORTH);
 
 		this.menuArchivo = new JMenu("Archivo");
 		this.menuBar.add(this.menuArchivo);
@@ -307,11 +394,14 @@ public class Main {
 		this.menuArchivo.add(this.menuNuevo);
 	}
 
+	/**
+	 * Función que crea el panel de los asientos contables en la ventana principal de la interfaz.
+	 */
 	public void initPanelIzq() { 
 		//Panel control izquierda
 		this.controlPanelIzq = new JPanel();
 		this.controlPanelIzq.setBorder(null);
-		this.frmSupuesto.getContentPane().add(this.controlPanelIzq, BorderLayout.WEST);
+		this.ventanaPrincipal.getContentPane().add(this.controlPanelIzq, BorderLayout.WEST);
 		this.controlPanelIzq.setLayout(new BorderLayout(0, 0));
 
 		this.contenedorScroll1 = new JScrollPane();
@@ -354,11 +444,14 @@ public class Main {
 		this.panelBox.add(this.añadirDerechoStrut);	
 	}
 	
+	/**
+	 * Función que crea el panel del enunciado en la ventana principal de la interfaz.
+	 */
 	private void initPanelDrch() {
 		//Panel control derecha
 		this.controlPanelDrch = new JPanel();
 		this.controlPanelDrch.setBorder(null);
-		this.frmSupuesto.getContentPane().add(this.controlPanelDrch,BorderLayout.CENTER);
+		this.ventanaPrincipal.getContentPane().add(this.controlPanelDrch,BorderLayout.CENTER);
 		this.controlPanelDrch.setLayout(new BorderLayout(0, 0));
 			
 		this.contenedorScroll2 = new JScrollPane();
@@ -391,6 +484,9 @@ public class Main {
 
 	}
 	
+	/**
+	 * Función que crea la ventana final de la interfaz de la aplicación.
+	 */
 	private void initVentanaFinal() {	
 		this.ventanaFinal = new JFrame();   
         
@@ -445,6 +541,10 @@ public class Main {
 	}
 
 	
+	/**
+	 * Función que añade un asiento al panel de asientos contables de la interfaz.
+	 * @param asiento Asiento que deseamos añadir al panel.
+	 */
 	public void añadeAsiento(String asiento){
 		switch (asiento){
 			
@@ -463,17 +563,17 @@ public class Main {
 								panelesAsiento.add(panelPrestamo);
 								contenedorPanel.revalidate();
 								break;
-			case "CompraMaterialNoAmortizable":  	MaterialNoAmortizablePanel panelMatNoAmort = new MaterialNoAmortizablePanel();
+			case "CompraMaterialNoAmortizable":  	CompraMaterialNoAmortizablePanel panelMatNoAmort = new CompraMaterialNoAmortizablePanel();
 													contenedorPanel.add(panelMatNoAmort);
 													panelesAsiento.add(panelMatNoAmort);
 													contenedorPanel.revalidate();
 													break;
-			case "CompraMaterialAmortizable":   	MaterialAmortizablePanel panelMatAmort = new MaterialAmortizablePanel();								
+			case "CompraMaterialAmortizable":   	CompraMaterialAmortizablePanel panelMatAmort = new CompraMaterialAmortizablePanel();								
 													contenedorPanel.add(panelMatAmort);
 													panelesAsiento.add(panelMatAmort);
 													contenedorPanel.revalidate();
 													break;
-			case "CompraIntangibleNoAmortizable": 	IntangibleNoAmortizablePanel panelIntNoAmort = new IntangibleNoAmortizablePanel();
+			case "CompraIntangibleNoAmortizable": 	CompraIntangibleNoAmortizablePanel panelIntNoAmort = new CompraIntangibleNoAmortizablePanel();
 													contenedorPanel.add(panelIntNoAmort);
 													panelesAsiento.add(panelIntNoAmort);
 													contenedorPanel.revalidate();
@@ -532,12 +632,12 @@ public class Main {
 								JOptionPane.showMessageDialog(null, "Para añadir un los sueldos y salarios antes tiene que haber una aportación inicial ejecutada");
 							}else{
 								if(conRetenciones){
-									SueldoEmpleadosPanel panelSueldoEmpl = new SueldoEmpleadosPanel();
+									SueldosEmpleadosPanel panelSueldoEmpl = new SueldosEmpleadosPanel();
 									contenedorPanel.add(panelSueldoEmpl);
 									panelesAsiento.add(panelSueldoEmpl);
 									contenedorPanel.revalidate();
 								}else{
-									SueldoEmpleadosSinRetPanel panelSueldoEmplSinRet = new SueldoEmpleadosSinRetPanel();
+									SueldosEmpleadosSinRetPanel panelSueldoEmplSinRet = new SueldosEmpleadosSinRetPanel();
 									contenedorPanel.add(panelSueldoEmplSinRet);
 									panelesAsiento.add(panelSueldoEmplSinRet);
 									contenedorPanel.revalidate();
@@ -556,7 +656,7 @@ public class Main {
 							panelesAsiento.add(panelInteres);
 							contenedorPanel.revalidate();
 						}else{
-							InteresSinRetPanel panelInteresSinRet = new InteresSinRetPanel();
+							InteresesSinRetPanel panelInteresSinRet = new InteresesSinRetPanel();
 							contenedorPanel.add(panelInteresSinRet);
 							panelesAsiento.add(panelInteresSinRet);
 							contenedorPanel.revalidate();
@@ -594,6 +694,11 @@ public class Main {
 	}
 	
 	
+	/**
+	 * Clase DesplegableItemListener para controlar los desplegables de la interfaz.
+	 * 
+	 * @author Noelia Manso García
+	 */
 	private class DesplegableItemListener implements ItemListener{
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getSource() == desplegable1){
@@ -639,6 +744,11 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Clase BotonAceptarActionListener para controlar los datos introducidos por el usuario en la interfaz.
+	 *
+	 * @author Noelia Manso García
+	 */
 	public class BotonAceptarActionListener implements ActionListener {
 		public void actionPerformed (ActionEvent event){
 			boolean ok = true;
@@ -697,7 +807,7 @@ public class Main {
 					}
 				}	
 				if(ok){
-					initPanel();
+					initVentanaPrincipal();
 					initMenuBar();
 					initPanelIzq();
 					initPanelDrch();
@@ -733,11 +843,11 @@ public class Main {
 						if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION){ 
 							direccionRuta = fileChooser.getSelectedFile().getAbsolutePath();
 							generarSupuestoContable();
-							JOptionPane.showMessageDialog(null, "La solución se ha generado con exito");
-							frmSupuesto.dispose();
+							JOptionPane.showMessageDialog(null, "La solución se ha generado con éxito");
+							ventanaPrincipal.dispose();
 							System.exit(0);
 						}else{
-							frmSupuesto.setVisible(true);
+							ventanaPrincipal.setVisible(true);
 							comprobarAnoFinal = false;
 						}
 						
@@ -750,6 +860,12 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Clase AddButtonActionListener para controlar el tipo de asiento contable que desea añadir 
+	 * el usuario en la interfaz.
+	 * 
+	 * @author Noelia Manso García
+	 */
 	public class AddButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			if (añadirBox.getSelectedItem().equals("Aportación inicial")) {
@@ -803,6 +919,11 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Clase MenuNuevoActionListener para controlar la generación de un nuevo documento en blanco.
+	 * 
+	 * @author Noelia Manso García
+	 */
 	private class MenuNuevoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			contenedorPanel.removeAll();
@@ -825,6 +946,11 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Clase MenuWebActionListener para controlar el botón de la interfaz que redirigé a la pagina web.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class MenuWebActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			try {
@@ -835,9 +961,14 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Clase MenuAcercaDeActionListenerpara controlar el botón acerca de de la interfaz.
+	 * 
+	 * @author Noelia Manso García
+	 */
 	private class MenuAcercaDeActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			JOptionPane.showMessageDialog(frmSupuesto, "Supuesto contable\n"
+			JOptionPane.showMessageDialog(ventanaPrincipal, "Supuesto contable\n"
 					+ "TFG del Grado en Ingeniería Informática\n"
 					+ "Escuela Politécnica Superior, Universidad de Burgos\n"
 					+ "Presentado en Julio de 2016\n\n"
@@ -847,17 +978,26 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Clase BotonGenerarSolucionActionListener para controlar el botón para generar la 
+	 * solución del supuesto contable de la interfaz.
+	 * 
+	 * @author Noelia Manso García
+	 */
 	public class BotonGenerarSolucionActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			if(ejecucionAlgunAsiento==false){
 				JOptionPane.showMessageDialog(null, "No has introducido ningún asiento");
 			}else{
-				frmSupuesto.setVisible(false);
+				ventanaPrincipal.setVisible(false);
 				initVentanaFinal();
 			}
 		}
 	}
 	
+	/**
+	 * Función que genera la solución del supuesto contable.
+	 */
 	public void generarSupuestoContable(){
 		int anoFin = 0;
 		//boolean hayDividendo = false;
@@ -971,10 +1111,17 @@ public class Main {
 		}
 		
 		//IMPRIME ENUNCIADO
-		imprimeEnunciado(AsientoPanel.listaEnunciadosOrdenados, anoFin);	
+		generaEnunciado(AsientoPanel.listaEnunciadosOrdenados, anoFin);	
 		
 	}
-	public void imprimeEnunciado (ArrayList<Enunciado>todosEnunciadosOrdenados, int anoFin){
+	
+	/**
+	 * Función que genera el enunciado del supuesto contable.
+	 * @param todosEnunciadosOrdenados Lista de los enunciados de los supuestos contables 
+	 * 								   ejecutados ordenados por fecha.
+	 * @param anoFin Último año al que afecta el supusto contable.
+	 */
+	public void generaEnunciado (ArrayList<Enunciado>todosEnunciadosOrdenados, int anoFin){
 		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 		
 		Calendar fech;

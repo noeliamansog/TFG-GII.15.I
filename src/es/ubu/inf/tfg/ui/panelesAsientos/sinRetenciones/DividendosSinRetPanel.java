@@ -15,11 +15,15 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
-import es.ubu.inf.tfg.asientosContables.sinRetenciones.DividendosSinRetenciones;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.doc.Enunciado;
-import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
+/**
+ * Clase DividendosSinRetPanel que implementa lo que debe aparecer en el panel para el asiento DividendosSinRetenciones.
+ * 
+ * @author Noelia Manso García
+ */
 public class DividendosSinRetPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -28,9 +32,16 @@ public class DividendosSinRetPanel extends AsientoPanel {
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JTextField valor;
-	public static DividendosSinRetenciones dividendosSinRetenciones;
+	/**
+	 * Enunciado del asiento contable Dividendos.
+	 */
 	private ArrayList<Enunciado> enunciado = new ArrayList<Enunciado>();
 	
+	
+	/**
+	 * Constructor de la clase DividendosSinRetPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento DividendosSinRetenciones.
+	 */
 	public DividendosSinRetPanel(){
 		this.nombre = "DividendosSinRetenciones";
 		
@@ -66,8 +77,12 @@ public class DividendosSinRetPanel extends AsientoPanel {
 		mainPanel.add(new JLabel("del resultado del ejercicio anterior."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double porcentajeValorDividendos = 0;

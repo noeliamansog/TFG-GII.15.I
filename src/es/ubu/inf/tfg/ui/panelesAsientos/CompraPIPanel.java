@@ -15,10 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.CompraPIAmortizable;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-
+/**
+ * Clase CompraPIPanel que implementa lo que debe aparecer en el panel para el asiento CompraPIAmortizable.
+ * 
+ * @author Noelia Manso García
+ */
 public class CompraPIPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -29,9 +33,15 @@ public class CompraPIPanel extends AsientoPanel {
 	private JTextField importe;
 	private JTextField dias;
 	private JTextField anos;
+	/**
+	 * Supuesto contable CompraPIAmortizable.
+	 */
 	public static CompraPIAmortizable propiedadIndustrialAmortizable;
 	
-	
+	/**
+	 * Constructor de la clase CompraPIPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento CompraPIAmortizable.
+	 */
 	public CompraPIPanel(){
 		this.nombre = "CompraPIAmortizable";
 		
@@ -77,6 +87,12 @@ public class CompraPIPanel extends AsientoPanel {
 		mainPanel.add(new JLabel ("años."));
 
 	}
+	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

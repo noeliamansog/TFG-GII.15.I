@@ -5,8 +5,20 @@ import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 
+/** 
+ * Clase CompraMercaderiasSinIVA que implementa el asiento contable de una compra de mercaderias sin iva.
+ *
+ * @author Noelia Manso García
+ */
 public class CompraMercaderiasSinIVA extends Asiento{
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar una compra de mercaderías sin IVA.
+	 * @param f fecha en la que se realiza la compra.
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public CompraMercaderiasSinIVA(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

@@ -5,11 +5,23 @@ import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 
+/** 
+ * Clase IVA que implementa los calculos necesarios en las cuentas contables para un supuesto contable con IVA.
+ * 
+ * @author Noelia Manso García
+ */
 public class IVA extends Asiento{
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado cuando el supuesto contable tiene IV.
+	 * @param f fecha en la que se realiza el supuesto contable con IVA.
+	 * @param i en este caso, la lista de parametros que el usuario introduce es null.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public IVA(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha = f;
-		inputs = i;
+		
 		double saldoIVARepercutido;
 		double saldoIVASoportado;
 		

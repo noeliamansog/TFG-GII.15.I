@@ -15,11 +15,15 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.doc.Enunciado;
-import es.ubu.inf.tfg.ui.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
-
+/**
+ * Clase DividendosPanel que implementa lo que debe aparecer en el panel para el asiento Dividendos.
+ * 
+ * @author Noelia Manso García
+ */
 public class DividendosPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -29,8 +33,15 @@ public class DividendosPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField valor;
 	private JTextField retencion;
+	/**
+	 * Enunciado del asiento contable Dividendos.
+	 */
 	private ArrayList<Enunciado> enunciado = new ArrayList<Enunciado>();
 	
+	/**
+	 * Constructor de la clase DividendosPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento Dividendos.
+	 */
 	public DividendosPanel(){
 		this.nombre ="Dividendos";
 		
@@ -71,6 +82,11 @@ public class DividendosPanel extends AsientoPanel {
 		mainPanel.add(new JLabel("%). El resto se lleva a Reserva Legal."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

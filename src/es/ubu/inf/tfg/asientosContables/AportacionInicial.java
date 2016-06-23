@@ -3,8 +3,20 @@ import java.util.Calendar;
 
 import es.ubu.inf.tfg.doc.*;
 
+/** 
+ * Clase AportacionInicial que implementa el asiento contable de una aportación inicial.
+ * 
+ * @author Noelia Manso García
+ */
 public class AportacionInicial extends Asiento {
 	
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar una aportación inicial.
+	 * @param f fecha en la que se realiza la aportación inicial
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public AportacionInicial(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha = f;
 		inputs = i;

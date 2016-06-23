@@ -15,10 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.AportacionInicial;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
-import es.ubu.inf.tfg.ui.AsientoPanel;
 
-
+/**
+ * Clase AportacionPanel que implementa lo que debe aparecer en el panel para el asiento AportacionInicial.
+ * 
+ * @author Noelia Manso García
+ */
 public class AportacionPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -4728031249878756673L;
@@ -27,10 +31,17 @@ public class AportacionPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField socios;
 	private JTextField importe;
+	
+	/**
+	 * Asiento contable aportación inicial.
+	 */
 	public static AportacionInicial aportacionInicial;
 	
 	
-	
+	/**
+	 * Constructor de la clase AportacionPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento AportacionInicial.
+	 */
 	public AportacionPanel(){
 		this.nombre = "AportaciónInicial";
 
@@ -73,6 +84,11 @@ public class AportacionPanel extends AsientoPanel {
 		
 	}
 
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

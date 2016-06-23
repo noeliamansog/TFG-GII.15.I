@@ -3,8 +3,20 @@ import java.util.Calendar;
 
 import es.ubu.inf.tfg.doc.*;
 
+/** 
+ * Clase Inventario que implementa el asiento contable de un inventario.
+ *
+ * @author Noelia Manso García
+ */
 public class Inventario extends Asiento {
 	
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar el inventario.
+	 * @param f fecha en la que se realiza el inventario
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public Inventario(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

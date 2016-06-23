@@ -15,12 +15,16 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinIVA.VentaProyectoSinIVA;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
+/**
+ * Clase VentaProyectoSinIVAPanel que implementa lo que debe aparecer en el panel para el asiento VentaProyectoSinIVA.
+ * 
+ * @author Noelia Manso García
+ */
 public class VentaProyectoSinIVAPanel extends AsientoPanel {
 
-	//private static final Logger log = LoggerFactory.getLogger(AportacionPanel.class);
 	private static final long serialVersionUID = -1805230103073818602L;
 
 	private JButton borrarButton;
@@ -28,9 +32,15 @@ public class VentaProyectoSinIVAPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField importe;
 	private JTextField dias;
+	/**
+	 * Asiento contable VentaProyectoSinIVA.
+	 */
 	public static VentaProyectoSinIVA ventaProyectoSinIVA;
 	
-	
+	/**
+	 * Constructor de la clase VentaProyectoSinIVAPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento VentaProyectoSinIVA.
+	 */
 	public VentaProyectoSinIVAPanel(){
 		this.nombre = "VentaProyectoSinIVA";
 		
@@ -71,8 +81,12 @@ public class VentaProyectoSinIVAPanel extends AsientoPanel {
 		mainPanel.add(new JLabel ("días."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double importeVenta = 0;

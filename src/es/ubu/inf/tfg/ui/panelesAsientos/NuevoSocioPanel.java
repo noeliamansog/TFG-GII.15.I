@@ -15,9 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.NuevoSocio;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
+/**
+ * Clase NuevoSocioPanel que implementa lo que debe aparecer en el panel para el asiento NuevoSocio.
+ * 
+ * @author Noelia Manso García
+ */
 public class NuevoSocioPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -26,9 +31,15 @@ public class NuevoSocioPanel extends AsientoPanel {
 	private JButton mostrarButton;
 	private JDateChooser calendario;
 	private JTextField aporte;
+	/**
+	 * Supuesto contable nuevoSocio.
+	 */
 	public static NuevoSocio nuevoSocio;
 	
-	
+	/**
+	 * Constructor de la clase NuevoSocioPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento NuevoSocio.
+	 */
 	public NuevoSocioPanel(){
 		this.nombre = "NuevoSocio";
 		
@@ -66,6 +77,11 @@ public class NuevoSocioPanel extends AsientoPanel {
 
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

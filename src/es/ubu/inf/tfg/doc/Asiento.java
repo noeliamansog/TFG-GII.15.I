@@ -4,19 +4,54 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+/**
+ * La clase Asiento implementa un asiento contable. Un supuesto contable está compuesto por diferentes
+ * asientos contables. De esta clase heredan todos los posibles tipos de asientos contables.
+ * 
+ * @author Noelia Manso García
+ */
 public class Asiento {
 	
+	/**
+	 * Una lista de enunciados que recoge todos los enunciados de todos los asientos contables creados.
+	 */
 	public ArrayList<Enunciado> enunciados = new ArrayList<Enunciado>();
+	/**
+	 * Booleano que nos indica si el usuario desea que aparezca en el enunciado los nombres de las 
+	 * cuentas del PGC usadas.
+	 */
 	public boolean enunciadoCuentas;
+	/**
+	 * Fecha del asiento contable.
+	 */
 	public Calendar fecha;
+	/**
+	 * Parámetros que introduce el usuario para hacer un asiento a medida.
+	 */
 	public double[] inputs;
+	/**
+	 * Cuentas usadas en el supuesto contable hasta el momento. Este HashMap inicialmente está vacío.
+	 */
 	protected static HashMap<Integer, Cuenta> cuentas = new HashMap<Integer, Cuenta>();
+	/**
+	 * Todas las posibles cuentas que se pueden llegar a usar en un supuesto contable.
+	 */
 	protected static HashMap<Integer, Cuenta> todasCuentas = new HashMap<Integer, Cuenta>();
 	
+	/**
+	 * Constructor de la clase Asiento que inicializa las variables necesarias.
+	 */
 	public Asiento() {
 		inicializarTodasCuentas();
 	}
 
+	/**
+	 * Función que, dado el código de una cuenta comprueba si ya existe (si ya la hemos usado anteriormente).
+	 * En caso positivo devuelve el objeto cuenta de esta cuenta, y de lo contrario la crea.
+	 * 
+	 * @param codigo Código de la cuenta.
+	 * @return Objeto cuenta de la cuenta deseada.
+	 */
 	public Cuenta dameCuenta(int codigo) {
 		Cuenta cuenta;
 		
@@ -29,10 +64,19 @@ public class Asiento {
 		return cuenta;
 	}
 	
+	/**
+	 * Función que dado el código de una cuenta devuelve su prioridad.
+	 * @param codigo Código de la cuenta.
+	 * @return Prioridad de la cuenta.
+	 */
 	public int damePrioridad(int codigo){
 		return todasCuentas.get(codigo).prioridad;	
 	}
 	
+	/**
+	 * Función que inicializa el HashMap todasCuentas con todas las posibles cuentas que se pueden 
+	 * llegar a usar en un supuesto contable.
+	 */
 	public void inicializarTodasCuentas() {
 		// INICIALIZMAOS TODAS LAS CUENTAS CON SU CODIGO, SU NOMBRE Y SU PRIORIDAD
 		todasCuentas.put(12,new Cuenta(12, "Resultados pendientes de aplicación", -11));

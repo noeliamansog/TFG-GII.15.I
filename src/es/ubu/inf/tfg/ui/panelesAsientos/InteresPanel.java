@@ -15,9 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.Interes;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
+/**
+ * Clase InteresPanel que implementa lo que debe aparecer en el panel para el asiento Intereses.
+ * 
+ * @author Noelia Manso García
+ */
 public class InteresPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -27,9 +32,15 @@ public class InteresPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField ingreso;
 	private JTextField porcentaje;
+	/**
+	 * Asiento contable Intereses.
+	 */
 	public static Interes intereses;
 	
-	
+	/**
+	 * Constructor de la clase InteresPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento Intereses.
+	 */
 	public InteresPanel(){
 		this.nombre = "Interes";
 		
@@ -71,6 +82,11 @@ public class InteresPanel extends AsientoPanel {
 		mainPanel.add(new JLabel("% (el resto lo retienen)."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {

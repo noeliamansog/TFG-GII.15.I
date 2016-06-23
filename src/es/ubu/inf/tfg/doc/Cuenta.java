@@ -4,15 +4,46 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+/**
+ * Clase Cuenta que implementa una cuenta contable.
+ * 
+ * @author Noelia Manso García
+ */
 public class Cuenta implements Comparable<Cuenta>{
 	
+	/**
+	 * Código de la cuenta.
+	 */
 	public int codigo = 0;
+	/**
+	 * Nombre de la cuenta.
+	 */
 	public String nombre;
+	/**
+	 * Prioridad de la cuenta.
+	 */
 	public int prioridad;
+	/**
+	 * Lista de anotaciones que pertenecen al debe (Gastos o Cobros).
+	 */
 	public ArrayList<Anotacion> debe = new ArrayList<Anotacion>();
+	/**
+	 * Lista de anotaciones que pertenecen al haber (Ingresos o Pagos).
+	 */
 	public ArrayList<Anotacion> haber = new ArrayList<Anotacion>();
+	/**
+	 * HashMap que nos indica si el saldo de la cuenta se calcula restando la cantidad del Debe menos el Haber
+	 * o viceversa.
+	 */
 	public HashMap<Integer, Boolean> saldoDebeMenosHaber = new HashMap<Integer, Boolean>();
 	
+	/**
+	 * Constructor de la clase Cuenta que inicializa las variables necesarias.
+	 * 
+	 * @param codigo Código de la cuenta.
+	 * @param nombre Nombre de la cuenta.
+	 * @param prioridad Prioridad de la cuenta.
+	 */
 	public Cuenta(int codigo, String nombre, int prioridad){
 		this.codigo = codigo;
 		this.nombre = nombre;
@@ -20,14 +51,29 @@ public class Cuenta implements Comparable<Cuenta>{
 		inicializarSaldoDebeMenosHaber();
 	}
 
+	/**
+	 * Función que añade una anotación en la lista Debe.
+	 * 
+	 * @param anotacion Anotación que se desea añadir.
+	 */
 	public void añadirDebe(Anotacion anotacion){
 		debe.add(anotacion);	
 	}
 	
+	/**
+	 * Función que añade una anotación en la lista Haber.
+	 * 
+	 * @param anotacion Anotación que se desea añadir.
+	 */
 	public void añadirHaber(Anotacion anotacion){
 		haber.add(anotacion);	
 	}
 	
+	/**
+	 * Función que calcula el saldo de una cuenta en una determinada fecha.
+	 * @param fecha Fecha en la que se desea calcular el saldo.
+	 * @return Saldo de la cuenta.
+	 */
 	public double getSaldo(Calendar fecha){
 		double contDebe = 0;
 		double contHaber = 0;
@@ -49,6 +95,10 @@ public class Cuenta implements Comparable<Cuenta>{
 		}
 	}
 	
+	/**
+	 * Función que inicializa el HashMap saldoDebeMenosHaber para saber si el saldo de la cuenta
+	 *  se calcula restando la cantidad del Debe menos el Haber o viceversa.
+	 */
 	public void inicializarSaldoDebeMenosHaber(){
 		// INICIALIZAMOS LAS CUENTAS CON UN BOOLEANO PARA SABER SI ESTÁN A LA IZQUIERDA O A LA DERECHA DE LA CUENTA
 		saldoDebeMenosHaber.put(12, false);

@@ -5,8 +5,20 @@ import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 
+/** 
+ * Clase Interes que implementa el asiento contable de intereses.
+ *
+ * @author Noelia Manso García
+ */
 public class Interes extends Asiento{
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar intereses en el supuesto contable.
+	 * @param f fecha en la que se realizan los intereses.
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public Interes(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

@@ -5,8 +5,20 @@ import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 
+/** 
+ * Clase VentaProyectoSinIVA que implementa el asiento contable de una venta de un proyecto sin IVA.
+ *
+ * @author Noelia Manso García
+ */
 public class VentaProyectoSinIVA extends Asiento {
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar una venta de un proyecto sin IVA.
+	 * @param f fecha en la que se realiza la venta.
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public VentaProyectoSinIVA(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

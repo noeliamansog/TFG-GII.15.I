@@ -5,9 +5,20 @@ import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 
+/** 
+ * Clase CompraMaterialNoAmortizable que implementa el asiento contable de una compra de material no amortizable.
+ * 
+ * @author Noelia Manso García
+ */
 public class CompraMaterialNoAmortizable extends Asiento {
-	public static Calendar fechaVencimiento;
 	
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar una compra de material no amortizable.
+	 * @param f fecha en la que se realiza la compra
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public CompraMaterialNoAmortizable(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;
@@ -24,9 +35,6 @@ public class CompraMaterialNoAmortizable extends Asiento {
      			+ "Este activo no es amortizable. Se abonan " +inputs[2]+ "€ mediante transferencia y "
      			+ "quedan " +(inputs[1]-inputs[2])+ "€ pendiente de pago. Se acuerda que la deuda se pagará "
      			+ "en " +(int)inputs[3]+ " meses. \n";
-			
-		fechaVencimiento = (Calendar) fecha.clone();
-		fechaVencimiento.add(Calendar.MONTH, (int)inputs[3]);
 		
 		if (inputs[0]==0){
 			if (enunciadoCuentas){

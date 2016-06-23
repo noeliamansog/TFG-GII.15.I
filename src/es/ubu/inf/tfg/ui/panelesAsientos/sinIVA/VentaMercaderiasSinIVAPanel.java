@@ -1,6 +1,5 @@
 package es.ubu.inf.tfg.ui.panelesAsientos.sinIVA;
 
-
 import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -16,9 +15,15 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.sinIVA.VentaMercaderiasSinIVA;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
+/**
+ * Clase VentaMercaderiasSinIVAPanel que implementa lo que debe aparecer en el panel para el asiento 
+ * VentaMercaderiasSinIVA.
+ * 
+ * @author Noelia Manso García
+ */
 public class VentaMercaderiasSinIVAPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -28,9 +33,15 @@ public class VentaMercaderiasSinIVAPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField importe;
 	private JTextField dias;
+	/**
+	 * Supuesto contable VentaMercaderiasSinIVA.
+	 */
 	public static VentaMercaderiasSinIVA ventaMercaderiasSinIVA;
 	
-	
+	/**
+	 * Constructor de la clase VentaMercaderiasSinIVAPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento VentaMercaderiasSinIVA.
+	 */
 	public VentaMercaderiasSinIVAPanel(){
 		this.nombre = "VentaMercaderiasSinIVA";
 		
@@ -71,8 +82,12 @@ public class VentaMercaderiasSinIVAPanel extends AsientoPanel {
 		mainPanel.add(new JLabel ("días."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double importeVenta = 0;

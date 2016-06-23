@@ -1,2 +1,5 @@
-# TFG-GII.15.I
-Desarrollar una herramienta que genere de manera automática y con cierta aleatoriedad cuestiones relacionadas con la Dirección Financiera y problemas básicos de Matemáticas Financieras y de Contabilidad Financiera (p. ej. elaboración de Balances, cuentas de pérdidas y ganancias, etc. a partir de supuestos contables) para la plataforma Moodle. La herramienta debe ser capaz de comparar la respuesta aportada por el usuario con la solución correcta y ofrecer retroalimentación para facilitar el proceso de aprendizaje. Para el desarrollo de este trabajo será útil un interés en aprender (o repasar) conceptos de Finanzas; el tutor ayudará al alumno a entender estos conceptos.
+# TFG-GII.15.I Aplicación para la creación personalizada y resolución automática de supuestos contables.
+
+Desarrollo de una  aplicación que genera el enunciado y la solución de un supuesto contable personalizado a partir de diferentes tipos de asientos contables.
+El usuario debe parametrizar cada uno de los asientos elegidos para la realización del supuesto contable (P. ej. la aportación inicial de los socios, la solicitud de un préstamo, la compra o venta de mercaderías... ).
+La solución generada incluye por cada año: el balance de situación, la cuenta de perdidas y ganancias, el estado de flujo de efectivos, la rentabilidad económica y financiera, el fondo de maniobra y la liquidez y el endeudamiento de la empresa.

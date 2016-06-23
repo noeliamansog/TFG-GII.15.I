@@ -4,9 +4,21 @@ import java.util.Calendar;
 import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
-
+                                                               
+/** 
+ * Clase SueldoIngeniero que implementa el asiento contable del pago del sueldo de un ingeniero.
+ *
+ * @author Noelia Manso García
+ */
 public class SueldoIngeniero extends Asiento {
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar el pago del sueldo del ingeniero.
+	 * @param f fecha en la que se paga al ingeniero.
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public SueldoIngeniero(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

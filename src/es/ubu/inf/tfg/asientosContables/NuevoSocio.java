@@ -5,8 +5,20 @@ import es.ubu.inf.tfg.doc.Anotacion;
 import es.ubu.inf.tfg.doc.Asiento;
 import es.ubu.inf.tfg.doc.Enunciado;
 
+/** 
+ * Clase NuevoSocio que implementa el asiento contable de la incorporación de un nuevo socio.
+ * 
+ * @author Noelia Manso García
+ */
 public class NuevoSocio extends Asiento {
 
+	/**
+	 * Gestiona las cuentas contables y el enunciado al incorporarse un nuevo socio.
+	 * @param f fecha en la que se incorpora un nuevo socio.
+	 * @param i lista de parametros que el usuario introduce para que sea un asiento contable personalizado.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public NuevoSocio(Calendar f, double[] i, boolean enunciadoCuentas) {
 		fecha =f;
 		inputs=i;

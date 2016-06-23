@@ -15,9 +15,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import es.ubu.inf.tfg.asientosContables.VentaProyecto;
-import es.ubu.inf.tfg.ui.AsientoPanel;
+import es.ubu.inf.tfg.doc.AsientoPanel;
 import es.ubu.inf.tfg.main.Main;
 
+/**
+ * Clase VentaProyectoPanel que implementa lo que debe aparecer en el panel para el asiento VentaProyecto.
+ * 
+ * @author Noelia Manso García
+ */
 public class VentaProyectoPanel extends AsientoPanel {
 
 	private static final long serialVersionUID = -1805230103073818602L;
@@ -27,9 +32,15 @@ public class VentaProyectoPanel extends AsientoPanel {
 	private JDateChooser calendario;
 	private JTextField importe;
 	private JTextField dias;
+	/**
+	 * Supuesto contable VentaProyecto
+	 */
 	public static VentaProyecto ventaProyecto;
 	
-	
+	/**
+	 * Constructor de la clase VentaProyectoPanel que genera lo que debe aparecer en el panel para 
+	 * el asiento VentaProyecto.
+	 */
 	public VentaProyectoPanel(){
 		this.nombre = "VentaProyecto";
 		
@@ -71,8 +82,12 @@ public class VentaProyectoPanel extends AsientoPanel {
 		mainPanel.add(new JLabel ("días."));
 	}
 	
+	/**
+	 * Clase BotonMostrarActionListener para controlar los datos que introduce el usuario.
+	 * 
+	 * @author Noelia Manso García.
+	 */
 	private class BotonMostrarActionListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			Calendar fecha = Calendar.getInstance();
 			double importeVenta = 0;

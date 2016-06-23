@@ -3,11 +3,22 @@ import java.util.Calendar;
 
 import es.ubu.inf.tfg.doc.*;
 
+/** 
+ * Clase PagoDeudasHaciendaSinRetenciones que implementa el asiento contable de pago de las deudas a hacienda sin retenciones.
+ * 
+ * @author Noelia Manso García
+ */
 public class PagoDeudasHaciendaSinRetenciones extends Asiento {
 	
+	/**
+	 * Gestiona las cuentas contables y el enunciado al realizar el pago de las deudas con hacienda sin retenciones.
+	 * @param f fecha en la que se realiza el pago.
+	 * @param i en este caso, la lista de parametros que el usuario introduce es null.
+	 * @param enunciadoCuentas booleano que indica si el usuario desea que en el enunciado 
+	 * 						   aparezca el nombre de las cuentas que se usan del PGC.
+	 */
 	public PagoDeudasHaciendaSinRetenciones(Calendar f, double [] i, boolean enunciadoCuentas) {
 		fecha =f;
-		inputs=i;
 
 		String enunciado1 = " Se saldan todas las deudas con Hacienda.\n";
 		if (enunciadoCuentas){
