@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
@@ -63,6 +84,10 @@ public class Prestamo extends Asiento {
 		dameCuenta(170).añadirHaber(new Anotacion(fecha, "Prestamo", (inputs[0]), damePrioridad(170)));
 		
 		
+		Calendar fech = (Calendar)fecha.clone();
+		fech.set(Calendar.DAY_OF_YEAR, -0);
+
+		
 		//PAGO DE UNA CUOTA:
 		//Cuotas de amortización
 		 if(inputs[1]==0){
@@ -74,13 +99,19 @@ public class Prestamo extends Asiento {
 				 cuotaAmortizacion = inputs[0]/numPagos;
 				 			 
 				 for(int j=1; j<=numPagos; j++){
-					 Calendar fechaMesSiguiente = (Calendar)fecha.clone();
+					 Calendar fechaMesSiguiente = (Calendar)fech.clone();
 					 fechaMesSiguiente.add(Calendar.MONTH, +j);
 					 dameCuenta(170).añadirDebe(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
 					 dameCuenta(662).añadirDebe(new Anotacion(fechaMesSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 
+					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
+						if (enunciadoCuentas){
+							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
+									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
+						}			
+					enunciados.add(new Enunciado(fechaMesSiguiente, enunciado2));		 
 				 }
 			 //Anual
 			 }else{
@@ -90,14 +121,19 @@ public class Prestamo extends Asiento {
 				 cuotaAmortizacion = inputs[0]/numPagos;
 				 
 				 for(int j=1; j<=numPagos; j++){
-					 Calendar fechaAñoSiguiente = (Calendar)fecha.clone();
+					 Calendar fechaAñoSiguiente = (Calendar)fech.clone();
 					 fechaAñoSiguiente.add(Calendar.YEAR, +j);
 					 dameCuenta(170).añadirDebe(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
 					 dameCuenta(662).añadirDebe(new Anotacion(fechaAñoSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
-		
 					 
+					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
+						if (enunciadoCuentas){
+							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
+									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
+						}			
+					enunciados.add(new Enunciado(fechaAñoSiguiente, enunciado2));		 
 				 }
 			 }
 
@@ -112,14 +148,19 @@ public class Prestamo extends Asiento {
 				 cuotaPago = inputs[0]*(tipoInteres*(Math.pow(1+tipoInteres, numPagos))/(Math.pow(1+tipoInteres, numPagos)-1));
 				 
 				 for(int j=1; j<=numPagos; j++){
-					 Calendar fechaMesSiguiente = (Calendar)fecha.clone();
+					 Calendar fechaMesSiguiente = (Calendar)fech.clone();
 					 fechaMesSiguiente.add(Calendar.MONTH, +j);
-					 cuotaAmortizacion =  cuotaPago-deudaViva*tipoInteres;
 					 dameCuenta(170).añadirDebe(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
 					 dameCuenta(662).añadirDebe(new Anotacion(fechaMesSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 
+					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
+						if (enunciadoCuentas){
+							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
+									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
+						}			
+					enunciados.add(new Enunciado(fechaMesSiguiente, enunciado2));	 
 				 }
 			 //Anual
 			 }else{
@@ -129,13 +170,20 @@ public class Prestamo extends Asiento {
 				 cuotaPago = inputs[0]*(tipoInteres*(Math.pow(1+tipoInteres, numPagos))/(Math.pow(1+tipoInteres, numPagos)-1));
 				 
 				 for(int j=1; j<=numPagos; j++){
-					 Calendar fechaAñoSiguiente = (Calendar)fecha.clone();
+					 Calendar fechaAñoSiguiente = (Calendar)fech.clone();
 					 fechaAñoSiguiente.add(Calendar.YEAR, +j);
 					 cuotaAmortizacion =  cuotaPago-deudaViva*tipoInteres;
 					 dameCuenta(170).añadirDebe(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
 					 dameCuenta(662).añadirDebe(new Anotacion(fechaAñoSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));
-					 deudaViva = deudaViva - cuotaAmortizacion;					 
+					 deudaViva = deudaViva - cuotaAmortizacion;		
+					 
+					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
+						if (enunciadoCuentas){
+							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
+									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
+						}			
+					enunciados.add(new Enunciado(fechaAñoSiguiente, enunciado2));
 				 }
 			 }
 		 }

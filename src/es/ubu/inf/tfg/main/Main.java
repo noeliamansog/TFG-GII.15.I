@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.main;
 
 import java.awt.BorderLayout;
@@ -49,36 +70,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import es.ubu.inf.tfg.asientosContables.*;
-import es.ubu.inf.tfg.asientosContables.sinIVA.PagoDeudasHaciendaSinIVA;
-import es.ubu.inf.tfg.asientosContables.sinRetenciones.DividendosSinRetenciones;
-import es.ubu.inf.tfg.asientosContables.sinRetenciones.PagoDeudasHaciendaSinRetenciones;
 import es.ubu.inf.tfg.doc.*;
-import es.ubu.inf.tfg.solucion.Balance;
-import es.ubu.inf.tfg.solucion.Calculos;
-import es.ubu.inf.tfg.solucion.CuentaResultados;
-import es.ubu.inf.tfg.solucion.Tesoreria;
-import es.ubu.inf.tfg.ui.panelesAsientos.AportacionPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.CompraMercaderiasPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.CompraPIPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.CompraSWPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.DividendosPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.CompraIntangibleNoAmortizablePanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.InteresPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.InventarioPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.CompraMaterialAmortizablePanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.CompraMaterialNoAmortizablePanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.NuevoSocioPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.PrestamoPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.SueldosEmpleadosPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.SueldoIngenieroPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.VentaMercaderiasPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.VentaProyectoPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinIVA.CompraMercaderiasSinIVAPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinIVA.VentaMercaderiasSinIVAPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinIVA.VentaProyectoSinIVAPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.DividendosSinRetPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.InteresesSinRetPanel;
-import es.ubu.inf.tfg.ui.panelesAsientos.sinRetenciones.SueldosEmpleadosSinRetPanel;
+import es.ubu.inf.tfg.solucion.*;
+import es.ubu.inf.tfg.ui.panelesAsientos.*;
 
 /**
  * Clase Main, clase principal desde donde se ejecuta la aplicación.
@@ -362,7 +356,7 @@ public class Main {
 	 */
 	public void initVentanaPrincipal(){
 		this.ventanaPrincipal= new JFrame();
-		this.ventanaPrincipal.setTitle("Supuesto contable");
+		this.ventanaPrincipal.setTitle("Generador de supuesto contable");
 		this.ventanaPrincipal.setBounds(100, 100, 1150, 900);
 		this.ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventanaPrincipal.setVisible(true);
@@ -588,79 +582,40 @@ public class Main {
 										panelesAsiento.add(panelCompraPI);
 										contenedorPanel.revalidate();
 										break;
-			case "CompraMercaderias": 	
-								if(conIVA){
+			case "CompraMercaderias":
 									CompraMercaderiasPanel panelCompraMerc = new CompraMercaderiasPanel();
 									contenedorPanel.add(panelCompraMerc);
 									panelesAsiento.add(panelCompraMerc);
 									contenedorPanel.revalidate();
-								}else{
-									CompraMercaderiasSinIVAPanel panelCompraMercSinIVA = new CompraMercaderiasSinIVAPanel();
-									contenedorPanel.add(panelCompraMercSinIVA);
-									panelesAsiento.add(panelCompraMercSinIVA);
-									contenedorPanel.revalidate();			
-								}
 								break;
-			case "VentaMercaderias":  	
-								if(conIVA){
+			case "VentaMercaderias": 
 									VentaMercaderiasPanel panelVentaMerc = new VentaMercaderiasPanel();
 									contenedorPanel.add(panelVentaMerc);
 									panelesAsiento.add(panelVentaMerc);
 									contenedorPanel.revalidate();
-								}else{
-									VentaMercaderiasSinIVAPanel panelVentaMercSinIVA = new VentaMercaderiasSinIVAPanel();
-									contenedorPanel.add(panelVentaMercSinIVA);
-									panelesAsiento.add(panelVentaMercSinIVA);
-									contenedorPanel.revalidate();
-								}
 								break;
-			case "VentaProyecto":  	
-								if(conIVA){
+			case "VentaProyecto":
 									VentaProyectoPanel panelVentaProy = new VentaProyectoPanel();
 									contenedorPanel.add(panelVentaProy);
 									panelesAsiento.add(panelVentaProy);
 									contenedorPanel.revalidate();
-								}else{
-									VentaProyectoSinIVAPanel panelVentaProySinIVA = new VentaProyectoSinIVAPanel();
-									contenedorPanel.add(panelVentaProySinIVA);
-									panelesAsiento.add(panelVentaProySinIVA);
-									contenedorPanel.revalidate();
-								}
 								break;
 			case "SueldosYSalarios":
-							if(panelAportacion==null || aportacionEjecutada==false){
-								JOptionPane.showMessageDialog(null, "Para añadir un los sueldos y salarios antes tiene que haber una aportación inicial ejecutada");
-							}else{
-								if(conRetenciones){
-									SueldosEmpleadosPanel panelSueldoEmpl = new SueldosEmpleadosPanel();
-									contenedorPanel.add(panelSueldoEmpl);
-									panelesAsiento.add(panelSueldoEmpl);
-									contenedorPanel.revalidate();
-								}else{
-									SueldosEmpleadosSinRetPanel panelSueldoEmplSinRet = new SueldosEmpleadosSinRetPanel();
-									contenedorPanel.add(panelSueldoEmplSinRet);
-									panelesAsiento.add(panelSueldoEmplSinRet);
-									contenedorPanel.revalidate();
-								}
-							}
+								SueldosEmpleadosPanel panelSueldoEmpl = new SueldosEmpleadosPanel();
+								contenedorPanel.add(panelSueldoEmpl);
+								panelesAsiento.add(panelSueldoEmpl);
+								contenedorPanel.revalidate();	
 							break;
 			case "SueldoIgeniero": 	SueldoIngenieroPanel panelSueldoIng = new SueldoIngenieroPanel();
 									contenedorPanel.add(panelSueldoIng);
 									panelesAsiento.add(panelSueldoIng);
 									contenedorPanel.revalidate();
 									break;
-			case "Interes": 
-						if (conRetenciones){
+			case "Interes":
 							InteresPanel panelInteres = new InteresPanel();
 							contenedorPanel.add(panelInteres);
 							panelesAsiento.add(panelInteres);
 							contenedorPanel.revalidate();
-						}else{
-							InteresesSinRetPanel panelInteresSinRet = new InteresesSinRetPanel();
-							contenedorPanel.add(panelInteresSinRet);
-							panelesAsiento.add(panelInteresSinRet);
-							contenedorPanel.revalidate();
-						}
 						break;
 			case "NuevoSocio": 	
 							if(panelAportacion==null || aportacionEjecutada==false){
@@ -678,17 +633,10 @@ public class Main {
 								contenedorPanel.revalidate();
 								break;
 			case "Dividendos": 
-							if (conRetenciones){
 								DividendosPanel panelDividendos = new DividendosPanel();
 								contenedorPanel.add(panelDividendos);
 								panelesAsiento.add(panelDividendos);
 								contenedorPanel.revalidate();
-							}else{
-								DividendosSinRetPanel panelDividendosSinRet = new DividendosSinRetPanel();
-								contenedorPanel.add(panelDividendosSinRet);
-								panelesAsiento.add(panelDividendosSinRet);
-								contenedorPanel.revalidate();	
-							}
 							break;
 		}
 	}
@@ -955,7 +903,7 @@ public class Main {
 		public void actionPerformed(ActionEvent event) {
 			try {
 				Desktop.getDesktop().browse(
-						new URI("http://robertoia.github.com/PLQuiz"));
+						new URI("http://noeliamansog.github.io/TFG-GII.15.I/"));
 			} catch (IOException | URISyntaxException e) {
 			}
 		}
@@ -1025,49 +973,35 @@ public class Main {
 			//TODOS LOS AÑOS MENOS EL PRIMERO
 			if (anoActual!=anoInicial){
 					
+				Calendar fechaDeudas = Calendar.getInstance();
+				fechaDeudas.set(anoActual,0,1);
 				//Pago deudas hacienda
-				Calendar fechaDeudasHP = Calendar.getInstance();
-				fechaDeudasHP.set(anoActual,0,1);
-				if(conIVA && conRetenciones){
-					PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fechaDeudasHP, null, enunciadoConCuentas);
-					AsientoPanel.añadeEnunciado(deudasHacienda.enunciados);
-				}if(conIVA==false && conRetenciones){
-					PagoDeudasHaciendaSinIVA deudasHaciendaSinIVA = new PagoDeudasHaciendaSinIVA(fechaDeudasHP, null, enunciadoConCuentas);
-					AsientoPanel.añadeEnunciado(deudasHaciendaSinIVA.enunciados);
-				}if(conIVA && conRetenciones==false ){
-					PagoDeudasHaciendaSinRetenciones deudasHaciendaSinRetenciones = new PagoDeudasHaciendaSinRetenciones(fechaDeudasHP, null, enunciadoConCuentas);
-					AsientoPanel.añadeEnunciado(deudasHaciendaSinRetenciones.enunciados);
-				}
-					 
-				//Pago deudas segurada social
-				if(conRetenciones){
-					Calendar fechaDeudasSS = Calendar.getInstance();
-					fechaDeudasSS.set(anoActual,0,1);
-					PagoDeudasSS deudasSS = new PagoDeudasSS(fechaDeudasSS, null, enunciadoConCuentas);
-					AsientoPanel.añadeEnunciado(deudasSS.enunciados);
-				}
+				PagoDeudasHacienda deudasHacienda = new PagoDeudasHacienda(fechaDeudas, null, enunciadoConCuentas);
+				AsientoPanel.añadeEnunciado(deudasHacienda.enunciados);
+				//Pago deudas ss
+				PagoDeudasSS deudasSS = new PagoDeudasSS(fechaDeudas, null, enunciadoConCuentas);
+				AsientoPanel.añadeEnunciado(deudasSS.enunciados);
 
 				//Dividendos
 				if(AsientoPanel.anoDividendo.contains(anoActual)){
-					if(conRetenciones){
-						for (Map.Entry<Calendar, double []> entry : datosDividendos.entrySet()) {
-							Calendar fechaDividendos = entry.getKey();
-							double[] inputsDividendos = entry.getValue();
-							if(fechaDividendos.get(Calendar.YEAR)==anoActual){
-								Dividendos dividendos = new Dividendos(fechaDividendos, inputsDividendos, enunciadoConCuentas);
-								AsientoPanel.añadeEnunciado(dividendos.enunciados);
-							}
-
+					Calendar fechaDividendos;
+					double[] inputsDividendos;
+					for (Map.Entry<Calendar, double []> entry : datosDividendos.entrySet()) {
+						fechaDividendos = entry.getKey();
+						inputsDividendos = entry.getValue();
+						if(fechaDividendos.get(Calendar.YEAR)==anoActual){
+							Dividendos dividendos = new Dividendos(fechaDividendos, inputsDividendos, enunciadoConCuentas);
+							AsientoPanel.añadeEnunciado(dividendos.enunciados);
 						}
-					}else{
-						for (Map.Entry<Calendar, double []> entry : datosDividendosSinRet.entrySet()) {
-							Calendar fechaDividendosSinRet = entry.getKey();
-							double[] inputsDividendosSinRet = entry.getValue();
-							if(fechaDividendosSinRet.get(Calendar.YEAR)==anoActual){
-								DividendosSinRetenciones dividendosSinR = new DividendosSinRetenciones(fechaDividendosSinRet, inputsDividendosSinRet, enunciadoConCuentas);
-								AsientoPanel.añadeEnunciado(dividendosSinR.enunciados);
-							}
 
+					}
+					for (Map.Entry<Calendar, double []> entry : datosDividendosSinRet.entrySet()) {
+						fechaDividendos = entry.getKey();
+						inputsDividendos = entry.getValue();
+						if(fechaDividendos.get(Calendar.YEAR)==anoActual){
+							Dividendos dividendos = new Dividendos(fechaDividendos, inputsDividendos, enunciadoConCuentas);
+							AsientoPanel.añadeEnunciado(dividendos.enunciados);
+							}
 						}
 					}
 				}else{
@@ -1076,7 +1010,6 @@ public class Main {
 					new NoDividendos (fechaNoDividendos, null, enunciadoConCuentas);
 				}
 				
-			}
 				
 			//SIEMPRE
 			//Iva
@@ -1176,12 +1109,9 @@ public class Main {
 					 + "  a) Indique claramente cómo afectaría a cada una de las cuentas contables cada una de las "
 					 + "transacciones económicas de la empresa, elaborando al mismo tiempo el balance de situación, "
 					 + "la cuenta de pérdidas y ganancias y el estado de flujos de tesorería de cada año. ");
-			if(conRetenciones && conIVA){
+			if(conIVA){
 				parrafo.add("El impuesto de sociedades es el " +impuestoSociedades+ "% del beneficio y el IVA es " +IVA+ "%.");
-			}if(conRetenciones==false && conIVA){
-				parrafo.add("El IVA es " +IVA+ "%.\n");	 
-			}
-			if(conRetenciones && conIVA==false){
+			}else{
 				parrafo.add("El impuesto de sociedades es el " +impuestoSociedades+ "% del beneficio.");				 
 			}
  			parrafo.add("\n  b) Calcular la rentabilidad económica y la rentabilidad financiera de cada año y comprobar "

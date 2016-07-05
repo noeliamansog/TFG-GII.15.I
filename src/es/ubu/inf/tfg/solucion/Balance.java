@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.solucion;
 
 import java.io.File;
@@ -189,66 +210,66 @@ public class Balance extends Asiento{
 		  Cuenta cuenta = cuentas.get(key);	  
 		  
 		  //Activo No Corriente Material
-		  if(cuenta.prioridad>=1 && cuenta.prioridad<=10){
+		  if(cuenta.prioridad>=1 && cuenta.prioridad<=10 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  activoNoCorrienteMaterial.add(cuenta);
 			  valorActivoNoCorrienteMaterial += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Activo No Corriente Intangible
-		  if(cuenta.prioridad>=11 && cuenta.prioridad<=20){
+		  if(cuenta.prioridad>=11 && cuenta.prioridad<=20 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  activoNoCorrienteIntangible.add(cuenta);
 			  valorActivoNoCorrienteIntangible += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Activo No Corriente Financiero
-		  if(cuenta.prioridad>=21 && cuenta.prioridad<=30){
+		  if(cuenta.prioridad>=21 && cuenta.prioridad<=30 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  activoNoCorrienteFinanciero.add(cuenta);
 			  valorActivoNoCorrienteFinanciero += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Activo Corriente Existencias
-		  if(cuenta.prioridad>=31 && cuenta.prioridad<=40){
+		  if(cuenta.prioridad>=31 && cuenta.prioridad<=40 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  activoCorrienteExistencias.add(cuenta);
 			  valorActivoCorrienteExistencias += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Activo Corriente Realizable
-		  if(cuenta.prioridad>=41 && cuenta.prioridad<=50){
+		  if(cuenta.prioridad>=41 && cuenta.prioridad<=50 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  activoCorrienteRealizable.add(cuenta);
 			  valorActivoCorrienteRealizable += cuenta.getSaldo(fecha);
 		  }
 		  //Activo Corriente Disponible
-		  if(cuenta.prioridad>=51 && cuenta.prioridad<=60){
+		  if(cuenta.prioridad>=51 && cuenta.prioridad<=60 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  activoCorrienteDisponible.add(cuenta);
 			  valorActivoCorrienteDisponible += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Patrimonio Neto Capital
-		  if(cuenta.prioridad<=-1 && cuenta.prioridad>=-5){
+		  if(cuenta.prioridad<=-1 && cuenta.prioridad>=-5 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  patrimonioNetoCapital.add(cuenta);
 			  valorPatrimonioNetoCapital += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Patrimonio Neto Reservas
-		  if(cuenta.prioridad<=-6 && cuenta.prioridad>=-15){
+		  if(cuenta.prioridad<=-6 && cuenta.prioridad>=-15 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  patrimonioNetoReservas.add(cuenta);
 			  valorPatrimonioNetoReservas += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Patrimonio Neto Subvenciones
-		  if(cuenta.prioridad<=-16 && cuenta.prioridad>=-20){
+		  if(cuenta.prioridad<=-16 && cuenta.prioridad>=-20 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  patrimonioNetoSubvenciones.add(cuenta);
 			  valorPatrimonioNetoSubvenciones += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Pasivo No Corriente
-		  if(cuenta.prioridad<=-21 && cuenta.prioridad>=-30){
+		  if(cuenta.prioridad<=-21 && cuenta.prioridad>=-30 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){
 			  pasivoNoCorriente.add(cuenta);
 			  valorPasivoNoCorriente += cuenta.getSaldo(fecha);
 		  }
 		  
 		  //Pasivo Corriente
-		  if(cuenta.prioridad<=-31 && cuenta.prioridad>=-60){ 
+		  if(cuenta.prioridad<=-31 && cuenta.prioridad>=-60 && (cuenta.algunaAnotacion(ano) || cuenta.getSaldo(fecha)!=0)){ 
 			  pasivoCorriente.add(cuenta);
 			  valorPasivoCorriente += cuenta.getSaldo(fecha);
 		  }

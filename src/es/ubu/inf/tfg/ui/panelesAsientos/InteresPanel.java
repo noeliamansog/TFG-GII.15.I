@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.ui.panelesAsientos;
 
 import java.awt.BorderLayout;
@@ -63,23 +84,37 @@ public class InteresPanel extends AsientoPanel {
 		Calendar fechaMinima = Calendar.getInstance();
 		fechaMinima.set(Main.anoInicial, 0, 1);
 		this.calendario.setMinSelectableDate(fechaMinima.getTime());
+		this.calendario.setDate(fechaMinima.getTime());
 		mainPanel.add(calendario);
 		
-
-		//Texto
-		mainPanel.add(new JLabel(" La empresa obtiene un ingreso de"));
+		//CON RETENCIONES
+		if(Main.conRetenciones){
+			//Texto
+			mainPanel.add(new JLabel(" La empresa obtiene un ingreso de"));
 		
-		this.ingreso = new JTextField(6);
-		mainPanel.add(this.ingreso);
+			this.ingreso = new JTextField(6);
+			mainPanel.add(this.ingreso);
 		
-		mainPanel.add(new JLabel("€ por"));
-		mainPanel.add(new JLabel("intereses devengados en la cuenta corriente durante este año, de los cuales"));
-		mainPanel.add(new JLabel("cobra el"));
+			mainPanel.add(new JLabel("€ por"));
+			mainPanel.add(new JLabel("intereses devengados en la cuenta corriente durante este año, de los cuales"));
+			mainPanel.add(new JLabel("cobra el"));
 		
-		this.porcentaje = new JTextField(2);
-		mainPanel.add(this.porcentaje);
+			this.porcentaje = new JTextField(2);
+			mainPanel.add(this.porcentaje);
 		
-		mainPanel.add(new JLabel("% (el resto lo retienen)."));
+			mainPanel.add(new JLabel("% (el resto lo retienen)."));
+			
+		//SIN RETENCIONES	
+		}else{
+			//Texto
+			mainPanel.add(new JLabel(" La empresa obtiene un ingreso de"));
+			
+			this.ingreso = new JTextField(6);
+			mainPanel.add(this.ingreso);
+			
+			mainPanel.add(new JLabel("€ por"));
+			mainPanel.add(new JLabel("intereses devengados en la cuenta corriente durante este año."));
+		}
 	}
 	
 	/**
@@ -118,27 +153,36 @@ public class InteresPanel extends AsientoPanel {
 					ok = false;
 				}
 			}
-			//Porcentaje que se cobra
-			String p = porcentaje.getText();
-			if("".equals(p)){
-				JOptionPane.showMessageDialog(null, "Introduce el % de los ingresos que se cobra correctamente");
-				ok = false;
-			}else{
-				try{
-					porcentajeCobrado = Double.parseDouble(p);
-					if(porcentajeCobrado<0 || porcentajeCobrado>100){
-						JOptionPane.showMessageDialog(null, "El % de los intereses debe estar entre 0 y 100");
-						ok=false;
-					}
-				}catch (Exception e){
+			if(Main.conRetenciones){
+				//Porcentaje que se cobra
+				String p = porcentaje.getText();
+				if("".equals(p)){
 					JOptionPane.showMessageDialog(null, "Introduce el % de los ingresos que se cobra correctamente");
 					ok = false;
+				}else{
+					try{
+						porcentajeCobrado = Double.parseDouble(p);
+						if(porcentajeCobrado<0 || porcentajeCobrado>100){
+							JOptionPane.showMessageDialog(null, "El % de los intereses debe estar entre 0 y 100");
+							ok=false;
+						}
+					}catch (Exception e){
+						JOptionPane.showMessageDialog(null, "Introduce el % de los ingresos que se cobra correctamente");
+						ok = false;
+					}
 				}
 			}
 				
 			if(ok){
-				double [] inputsIntereses = {ingresoIntereses, porcentajeCobrado};
-				intereses = new Interes(fecha, inputsIntereses, Main.enunciadoConCuentas);
+				//CON RETENCIONES
+				if(Main.conRetenciones){
+					double [] inputsIntereses = {ingresoIntereses, porcentajeCobrado};
+					intereses = new Interes(fecha, inputsIntereses, Main.enunciadoConCuentas);
+				}else{
+					double [] inputsInteresesSinR = {ingresoIntereses};
+					intereses = new Interes(fecha, inputsInteresesSinR, Main.enunciadoConCuentas);
+				}
+				
 				añadeEnunciado(intereses.enunciados);
 				Main.ejecucionAlgunAsiento = true;
 				borrarButton.setEnabled(false);

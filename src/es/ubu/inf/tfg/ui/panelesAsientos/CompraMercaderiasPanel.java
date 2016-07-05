@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.ui.panelesAsientos;
 
 import java.awt.BorderLayout;
@@ -63,21 +84,39 @@ public class CompraMercaderiasPanel extends AsientoPanel {
 		Calendar fechaMinima = Calendar.getInstance();
 		fechaMinima.set(Main.anoInicial, 0, 1);
 		this.calendario.setMinSelectableDate(fechaMinima.getTime());
+		this.calendario.setDate(fechaMinima.getTime());
 		mainPanel.add(calendario);
 		
-
-		//Texto
-		mainPanel.add(new JLabel(" La empresa compra mercaderías por un importe de"));
+		//CON IVA
+		if(Main.conIVA){
+			//Texto
+			mainPanel.add(new JLabel(" La empresa compra mercaderías por un importe de"));
 		
-		this.importe = new JTextField(6);
-		mainPanel.add(this.importe);
+			this.importe = new JTextField(6);
+			mainPanel.add(this.importe);
 		
-		mainPanel.add(new JLabel("€ mas un "+Main.IVA+"% de IVA. Se acuerda que el pago se realice en"));
+			mainPanel.add(new JLabel("€ mas un "+Main.IVA+"% de IVA. Se acuerda que el pago se realice en"));
 		
-		this.dias = new JTextField(2);
-		mainPanel.add(this.dias);
+			this.dias = new JTextField(2);
+			mainPanel.add(this.dias);
 		
-		mainPanel.add(new JLabel ("días."));
+			mainPanel.add(new JLabel ("días."));
+			
+		//SIN IVA	
+		}else{
+			//Texto
+			mainPanel.add(new JLabel(" La empresa compra mercaderías por un importe de"));
+			
+			this.importe = new JTextField(6);
+			mainPanel.add(this.importe);
+			
+			mainPanel.add(new JLabel("€. Se acuerda que el pago se realice en"));
+			
+			this.dias = new JTextField(2);
+			mainPanel.add(this.dias);
+			
+			mainPanel.add(new JLabel ("días."));
+		}
 	}
 	
 	/**

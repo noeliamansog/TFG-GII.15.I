@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.asientosContables;
 import java.util.Calendar;
 
@@ -23,8 +44,7 @@ public class CompraMaterialNoAmortizable extends Asiento {
 		fecha =f;
 		inputs=i;
 		String compra=null;
-		
-		
+			
 		if (inputs[0]==0){
 			compra = "un solar";
 		}else{
@@ -32,9 +52,13 @@ public class CompraMaterialNoAmortizable extends Asiento {
 		}
 		
 		String enunciado1 = " La empresa compra " +compra+ " por importe de " +inputs[1]+ "€. "
-     			+ "Este activo no es amortizable. Se abonan " +inputs[2]+ "€ mediante transferencia y "
-     			+ "quedan " +(inputs[1]-inputs[2])+ "€ pendiente de pago. Se acuerda que la deuda se pagará "
-     			+ "en " +(int)inputs[3]+ " meses. \n";
+     			+ "Este activo no es amortizable. Se abonan " +inputs[2];
+		if(inputs[3]==0){
+			enunciado1 = enunciado1 + "€ inmediatamente mediante transferencia.\n";
+		}else{
+			enunciado1 = enunciado1 + "€ mediante transferencia y quedan " +(inputs[1]-inputs[2])+ "€"
+					+ " pendiente de pago. Se acuerda que la deuda se pagará en " +(int)inputs[3]+ " meses.\n";
+		}
 		
 		if (inputs[0]==0){
 			if (enunciadoCuentas){
@@ -66,23 +90,27 @@ public class CompraMaterialNoAmortizable extends Asiento {
 		
 			
 		//SE SALDAN LAS DEUDAS CON LOS VENDEDORES "Y" DIAS DESPUES
-		Calendar fechaDeudas = (Calendar)fecha.clone();
-		fechaDeudas.add(Calendar.MONTH, (int) +inputs[3]);
+		if(inputs[3]>0){
+			Calendar fechaDeudas = (Calendar)fecha.clone();
+			fechaDeudas.add(Calendar.MONTH, (int) +inputs[3]);
+			
+			String enunciado2 = " Se salda la deuda con los vendedores de " +compra+ ".\n";
+			if (enunciadoCuentas){
+				enunciado2 = enunciado2 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros.";		
+				if (inputs[3]<12){
+					enunciado2 = enunciado2 +"523. Proveedores de inmovilizado a c/p. \n";
+				}else{
+					enunciado2 = enunciado2 +"173. Proveedores de inmovilizado a largo plazo. \n";
+				}
+			}
+			enunciados.add(new Enunciado(fechaDeudas, enunciado2));
 		
-		String enunciado2 = " Se salda la deuda con los vendedores de " +compra+ ".\n";
-		if (enunciadoCuentas){
-			enunciado2 = enunciado2 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros.";
-		}
-		
-		enunciados.add(new Enunciado(fechaDeudas, enunciado2));
-		
-		dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Deuda con proveedores de inmovilizado material", (inputs[1]-inputs[2]), damePrioridad(572)));
-		if (inputs[3]<12){
-			dameCuenta(523).añadirDebe(new Anotacion(fechaDeudas, "Deuda con proveedores de inmovilizado material", (inputs[1]-inputs[2]),damePrioridad(523)));
-			enunciado2 = enunciado2 +"523. Proveedores de inmovilizado a c/p. \n";
-		}else{
-			dameCuenta(173).añadirDebe(new Anotacion(fechaDeudas, "Deuda con proveedores de inmovilizado material", (inputs[1]-inputs[2]), damePrioridad(173)));
-			enunciado2 = enunciado2 +"173. Proveedores de inmovilizado a largo plazo. \n";
+			dameCuenta(572).añadirHaber(new Anotacion(fechaDeudas, "Deuda con proveedores de inmovilizado material", (inputs[1]-inputs[2]), damePrioridad(572)));
+			if (inputs[3]<12){
+				dameCuenta(523).añadirDebe(new Anotacion(fechaDeudas, "Deuda con proveedores de inmovilizado material", (inputs[1]-inputs[2]),damePrioridad(523)));
+			}else{
+				dameCuenta(173).añadirDebe(new Anotacion(fechaDeudas, "Deuda con proveedores de inmovilizado material", (inputs[1]-inputs[2]), damePrioridad(173)));
+			}
 		}
 	}
 }

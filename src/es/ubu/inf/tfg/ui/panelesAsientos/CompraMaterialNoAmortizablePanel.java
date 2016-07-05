@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.ui.panelesAsientos;
 
 import java.awt.BorderLayout;
@@ -71,6 +92,7 @@ public class CompraMaterialNoAmortizablePanel extends AsientoPanel {
 		Calendar fechaMinima = Calendar.getInstance();
 		fechaMinima.set(Main.anoInicial, 0, 1);
 		this.calendario.setMinSelectableDate(fechaMinima.getTime());
+		this.calendario.setDate(fechaMinima.getTime());
 		mainPanel.add(calendario);
 				
 

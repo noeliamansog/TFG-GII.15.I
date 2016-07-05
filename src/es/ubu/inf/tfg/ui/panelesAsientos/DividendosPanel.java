@@ -1,3 +1,24 @@
+/* GSC
+ * GSC es una aplicación que permite la creación de supuestos contables 
+ * personalizados y los resuelve de forma automática.
+ * Copyright (C) 2016 Noelia Manso & Luis R. Izquierdo
+ *
+ * This file is part of GSC.
+ *
+ * GSC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GSC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GSC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.ubu.inf.tfg.ui.panelesAsientos;
 
 import java.awt.BorderLayout;
@@ -64,22 +85,37 @@ public class DividendosPanel extends AsientoPanel {
 		Calendar fechaMinima = Calendar.getInstance();
 		fechaMinima.set(Main.anoInicial, 0, 1);
 		this.calendario.setMinSelectableDate(fechaMinima.getTime());
+		this.calendario.setDate(fechaMinima.getTime());
 		mainPanel.add(calendario);
 		
 
-		//Texto
-		mainPanel.add(new JLabel(" Se decide repartir dividendos por valor del"));
+		//CON RETENCIONES
+		if(Main.conRetenciones){
+			//Texto
+			mainPanel.add(new JLabel(" Se decide repartir dividendos por valor del"));
 		
-		this.valor = new JTextField(2);
-		mainPanel.add(this.valor);
+			this.valor = new JTextField(2);
+			mainPanel.add(this.valor);
 		
-		mainPanel.add(new JLabel("%"));
-		mainPanel.add(new JLabel("del resultado del ejercicio anterior (sobre los cuales se practica una retención"));
-		mainPanel.add(new JLabel("del"));
-		this.retencion = new JTextField(2);
-		mainPanel.add(this.retencion);
+			mainPanel.add(new JLabel("%"));
+			mainPanel.add(new JLabel("del resultado del ejercicio anterior (sobre los cuales se practica una retención"));
+			mainPanel.add(new JLabel("del"));
+			this.retencion = new JTextField(2);
+			mainPanel.add(this.retencion);
 		
-		mainPanel.add(new JLabel("%). El resto se lleva a Reserva Legal."));
+			mainPanel.add(new JLabel("%). El resto se lleva a Reserva Legal."));
+		
+		//SIN RETENCIONES	
+		}else{
+			//Texto
+			mainPanel.add(new JLabel(" Se decide repartir dividendos por valor del"));
+			
+			this.valor = new JTextField(2);
+			mainPanel.add(this.valor);
+			
+			mainPanel.add(new JLabel("%"));
+			mainPanel.add(new JLabel("del resultado del ejercicio anterior."));
+		}
 	}
 	
 	/**
@@ -134,38 +170,52 @@ public class DividendosPanel extends AsientoPanel {
 				}
 			}
 			
-			//Porcentaje retencion
-			String r = retencion.getText();
-			if("".equals(r)){
-				JOptionPane.showMessageDialog(null, "Introduce el % de la retención correctamente");
-				ok = false;
-			}else{
-				try{
-					porcentajeRetencion = Double.parseDouble(r);
-					if(porcentajeRetencion<0 || porcentajeRetencion>100){
-						JOptionPane.showMessageDialog(null, "El % de la retención debe estar entre 0 y 100");
-						ok=false;
-					}
-				}catch (Exception e){
+			if(Main.conRetenciones){
+				//Porcentaje retencion
+				String r = retencion.getText();
+				if("".equals(r)){
 					JOptionPane.showMessageDialog(null, "Introduce el % de la retención correctamente");
 					ok = false;
+				}else{
+					try{
+						porcentajeRetencion = Double.parseDouble(r);
+						if(porcentajeRetencion<0 || porcentajeRetencion>100){
+							JOptionPane.showMessageDialog(null, "El % de la retención debe estar entre 0 y 100");
+							ok=false;
+						}
+					}catch (Exception e){
+						JOptionPane.showMessageDialog(null, "Introduce el % de la retención correctamente");
+						ok = false;
+					}
 				}
 			}
 				
-			if(ok){
-				double [] inputsDividendos = {porcentajeValorDividendos, porcentajeRetencion};
-				
+			if(ok){				
 				//Introduzco sólo el enunciado en el panel de la interfaz
-				String enunciado1 = " Se decide repartir dividendos por valor del " +inputsDividendos[0]+ "% del resultado del "
+				String enunciado1 = null;
+				//Con retenciones
+				if(Main.conRetenciones){
+					double [] inputsDividendos = {porcentajeValorDividendos, porcentajeRetencion};
+					enunciado1 = " Se decide repartir dividendos por valor del " +inputsDividendos[0]+ "% del resultado del "
 						+ "ejercicio anterior (sobre los cuales se practica una retención del " +inputsDividendos[1]+ "%). El resto se lleva a Reserva Legal.\n";
-				if (Main.enunciadoConCuentas){
-					enunciado1 = enunciado1 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 129. Resultados del ejercicio;"
+					if (Main.enunciadoConCuentas){
+						enunciado1 = enunciado1 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 129. Resultados del ejercicio;"
 											+ "112. Reserva legal; 4751. H.P acreedor por retenciones practicadas; 12. Resultados pendientes de aplicación.\n";
+					}
+					Main.datosDividendos.put(fecha, inputsDividendos);
+				//Sin retenciones	
+				}else{
+					double [] inputsDividendosSinR = {porcentajeValorDividendos};
+					enunciado1 = " Se decide repartir dividendos por valor del " +inputsDividendosSinR[0]+ "% del resultado del "
+								+ "ejercicio anterior \n";
+					if (Main.enunciadoConCuentas){
+						enunciado1 = enunciado1 + "CUENTAS PGC: 572. Bancos e instituciones de crédito c/c vista, euros; 129. Resultados del ejercicio;"
+												+ "12. Resultados pendientes de aplicación.\n";
+					}
+					Main.datosDividendosSinRet.put(fecha, inputsDividendosSinR);
 				}
 				enunciado.add(new Enunciado(fecha, enunciado1));
 				añadeEnunciado(enunciado);
-				
-				Main.datosDividendos.put(fecha, inputsDividendos);
 				
 				Main.ejecucionAlgunAsiento = true;
 				borrarButton.setEnabled(false);
