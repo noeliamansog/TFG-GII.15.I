@@ -52,12 +52,19 @@ public class SueldoIngeniero extends Asiento {
 									+ "200.Gastos en investigación; 730 Trabajos realizados para el inmovilizado intangible.\n";
 		}
 	
+		//Calcular la diferencia hasta fin de año
+		Calendar fechaFinAno = (Calendar)fecha.clone();
+		fechaFinAno.set(fecha.get(Calendar.YEAR), 11, 31);	
+		double diferencia = (( fechaFinAno.getTimeInMillis() - fecha.getTimeInMillis())/(1000*60*60*24)+1);
+		
 		enunciados.add(new Enunciado(fecha, enunciado1));
 		
-		dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos Ingeniero informático", inputs[0], damePrioridad(640)));
-		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Ingeniero informático", inputs[0], damePrioridad(572)));
-		dameCuenta(200).añadirDebe(new Anotacion(fecha, "Gasto en investigacion", (inputs[1]*inputs[0])/100, damePrioridad(200)));
-		dameCuenta(730).añadirHaber(new Anotacion(fecha, "Trabajos realizados para el inmovilizado intangible", (inputs[1]*inputs[0])/100, damePrioridad(730)));
+		double aPagar = (diferencia/365)*inputs[0];
+		
+		dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos Ingeniero informático", aPagar, damePrioridad(640)));
+		dameCuenta(572).añadirHaber(new Anotacion(fecha, "Ingeniero informático", aPagar, damePrioridad(572)));
+		dameCuenta(200).añadirDebe(new Anotacion(fecha, "Gasto en investigacion", (inputs[1]*aPagar)/100, damePrioridad(200)));
+		dameCuenta(730).añadirHaber(new Anotacion(fecha, "Trabajos realizados para el inmovilizado intangible", (inputs[1]*aPagar)/100, damePrioridad(730)));
 	
 	}
 }

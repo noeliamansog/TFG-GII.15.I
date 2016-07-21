@@ -150,6 +150,7 @@ public class Prestamo extends Asiento {
 				 for(int j=1; j<=numPagos; j++){
 					 Calendar fechaMesSiguiente = (Calendar)fech.clone();
 					 fechaMesSiguiente.add(Calendar.MONTH, +j);
+					 cuotaAmortizacion =  cuotaPago-deudaViva*tipoInteres;
 					 dameCuenta(170).añadirDebe(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion, damePrioridad(170)));
 					 dameCuenta(662).añadirDebe(new Anotacion(fechaMesSiguiente, "Intereses préstamo de la " +j+ "ª cuota", deudaViva*tipoInteres, damePrioridad(662)));
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));

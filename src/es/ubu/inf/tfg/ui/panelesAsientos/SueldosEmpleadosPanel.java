@@ -102,12 +102,12 @@ public class SueldosEmpleadosPanel extends AsientoPanel {
 			mainPanel.add(this.sueldo);
 		
 			mainPanel.add(new JLabel("€ de sueldo bruto al año. Por cada uno de sus empleados la"));
-			mainPanel.add(new JLabel("empresa cotiza"));
+			mainPanel.add(new JLabel("empresa cotiza el"));
 		
-			this.cotizacion = new JTextField(6);
+			this.cotizacion = new JTextField(2);
 			mainPanel.add(this.cotizacion);
 			
-			mainPanel.add(new JLabel("€ a la Seguridad Social (cuota patronal), que"));
+			mainPanel.add(new JLabel("% a la Seguridad Social (cuota patronal), que"));
 			mainPanel.add(new JLabel("pagará al año que viene. Se retiene el"));
 		
 			this.retencion1 = new JTextField(2);
@@ -208,13 +208,13 @@ public class SueldosEmpleadosPanel extends AsientoPanel {
 			//Cotizacion
 			String c = cotizacion.getText();
 			if("".equals(c)){
-				JOptionPane.showMessageDialog(null, "Introduce el importe de cotización correctamente");
+				JOptionPane.showMessageDialog(null, "Introduce el % de cotización correctamente");
 				ok = false;
 			}else{
 				try{
 					cotizacionSS = Double.parseDouble(c);	
 				}catch (Exception e){
-					JOptionPane.showMessageDialog(null, "Introduce el importe de cotización correctamente");
+					JOptionPane.showMessageDialog(null, "Introduce el % de cotización correctamente");
 					ok = false;
 				}
 			}

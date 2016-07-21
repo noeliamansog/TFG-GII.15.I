@@ -47,10 +47,17 @@ public class SueldosEmpleados extends Asiento {
 	
 		String enunciado1 = null;
 		
+		//Calcular la diferencia hasta fin de año
+		Calendar fechaFinAno = (Calendar)fecha.clone();
+		fechaFinAno.set(fecha.get(Calendar.YEAR), 11, 31);	
+		double diferencia = (( fechaFinAno.getTimeInMillis() - fecha.getTimeInMillis())/(1000*60*60*24)+1);
+				
+		double aPagar = (diferencia/365)*inputs[1];
+		
 		//CON RETENCIONES
 		if(Main.conRetenciones){
 			enunciado1 = " La empresa paga a cada uno de sus " +(int)inputs[0]+ " empleados " +inputs[1]+ "€ de sueldo bruto al año. "
-					+ "Por cada uno de sus empleados la empresa cotiza " +inputs[2]+ "€ a la Seguridad Social (cuota patronal), "
+					+ "Por cada uno de sus empleados la empresa cotiza el " +inputs[2]+ "% a la Seguridad Social (cuota patronal), "
 					+ "que pagará al año que viene. Se retiene el " +inputs[3]+ "% del salario bruto por I.R.P.F. y "
 					+ "el " +inputs[4]+ "% del salario bruto en concepto de Seguridad Social a cargo del trabajador (cuota obrera). \n";
 			if (enunciadoCuentas){
@@ -60,19 +67,19 @@ public class SueldosEmpleados extends Asiento {
 		
 			enunciados.add(new Enunciado(fecha, enunciado1));
 	
-			dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*inputs[1]), damePrioridad(640)));
-			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*inputs[1])-(((inputs[4]/100)*(inputs[0]*inputs[1]))+((inputs[3]/100)*((inputs[0]*inputs[1])))), damePrioridad(572)));
+			dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*aPagar), damePrioridad(640)));
+			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Sueldos y salarios", (inputs[0]*aPagar)-(((inputs[4]/100)*(inputs[0]*aPagar))+((inputs[3]/100)*((inputs[0]*aPagar)))), damePrioridad(572)));
 	
-			dameCuenta(642).añadirDebe(new Anotacion(fecha, "S.S. a cargo de la empresa", (inputs[0]*inputs[2]), damePrioridad(642)));
-			dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", (inputs[0]*inputs[2]), damePrioridad(476)));
+			dameCuenta(642).añadirDebe(new Anotacion(fecha, "S.S. a cargo de la empresa", ((inputs[2]/100)*((inputs[0]*aPagar))), damePrioridad(642)));
+			dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", ((inputs[2]/100)*((inputs[0]*aPagar))), damePrioridad(476)));
 	
-			dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", ((inputs[4]/100)*(inputs[0]*inputs[1])), damePrioridad(476)));
-			dameCuenta(4751).añadirHaber(new Anotacion(fecha, "H.P acreedor por retenciones practicadas", ((inputs[3]/100)*((inputs[0]*inputs[1]))), damePrioridad(4751)));
+			dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", ((inputs[4]/100)*(inputs[0]*aPagar)), damePrioridad(476)));
+			dameCuenta(4751).añadirHaber(new Anotacion(fecha, "H.P acreedor por retenciones practicadas", ((inputs[3]/100)*((inputs[0]*aPagar))), damePrioridad(4751)));
 
 		//SIN RETENCIONES
 		}else{
 			enunciado1 = " La empresa paga a cada uno de sus " +(int)inputs[0]+ " empleados " +inputs[1]+ "€ de sueldo bruto al año. "
-					 + "Por cada uno de sus empleados la empresa cotiza " +inputs[2]+ "€ a la Seguridad Social (cuota patronal), "
+					 + "Por cada uno de sus empleados la empresa cotiza el " +inputs[2]+ "% a la Seguridad Social (cuota patronal), "
 					 + "que pagará al año que viene. \n";
 			if (enunciadoCuentas){
 				enunciado1 = enunciado1 + "CUENTAS PGC: 640. Sueldo y salario; 642.S.S. a cargo de la empresa; "
@@ -81,11 +88,11 @@ public class SueldosEmpleados extends Asiento {
 				
 			enunciados.add(new Enunciado(fecha, enunciado1));
 			
-			dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos y salarios", inputs[0]*inputs[1], damePrioridad(640)));
-			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Sueldos y salarios", inputs[0]*inputs[1], damePrioridad(572)));
+			dameCuenta(640).añadirDebe(new Anotacion(fecha, "Sueldos y salarios", inputs[0]*aPagar, damePrioridad(640)));
+			dameCuenta(572).añadirHaber(new Anotacion(fecha, "Sueldos y salarios", inputs[0]*aPagar, damePrioridad(572)));
 			
-			dameCuenta(642).añadirDebe(new Anotacion(fecha, "S.S. a cargo de la empresa", (inputs[0]*inputs[2]), damePrioridad(642)));
-			dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", (inputs[0]*inputs[2]), damePrioridad(476)));	
+			dameCuenta(642).añadirDebe(new Anotacion(fecha, "S.S. a cargo de la empresa", ((inputs[2]/100)*((inputs[0]*aPagar))), damePrioridad(642)));
+			dameCuenta(476).añadirHaber(new Anotacion(fecha, "Organismos de la S.S. acreedores", ((inputs[2]/100)*((inputs[0]*aPagar))), damePrioridad(476)));	
 		}
 	}
 }
