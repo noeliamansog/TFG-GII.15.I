@@ -265,13 +265,13 @@ public class Main {
 	public void initVentanaInicial(){
 		this.ventanaInicial = new JFrame();   
         
-        this.ventanaInicial.setTitle("Configuaración antes de empezar");
+        this.ventanaInicial.setTitle("Configuración antes de empezar");
         this.ventanaInicial.setSize(440, 470);
         this.ventanaInicial.setLocationRelativeTo(null);
         ventanaInicial.setLayout(null); 
     
         this.textoVentanaInicial = new JLabel();
-        this.textoVentanaInicial.setText("<html><p align=center><font face=arial, serif size=4><b><u> ¿COMO DESEA REALIZAR EL SUPUESTO CONTABLE?</u></b></html>");
+        this.textoVentanaInicial.setText("<html><p align=center><font face=arial, serif size=4><b><u> ¿CÓMO DESEA REALIZAR EL SUPUESTO CONTABLE?</u></b></html>");
         this.textoVentanaInicial.setBounds(10, 7, 400, 50);
         this.ventanaInicial.add(this.textoVentanaInicial);		
         
@@ -484,7 +484,7 @@ public class Main {
 	private void initVentanaFinal() {	
 		this.ventanaFinal = new JFrame();   
         
-        this.ventanaFinal.setTitle("Configuaración de la generación de tablas");
+        this.ventanaFinal.setTitle("Configuración de la generación de tablas");
         this.ventanaFinal.setSize(470, 280);
         this.ventanaFinal.setLocationRelativeTo(null);
         ventanaFinal.setLayout(null); 
@@ -492,7 +492,7 @@ public class Main {
         this.textoVentanaFinal = new JLabel();
         if(anoInicial == anoFinal){
         	this.textoVentanaFinal.setText("<html><b>Se generará en el año "+anoInicial+" las tablas correspondientes "
-        			+ "al Balance,<br> Cuenta de perdidas y ganancias y Tesorería de este año.</b></html>");
+        			+ "al Balance,<br> Cuenta de pérdidas y ganancias y Tesorería de este año.</b></html>");
         	this.textoVentanaFinal.setBounds(10, 0, 430, 100);
             this.ventanaFinal.add(this.textoVentanaFinal);
         	
@@ -878,7 +878,7 @@ public class Main {
 			panelesAsiento.clear();
 			contenedorPanel.revalidate();
 			
-			textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciados de los asientos contable<br><br></b></p>";
+			textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciado del supuesto contable<br><br></b></p>";
 			panelEnunciado.setText(textoEnunciado);
 			AsientoPanel.listaEnunciados =  new ArrayList<ArrayList<Enunciado>>();
 			

@@ -207,7 +207,7 @@ public class AsientoPanel extends JPanel {
 				 + "  e) Analizar el endeudamiento de la empresa mediante ratios para cada uno de los años.<br>";
 		
 		Main.panelEnunciado.setText(Main.textoEnunciado);
-		Main.textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciados de los asientos contable<br><br></b></p>";	
+		Main.textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciado del supuesto contable<br><br></b></p>";	
 
 		Main.anoFinal = fechaCierre.get(Calendar.YEAR);
 	}	
