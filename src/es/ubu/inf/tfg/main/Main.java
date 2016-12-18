@@ -462,7 +462,7 @@ public class Main {
 	
 		panelEnunciado.setContentType("text/html");
 		textoEnunciado =  "<p align=center><font color=#6E6E6E face=impact, serif size=12><b>Enunciado "
-				+ "supuesto contable<br><br></b></p>";
+				+ "del supuesto contable<br><br></b></p>";
 		panelEnunciado.setText(textoEnunciado);
 		
 		this.contenedorScroll2.add(panelEnunciado);
@@ -1067,7 +1067,7 @@ public class Main {
 			
 			documento.open();
 			
-			Paragraph par = new Paragraph("ENUNCIADO SUPUESTO CONTABLE:  \n \n", FontFactory.getFont("arial", 16, Font.BOLD, BaseColor.BLACK)); 
+			Paragraph par = new Paragraph("ENUNCIADO DEL SUPUESTO CONTABLE:  \n \n", FontFactory.getFont("arial", 16, Font.BOLD, BaseColor.BLACK)); 
 			documento.add(par);
 			
 
