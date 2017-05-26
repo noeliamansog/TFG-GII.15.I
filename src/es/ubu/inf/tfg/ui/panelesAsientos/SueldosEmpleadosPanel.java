@@ -135,12 +135,12 @@ public class SueldosEmpleadosPanel extends AsientoPanel {
 			mainPanel.add(this.sueldo);
 			
 			mainPanel.add(new JLabel("€ de sueldo bruto al año. Por cada uno de sus empleados la"));
-			mainPanel.add(new JLabel("empresa cotiza"));
+			mainPanel.add(new JLabel("empresa cotiza el"));
 			
 			this.cotizacion = new JTextField(6);
 			mainPanel.add(this.cotizacion);
 			
-			mainPanel.add(new JLabel("€ a la Seguridad Social (cuota patronal), que"));
+			mainPanel.add(new JLabel("% a la Seguridad Social (cuota patronal), que"));
 			mainPanel.add(new JLabel("pagará al año que viene."));
 		
 		}
