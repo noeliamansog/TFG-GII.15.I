@@ -106,12 +106,14 @@ public class Prestamo extends Asiento {
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 
+					 /*
 					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
 						if (enunciadoCuentas){
 							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
 									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
 						}			
-					enunciados.add(new Enunciado(fechaMesSiguiente, enunciado2));		 
+					 enunciados.add(new Enunciado(fechaMesSiguiente, enunciado2));	
+					 */	 
 				 }
 			 //Anual
 			 }else{
@@ -128,12 +130,14 @@ public class Prestamo extends Asiento {
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaAmortizacion+deudaViva*tipoInteres, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 
+					 /*
 					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
 						if (enunciadoCuentas){
 							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
 									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
 						}			
-					enunciados.add(new Enunciado(fechaAñoSiguiente, enunciado2));		 
+					 enunciados.add(new Enunciado(fechaAñoSiguiente, enunciado2));		 
+					*/
 				 }
 			 }
 
@@ -156,12 +160,14 @@ public class Prestamo extends Asiento {
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaMesSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;
 					 
+					 /*
 					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
 						if (enunciadoCuentas){
 							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
 									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
 						}			
-					enunciados.add(new Enunciado(fechaMesSiguiente, enunciado2));	 
+					 enunciados.add(new Enunciado(fechaMesSiguiente, enunciado2));	 
+					*/
 				 }
 			 //Anual
 			 }else{
@@ -179,12 +185,14 @@ public class Prestamo extends Asiento {
 					 dameCuenta(572).añadirHaber(new Anotacion(fechaAñoSiguiente, j+ "ª cuota prestamo", cuotaPago, damePrioridad(572)));
 					 deudaViva = deudaViva - cuotaAmortizacion;		
 					 
+					 /*
 					 String enunciado2 = " Se paga la "+j+"ª cuota del préstamo.\n";
 						if (enunciadoCuentas){
 							enunciado2 = enunciado2 + "CUENTAS PGC: 170. Deudas a largo plazo con entidades de crédito; 662.Intereses de deudas; "
 									+ "572. Bancos e instituciones de crédito c/c vista, euros. \n";
 						}			
-					enunciados.add(new Enunciado(fechaAñoSiguiente, enunciado2));
+					 enunciados.add(new Enunciado(fechaAñoSiguiente, enunciado2));
+					 */
 				 }
 			 }
 		 }
